@@ -154,9 +154,11 @@ export const translations = {
 3. Implementiere Logik in `src/composables/useOscillators.js`
 
 ## Lizenz
+MIT Lizenz
 
 Open Source - frei verwendbar und anpassbar
 
-## Credits
+## Autor
+Dinko Ramić Kodini Tools kodinitools.com
 
-Konvertiert aus einer vanilla JavaScript Anwendung in eine moderne Vue 3 Architektur mit Composition API, Pinia State Management und modularem Design.
+
