@@ -88,7 +88,8 @@ export const translations = {
     faq_a10: "Ja, das Alarm-Tool ist vollständig kostenlos und Open Source. Du kannst es frei nutzen und anpassen.",
 
     // Donate
-    donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:"
+    donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:",
+    donate_button_text: "Spenden via PayPal"
   },
   en: {
     page_title: "Modern Alarm Tool with 12 Oscillators & Live Recorder",
@@ -179,6 +180,7 @@ export const translations = {
     faq_a10: "Yes, the Alarm Tool is completely free and Open Source. You can use and modify it freely.",
 
     // Donate
-    donate_message: "If you like this project and would like to support its development, feel free to donate:"
+    donate_message: "If you like this project and would like to support its development, feel free to donate:",
+    donate_button_text: "Donate via PayPal"
   }
 }
