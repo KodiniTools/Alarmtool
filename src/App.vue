@@ -55,6 +55,9 @@
     <div class="section">
       <PlayerControl />
     </div>
+
+    <!-- Donate Button -->
+    <DonateButton />
   </div>
 </template>
 
@@ -71,6 +74,7 @@ import RecorderControl from '@/components/RecorderControl.vue'
 import FAQSection from '@/components/FAQSection.vue'
 import SettingsPanel from '@/components/SettingsPanel.vue'
 import PlayerControl from '@/components/PlayerControl.vue'
+import DonateButton from '@/components/DonateButton.vue'
 
 const store = useAlarmStore()
 const { handleKeyboard } = usePlayer()

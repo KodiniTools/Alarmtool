@@ -85,7 +85,10 @@ export const translations = {
     faq_q9: "Wie funktionieren Pattern?",
     faq_a9: "Pattern definieren Rhythmen als Zahlenfolge: an-Zeit, aus-Zeit, an-Zeit, aus-Zeit... (z.B. '500,200' für 500ms an, 200ms aus).",
     faq_q10: "Ist das Tool kostenlos?",
-    faq_a10: "Ja, das Alarm-Tool ist vollständig kostenlos und Open Source. Du kannst es frei nutzen und anpassen."
+    faq_a10: "Ja, das Alarm-Tool ist vollständig kostenlos und Open Source. Du kannst es frei nutzen und anpassen.",
+
+    // Donate
+    donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:"
   },
   en: {
     page_title: "Modern Alarm Tool with 12 Oscillators & Live Recorder",
@@ -173,6 +176,9 @@ export const translations = {
     faq_q9: "How do patterns work?",
     faq_a9: "Patterns define rhythms as number sequences: on-time, off-time, on-time, off-time... (e.g. '500,200' for 500ms on, 200ms off).",
     faq_q10: "Is the tool free?",
-    faq_a10: "Yes, the Alarm Tool is completely free and Open Source. You can use and modify it freely."
+    faq_a10: "Yes, the Alarm Tool is completely free and Open Source. You can use and modify it freely.",
+
+    // Donate
+    donate_message: "If you like this project and would like to support its development, feel free to donate:"
   }
 }
