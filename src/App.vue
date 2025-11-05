@@ -96,10 +96,15 @@ const t = (key) => {
 onMounted(() => {
   // Set theme on mount
   document.body.setAttribute('data-theme', store.currentTheme)
-  
+
+  // Apply saved background color
+  if (store.backgroundColor) {
+    document.body.style.background = store.backgroundColor
+  }
+
   // Add keyboard event listener
   document.addEventListener('keydown', handleKeyboard)
-  
+
   console.log('Alarm Tool Vue initialized')
 })
 

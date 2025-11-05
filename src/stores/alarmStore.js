@@ -30,6 +30,7 @@ export const useAlarmStore = defineStore('alarm', () => {
   // Language & Theme
   const currentLang = ref(localStorage.getItem('alarmToolLang') || 'de')
   const currentTheme = ref(localStorage.getItem('alarmToolTheme') || 'dark')
+  const backgroundColor = ref(localStorage.getItem('alarmToolBgColor') || '')
   
   // Filter Settings
   const filterSettings = ref({
@@ -73,6 +74,17 @@ export const useAlarmStore = defineStore('alarm', () => {
     currentTheme.value = theme
     localStorage.setItem('alarmToolTheme', theme)
     document.body.setAttribute('data-theme', theme)
+  }
+
+  function setBackgroundColor(color) {
+    backgroundColor.value = color
+    localStorage.setItem('alarmToolBgColor', color)
+    if (color) {
+      document.body.style.background = color
+    } else {
+      // Reset to default gradient
+      document.body.style.background = ''
+    }
   }
 
   function updateFilterSettings(settings) {
@@ -125,15 +137,17 @@ export const useAlarmStore = defineStore('alarm', () => {
     remainingTime,
     currentLang,
     currentTheme,
+    backgroundColor,
     filterSettings,
     oscillators,
-    
+
     // Computed
     activeOscillators,
-    
+
     // Actions
     setLanguage,
     setTheme,
+    setBackgroundColor,
     updateFilterSettings,
     updateOscillator,
     resetOscillators

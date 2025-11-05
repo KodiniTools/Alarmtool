@@ -64,6 +64,7 @@ function saveSettings() {
         frequency: store.filterSettings.frequency,
         Q: store.filterSettings.Q
       },
+      backgroundColor: store.backgroundColor,
       oscillators: store.oscillators.map((osc) => ({
         waveType: osc.waveType,
         frequency: osc.frequency,
@@ -106,6 +107,7 @@ function exportSettings() {
         frequency: store.filterSettings.frequency,
         Q: store.filterSettings.Q
       },
+      backgroundColor: store.backgroundColor,
       oscillators: store.oscillators.map((osc) => ({
         waveType: osc.waveType,
         frequency: osc.frequency,
@@ -157,6 +159,11 @@ function applySettings(settings) {
       updateFilter(settings.globalFilter)
     }
 
+    // Apply background color
+    if (settings.backgroundColor !== undefined) {
+      store.setBackgroundColor(settings.backgroundColor)
+    }
+
     // Apply oscillator settings
     if (settings.oscillators && settings.oscillators.length === store.oscillators.length) {
       settings.oscillators.forEach((oscSettings, index) => {
@@ -169,7 +176,7 @@ function applySettings(settings) {
           release: oscSettings.release,
           pattern: oscSettings.pattern
         })
-        
+
         // Parse pattern for this oscillator
         parsePattern(index)
       })

@@ -89,7 +89,11 @@ export const translations = {
 
     // Donate
     donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:",
-    donate_button_text: "Spenden via PayPal"
+    donate_button_text: "Spenden via PayPal",
+
+    // Background Color
+    bg_color_tooltip: "Hintergrundfarbe anpassen",
+    bg_color_reset: "Standardfarbe wiederherstellen"
   },
   en: {
     page_title: "Modern Alarm Tool with 12 Oscillators & Live Recorder",
@@ -181,6 +185,10 @@ export const translations = {
 
     // Donate
     donate_message: "If you like this project and would like to support its development, feel free to donate:",
-    donate_button_text: "Donate via PayPal"
+    donate_button_text: "Donate via PayPal",
+
+    // Background Color
+    bg_color_tooltip: "Customize background color",
+    bg_color_reset: "Reset to default color"
   }
 }
