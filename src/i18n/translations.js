@@ -40,6 +40,8 @@ export const translations = {
     // Oscillators
     osc_title: "12 Oszillator-Einstellungen",
     osc_title_prefix: "Oszillator",
+    osc_enable: "Oszillator aktivieren",
+    osc_disable: "Oszillator deaktivieren",
     osc_waveform: "Wellenform",
     osc_wave_sine: "Sinus",
     osc_wave_square: "Rechteck",
@@ -148,6 +150,8 @@ export const translations = {
     // Oscillators
     osc_title: "12 Oscillator Settings",
     osc_title_prefix: "Oscillator",
+    osc_enable: "Enable oscillator",
+    osc_disable: "Disable oscillator",
     osc_waveform: "Waveform",
     osc_wave_sine: "Sine",
     osc_wave_square: "Square",

@@ -10,6 +10,11 @@ export function useOscillators() {
     }
 
     store.oscillators.forEach((oscData, index) => {
+      // Skip disabled oscillators
+      if (!oscData.enabled) {
+        return
+      }
+
       try {
         const osc = store.audioCtx.createOscillator()
         const gainNode = store.audioCtx.createGain()
@@ -70,8 +75,9 @@ export function useOscillators() {
 
   function runOscPattern(oscId) {
     const oscData = store.oscillators[oscId]
-    
-    if (!store.isAlarmRunning || !oscData.patternSteps.length) {
+
+    // Skip disabled oscillators
+    if (!oscData.enabled || !store.isAlarmRunning || !oscData.patternSteps.length) {
       return
     }
     
