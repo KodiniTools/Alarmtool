@@ -159,6 +159,8 @@
             v-model="settings.pattern"
             type="text"
             class="form-control"
+            placeholder="500, 200, 300, 100"
+            @input="updateParameter('pattern', settings.pattern)"
             @change="updateParameter('pattern', settings.pattern)"
           />
           <div class="form-text">{{ t('osc_pattern_help') }}</div>
