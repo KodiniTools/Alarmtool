@@ -72,6 +72,7 @@ export const translations = {
     rec_download: "Download",
     rec_running: "Aufnahme läuft:",
     rec_remaining: "verbleibend",
+    rec_success: "Aufnahme fertig! Klicke auf Download.",
     rec_help: "Erst den Alarm starten, dann Aufnahme; nach der gewählten Dauer wird ein Download-Link angezeigt.",
     
     // Settings
@@ -83,6 +84,16 @@ export const translations = {
     
     // Player
     player_title: "Media Player Steuerung",
+    player_play: "Abspielen (Leertaste)",
+    player_pause: "Pause",
+    player_resume: "Fortsetzen (Leertaste)",
+    player_stop: "Stoppen (Esc)",
+    player_progress: "Fortschritt",
+    player_mute_on: "Ton einschalten (M)",
+    player_mute_off: "Stumm schalten (M)",
+    player_volume: "Lautstärke",
+    player_loop_on: "Loop deaktivieren (L)",
+    player_loop_off: "Loop aktivieren (L)",
     player_info: "Steuerung: Leertaste = Play/Pause | Esc = Stop | M = Mute | L = Loop",
     
     // FAQ
@@ -185,6 +196,7 @@ export const translations = {
     rec_download: "Download",
     rec_running: "Recording in progress:",
     rec_remaining: "remaining",
+    rec_success: "Recording complete! Click Download.",
     rec_help: "Start the alarm first, then start recording; after the selected duration, a download link will appear.",
     
     // Settings
@@ -196,6 +208,16 @@ export const translations = {
     
     // Player
     player_title: "Media Player Control",
+    player_play: "Play (Space)",
+    player_pause: "Pause",
+    player_resume: "Resume (Space)",
+    player_stop: "Stop (Esc)",
+    player_progress: "Progress",
+    player_mute_on: "Unmute (M)",
+    player_mute_off: "Mute (M)",
+    player_volume: "Volume",
+    player_loop_on: "Disable Loop (L)",
+    player_loop_off: "Enable Loop (L)",
     player_info: "Control: Spacebar = Play/Pause | Esc = Stop | M = Mute | L = Loop",
     
     // FAQ

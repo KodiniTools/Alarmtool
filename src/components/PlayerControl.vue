@@ -9,7 +9,7 @@
           class="btn btn-primary player-btn"
           :disabled="store.isPlaying && !store.isPaused"
           @click="handlePlay"
-          title="Abspielen"
+          :title="store.isPaused ? t('player_resume') : t('player_play')"
         >
           <i class="fas fa-play"></i>
         </button>
@@ -20,7 +20,7 @@
           class="btn btn-secondary player-btn"
           :disabled="!store.isPlaying || store.isPaused"
           @click="pauseAlarm"
-          title="Pause"
+          :title="t('player_pause')"
         >
           <i class="fas fa-pause"></i>
         </button>
@@ -31,7 +31,7 @@
           class="btn btn-danger player-btn"
           :disabled="!store.isPlaying"
           @click="stopAlarm"
-          title="Stoppen"
+          :title="t('player_stop')"
         >
           <i class="fas fa-stop"></i>
         </button>
@@ -45,7 +45,7 @@
             min="0"
             max="100"
             :value="progressValue"
-            title="Fortschritt"
+            :title="t('player_progress')"
           />
           <span class="player-time">{{ formatTime(store.currentTime) }}</span>
         </div>
@@ -55,7 +55,7 @@
           <button
             id="playerMute"
             class="btn btn-outline-secondary player-btn"
-            :title="store.isMuted ? 'Ton einschalten' : 'Stumm schalten'"
+            :title="store.isMuted ? t('player_mute_on') : t('player_mute_off')"
             @click="toggleMute"
           >
             <i :class="store.isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up'"></i>
@@ -68,7 +68,7 @@
             max="1"
             step="0.01"
             :value="store.volume"
-            :title="`Lautstärke: ${Math.round(store.volume * 100)}%`"
+            :title="`${t('player_volume')}: ${Math.round(store.volume * 100)}%`"
             @input="updateVolume($event.target.value)"
           />
         </div>
@@ -78,7 +78,7 @@
           id="playerLoop"
           class="btn btn-outline-secondary player-btn"
           :class="{ active: store.isLooping }"
-          :title="store.isLooping ? 'Loop deaktivieren' : 'Loop aktivieren'"
+          :title="store.isLooping ? t('player_loop_on') : t('player_loop_off')"
           @click="toggleLoop"
         >
           <i class="fas fa-repeat"></i>
