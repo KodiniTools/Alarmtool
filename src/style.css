@@ -472,9 +472,17 @@ h2 {
   color: var(--titaniumgraphite-3);
 }
 
+[data-theme="light"] .btn-secondary {
+  color: #ffffff;
+}
+
 .btn-secondary:hover:not(:disabled) {
   background-color: var(--titaniumgraphite-1);
   color: var(--titaniumgraphite-4);
+}
+
+[data-theme="light"] .btn-secondary:hover:not(:disabled) {
+  color: #1a1a1f;
 }
 
 .btn-outline-secondary {
