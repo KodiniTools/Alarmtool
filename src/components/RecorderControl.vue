@@ -27,10 +27,13 @@
             v-model="selectedFormat"
             class="form-select"
           >
-            <option value="auto">{{ t('rec_format_auto') }}</option>
-            <option value="webm-opus">{{ t('rec_format_webm') }}</option>
-            <option value="ogg-opus">{{ t('rec_format_ogg') }}</option>
-            <option value="wav">{{ t('rec_format_wav') }}</option>
+            <option
+              v-for="fmt in availableFormats"
+              :key="fmt.value"
+              :value="fmt.value"
+            >
+              {{ t(fmt.labelKey) }}
+            </option>
           </select>
         </div>
 
@@ -98,10 +101,32 @@ const {
 } = useRecorder()
 
 const selectedDuration = ref(60000) // Default 1 minute
-const selectedFormat = ref('auto') // Default auto
 store.recordingDuration = selectedDuration.value
 
 const t = (key) => translations[store.currentLang]?.[key] || key
+
+// Define all possible formats with their mime types
+const allFormats = [
+  { value: 'webm-opus', labelKey: 'rec_format_webm', mimeType: 'audio/webm;codecs=opus' },
+  { value: 'ogg-opus', labelKey: 'rec_format_ogg', mimeType: 'audio/ogg;codecs=opus' },
+  { value: 'wav', labelKey: 'rec_format_wav', mimeType: 'audio/wav' }
+]
+
+// Filter to only show formats supported by the browser
+const availableFormats = computed(() => {
+  const supported = allFormats.filter(fmt =>
+    typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(fmt.mimeType)
+  )
+  // If multiple formats available, add "auto" option at the beginning
+  if (supported.length > 1) {
+    return [{ value: 'auto', labelKey: 'rec_format_auto' }, ...supported]
+  }
+  // If only one or no formats, just return what's available
+  return supported.length > 0 ? supported : [{ value: 'auto', labelKey: 'rec_format_auto' }]
+})
+
+// Default to first available format
+const selectedFormat = ref(availableFormats.value[0]?.value || 'auto')
 
 const canStartRecording = computed(() => {
   return selectedDuration.value && store.isAlarmRunning && !store.isRecording
