@@ -53,12 +53,17 @@
             v-if="showDownload"
             :href="downloadUrl"
             :download="downloadFilename"
-            class="btn btn-outline-secondary"
+            class="btn btn-outline-secondary download-ready"
             @click="handleDownload"
           >
             <i class="fas fa-download"></i> {{ t('rec_download') }}
           </a>
         </div>
+      </div>
+
+      <!-- Success Feedback -->
+      <div v-if="showDownload" class="recording-success">
+        <i class="fas fa-check-circle"></i> {{ t('rec_success') }}
       </div>
 
       <!-- Recording Feedback -->
@@ -174,6 +179,73 @@ function handleDownload() {
   gap: 0.5rem;
   flex-direction: row;
   align-items: center;
+}
+
+/* Success feedback */
+.recording-success {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.05));
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  border-radius: 8px;
+  color: #28a745;
+  font-weight: 500;
+  animation: successFadeIn 0.4s ease-out;
+}
+
+.recording-success i {
+  font-size: 1.2rem;
+  animation: successPulse 1s ease-in-out;
+}
+
+/* Download button animation */
+.download-ready {
+  animation: downloadPulse 0.6s ease-out;
+  border-color: #28a745 !important;
+  color: #28a745 !important;
+}
+
+.download-ready:hover {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+@keyframes successFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes downloadPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+  }
 }
 
 @media (max-width: 768px) {
