@@ -131,5 +131,15 @@ function handlePlay() {
 .player-btn.active {
   background-color: var(--titaniumgraphite-1) !important;
   color: var(--titaniumgraphite-4) !important;
+  box-shadow: 0 2px 8px rgba(242, 226, 142, 0.3);
+}
+
+[data-theme="light"] .player-btn.active {
+  box-shadow: 0 2px 8px rgba(196, 168, 46, 0.25);
+}
+
+h2 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
 }
 </style>
