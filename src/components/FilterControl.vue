@@ -9,7 +9,7 @@
           id="filterType"
           v-model="filterType"
           class="form-select"
-          @change="updateFilter"
+          @change="onFilterTypeChange"
         >
           <option value="none">{{ t('filter_none') }}</option>
           <option value="lowpass">{{ t('filter_lowpass') }}</option>
@@ -19,65 +19,73 @@
         </select>
       </div>
 
-      <!-- Filter Frequency -->
-      <div class="mb-3 param-container">
-        <label for="filterFrequency" class="form-label">{{ t('filter_frequency') }}</label>
-        <div class="slider-input-group">
-          <input
-            id="filterFrequency"
-            v-model.number="filterFrequency"
-            type="range"
-            class="form-range"
-            min="20"
-            max="20000"
-            step="1"
-            @input="updateFilter"
-          />
-          <input
-            v-model.number="filterFrequency"
-            type="number"
-            class="form-control"
-            min="20"
-            max="20000"
-            step="1"
-            @input="updateFilter"
-          />
+      <!-- Filter Parameters (only shown when filter is active) -->
+      <template v-if="filterType !== 'none'">
+        <!-- Filter Frequency -->
+        <div class="mb-3 param-container">
+          <label for="filterFrequency" class="form-label">{{ frequencyLabel }}</label>
+          <div class="slider-input-group">
+            <input
+              id="filterFrequency"
+              v-model.number="filterFrequency"
+              type="range"
+              class="form-range"
+              :min="frequencyRange.min"
+              :max="frequencyRange.max"
+              step="1"
+              @input="updateFilter"
+            />
+            <input
+              v-model.number="filterFrequency"
+              type="number"
+              class="form-control"
+              :min="frequencyRange.min"
+              :max="frequencyRange.max"
+              step="1"
+              @input="updateFilter"
+            />
+          </div>
+          <small class="form-text">{{ frequencyHelp }}</small>
         </div>
-        <small class="form-text">{{ t('filter_freq_help') }}</small>
-      </div>
 
-      <!-- Filter Q -->
-      <div class="mb-3 param-container">
-        <label for="filterQ" class="form-label">{{ t('filter_q') }}</label>
-        <div class="slider-input-group">
-          <input
-            id="filterQ"
-            v-model.number="filterQ"
-            type="range"
-            class="form-range"
-            min="0.1"
-            max="20"
-            step="0.1"
-            @input="updateFilter"
-          />
-          <input
-            v-model.number="filterQ"
-            type="number"
-            class="form-control"
-            min="0.1"
-            max="20"
-            step="0.1"
-            @input="updateFilter"
-          />
+        <!-- Filter Q -->
+        <div class="mb-3 param-container">
+          <label for="filterQ" class="form-label">{{ qLabel }}</label>
+          <div class="slider-input-group">
+            <input
+              id="filterQ"
+              v-model.number="filterQ"
+              type="range"
+              class="form-range"
+              :min="qRange.min"
+              :max="qRange.max"
+              :step="qRange.step"
+              @input="updateFilter"
+            />
+            <input
+              v-model.number="filterQ"
+              type="number"
+              class="form-control"
+              :min="qRange.min"
+              :max="qRange.max"
+              :step="qRange.step"
+              @input="updateFilter"
+            />
+          </div>
+          <small class="form-text">{{ qHelp }}</small>
         </div>
-        <small class="form-text">{{ t('filter_q_help') }}</small>
+      </template>
+
+      <!-- Info when no filter selected -->
+      <div v-else class="filter-inactive-info">
+        <small class="form-text">{{ t('filter_inactive_info') }}</small>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useAudioContext } from '@/composables/useAudioContext'
 import { translations } from '@/i18n/translations'
@@ -93,6 +101,66 @@ const filterQ = ref(store.filterSettings.Q)
 // Translation helper
 const t = (key) => translations[store.currentLang]?.[key] || key
 
+// Filter-specific default values
+const filterDefaults = {
+  lowpass: { frequency: 2000, Q: 1, freqMin: 20, freqMax: 20000, qMin: 0.1, qMax: 20, qStep: 0.1 },
+  highpass: { frequency: 200, Q: 1, freqMin: 20, freqMax: 20000, qMin: 0.1, qMax: 20, qStep: 0.1 },
+  bandpass: { frequency: 1000, Q: 5, freqMin: 20, freqMax: 20000, qMin: 0.5, qMax: 30, qStep: 0.5 },
+  notch: { frequency: 1000, Q: 10, freqMin: 20, freqMax: 20000, qMin: 1, qMax: 50, qStep: 1 }
+}
+
+// Computed properties for dynamic ranges
+const frequencyRange = computed(() => {
+  const defaults = filterDefaults[filterType.value] || filterDefaults.lowpass
+  return { min: defaults.freqMin, max: defaults.freqMax }
+})
+
+const qRange = computed(() => {
+  const defaults = filterDefaults[filterType.value] || filterDefaults.lowpass
+  return { min: defaults.qMin, max: defaults.qMax, step: defaults.qStep }
+})
+
+// Computed properties for dynamic labels
+const frequencyLabel = computed(() => {
+  const labels = {
+    lowpass: t('filter_freq_cutoff'),
+    highpass: t('filter_freq_cutoff'),
+    bandpass: t('filter_freq_center'),
+    notch: t('filter_freq_notch')
+  }
+  return labels[filterType.value] || t('filter_frequency')
+})
+
+const frequencyHelp = computed(() => {
+  const helps = {
+    lowpass: t('filter_freq_help_lowpass'),
+    highpass: t('filter_freq_help_highpass'),
+    bandpass: t('filter_freq_help_bandpass'),
+    notch: t('filter_freq_help_notch')
+  }
+  return helps[filterType.value] || t('filter_freq_help')
+})
+
+const qLabel = computed(() => {
+  const labels = {
+    lowpass: t('filter_q_resonance'),
+    highpass: t('filter_q_resonance'),
+    bandpass: t('filter_q_bandwidth'),
+    notch: t('filter_q_width')
+  }
+  return labels[filterType.value] || t('filter_q')
+})
+
+const qHelp = computed(() => {
+  const helps = {
+    lowpass: t('filter_q_help_lowpass'),
+    highpass: t('filter_q_help_highpass'),
+    bandpass: t('filter_q_help_bandpass'),
+    notch: t('filter_q_help_notch')
+  }
+  return helps[filterType.value] || t('filter_q_help')
+})
+
 // Watch for store changes (e.g., when loading settings)
 watch(
   () => store.filterSettings,
@@ -104,6 +172,16 @@ watch(
   { deep: true }
 )
 
+function onFilterTypeChange() {
+  // Set default values for the selected filter type
+  if (filterType.value !== 'none' && filterDefaults[filterType.value]) {
+    const defaults = filterDefaults[filterType.value]
+    filterFrequency.value = defaults.frequency
+    filterQ.value = defaults.Q
+  }
+  updateFilter()
+}
+
 function updateFilter() {
   const settings = {
     type: filterType.value,
@@ -113,3 +191,11 @@ function updateFilter() {
   updateAudioFilter(settings)
 }
 </script>
+
+<style scoped>
+.filter-inactive-info {
+  padding: 1rem;
+  text-align: center;
+  opacity: 0.7;
+}
+</style>
