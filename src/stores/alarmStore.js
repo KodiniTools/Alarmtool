@@ -41,6 +41,7 @@ export const useAlarmStore = defineStore('alarm', () => {
   // Oscillator Data (12 oscillators)
   const oscillators = ref(Array.from({ length: 12 }, (_, i) => ({
     id: i,
+    enabled: i < 3, // First 3 oscillators enabled by default
     oscillator: null,
     gainNode: null,
     panNode: null,
@@ -59,8 +60,12 @@ export const useAlarmStore = defineStore('alarm', () => {
   })))
 
   // Computed
-  const activeOscillators = computed(() => 
+  const activeOscillators = computed(() =>
     oscillators.value.filter(osc => osc.oscillator !== null)
+  )
+
+  const enabledOscillators = computed(() =>
+    oscillators.value.filter(osc => osc.enabled)
   )
 
   // Actions
@@ -130,7 +135,8 @@ export const useAlarmStore = defineStore('alarm', () => {
     
     // Computed
     activeOscillators,
-    
+    enabledOscillators,
+
     // Actions
     setLanguage,
     setTheme,

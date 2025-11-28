@@ -1,21 +1,32 @@
 <template>
-  <div class="oscillator-item">
+  <div class="oscillator-item" :class="{ 'oscillator-disabled': !settings.enabled }">
     <div class="oscillator-header">
-      <h5 class="oscillator-title">{{ t('osc_title_prefix') }} {{ oscillatorId + 1 }}</h5>
+      <div class="oscillator-title-row">
+        <label class="toggle-switch" :title="settings.enabled ? t('osc_disable') : t('osc_enable')">
+          <input
+            type="checkbox"
+            v-model="settings.enabled"
+            @change="updateParameter('enabled', settings.enabled)"
+          />
+          <span class="toggle-slider"></span>
+        </label>
+        <h5 class="oscillator-title">{{ t('osc_title_prefix') }} {{ oscillatorId + 1 }}</h5>
+      </div>
       <button
         class="more-options-btn"
         @click="showAdvanced = !showAdvanced"
         :title="showAdvanced ? 'Erweiterte Optionen ausblenden' : 'Erweiterte Optionen anzeigen'"
+        :disabled="!settings.enabled"
       >
         <i class="fas fa-cog"></i>
       </button>
     </div>
 
-    <div class="control-group">
+    <div class="control-group" :class="{ 'controls-disabled': !settings.enabled }">
       <!-- Waveform -->
       <div class="mb-3 param-container">
         <label class="form-label">{{ t('osc_waveform') }}</label>
-        <select v-model="settings.waveType" class="form-select" @change="updateParameter('waveType', settings.waveType)">
+        <select v-model="settings.waveType" class="form-select" :disabled="!settings.enabled" @change="updateParameter('waveType', settings.waveType)">
           <option value="sine">{{ t('osc_wave_sine') }}</option>
           <option value="square">{{ t('osc_wave_square') }}</option>
           <option value="sawtooth">{{ t('osc_wave_sawtooth') }}</option>
@@ -34,6 +45,7 @@
             min="50"
             max="2000"
             step="1"
+            :disabled="!settings.enabled"
             @input="updateParameter('frequency', settings.frequency)"
           />
           <input
@@ -43,6 +55,7 @@
             min="50"
             max="2000"
             step="1"
+            :disabled="!settings.enabled"
             @input="updateParameter('frequency', settings.frequency)"
           />
         </div>
@@ -59,6 +72,7 @@
             min="0"
             max="1"
             step="0.01"
+            :disabled="!settings.enabled"
             @input="updateParameter('volume', settings.volume)"
           />
           <input
@@ -68,6 +82,7 @@
             min="0"
             max="1"
             step="0.01"
+            :disabled="!settings.enabled"
             @input="updateParameter('volume', settings.volume)"
           />
         </div>
@@ -84,6 +99,7 @@
             min="-1"
             max="1"
             step="0.01"
+            :disabled="!settings.enabled"
             @input="updateParameter('pan', settings.pan)"
           />
           <input
@@ -93,6 +109,7 @@
             min="-1"
             max="1"
             step="0.01"
+            :disabled="!settings.enabled"
             @input="updateParameter('pan', settings.pan)"
           />
         </div>
@@ -100,7 +117,7 @@
     </div>
 
     <!-- Advanced Options -->
-    <div v-show="showAdvanced" class="advanced-options">
+    <div v-show="showAdvanced && settings.enabled" class="advanced-options">
       <div class="control-group">
         <!-- Attack -->
         <div class="mb-3 param-container">
@@ -194,6 +211,7 @@ const showAdvanced = ref(false)
 
 // Local settings (synced with store)
 const settings = ref({
+  enabled: props.oscillator.enabled,
   waveType: props.oscillator.waveType,
   frequency: props.oscillator.frequency,
   volume: props.oscillator.volume,
@@ -210,6 +228,7 @@ watch(
   () => props.oscillator,
   (newOsc) => {
     settings.value = {
+      enabled: newOsc.enabled,
       waveType: newOsc.waveType,
       frequency: newOsc.frequency,
       volume: newOsc.volume,
