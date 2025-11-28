@@ -1,8 +1,10 @@
 import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
+import { usePlayer } from './usePlayer'
 
 export function useRecorder() {
   const store = useAlarmStore()
+  const { stopAlarm } = usePlayer()
   
   const mediaRecorder = ref(null)
   const recordedChunks = ref([])
@@ -12,7 +14,48 @@ export function useRecorder() {
   const downloadFilename = ref('')
   const showDownload = ref(false)
 
-  function startRecording(durationMs) {
+  function getRecordingOptions(format) {
+    // Format-specific options
+    const formatOptions = {
+      'webm-opus': {
+        mimeType: 'audio/webm;codecs=opus',
+        audioBitsPerSecond: 320000
+      },
+      'ogg-opus': {
+        mimeType: 'audio/ogg;codecs=opus',
+        audioBitsPerSecond: 320000
+      },
+      'wav': {
+        mimeType: 'audio/wav',
+        audioBitsPerSecond: 1411200
+      }
+    }
+
+    // If specific format requested, check if supported
+    if (format && format !== 'auto' && formatOptions[format]) {
+      const requested = formatOptions[format]
+      if (MediaRecorder.isTypeSupported(requested.mimeType)) {
+        return requested
+      }
+      console.warn(`Format ${format} not supported, falling back to auto`)
+    }
+
+    // Auto: find best supported format
+    if (MediaRecorder.isTypeSupported('audio/wav')) {
+      return { mimeType: 'audio/wav', audioBitsPerSecond: 1411200 }
+    } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+      return { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 320000 }
+    } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+      return { mimeType: 'audio/ogg;codecs=opus', audioBitsPerSecond: 320000 }
+    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+      return { mimeType: 'audio/webm', audioBitsPerSecond: 256000 }
+    } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+      return { mimeType: 'audio/mp4', audioBitsPerSecond: 256000 }
+    }
+    return {}
+  }
+
+  function startRecording(durationMs, format = 'auto') {
     if (!store.audioCtx || !store.masterGainNode) {
       alert('Bitte starte zuerst den Alarm!')
       return false
@@ -34,34 +77,8 @@ export function useRecorder() {
       const dest = store.audioCtx.createMediaStreamDestination()
       store.masterGainNode.connect(dest)
 
-      // Determine best codec
-      let options = {}
-      if (MediaRecorder.isTypeSupported('audio/wav')) {
-        options = {
-          mimeType: 'audio/wav',
-          audioBitsPerSecond: 1411200 // CD quality
-        }
-      } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-        options = {
-          mimeType: 'audio/webm;codecs=opus',
-          audioBitsPerSecond: 320000
-        }
-      } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
-        options = {
-          mimeType: 'audio/ogg;codecs=opus',
-          audioBitsPerSecond: 320000
-        }
-      } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-        options = {
-          mimeType: 'audio/webm',
-          audioBitsPerSecond: 256000
-        }
-      } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-        options = {
-          mimeType: 'audio/mp4',
-          audioBitsPerSecond: 256000
-        }
-      }
+      // Get recording options based on selected format
+      const options = getRecordingOptions(format)
 
       // Create MediaRecorder
       mediaRecorder.value = new MediaRecorder(dest.stream, options)
@@ -82,6 +99,10 @@ export function useRecorder() {
         createDownloadURL()
         store.isRecording = false
         console.log('Recording stopped and download URL created')
+
+        // Auto-stop player when recording finishes
+        stopAlarm()
+        console.log('Player auto-stopped after recording')
       }
 
       mediaRecorder.value.onerror = (event) => {
