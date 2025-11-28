@@ -2,50 +2,60 @@
   <div>
     <h2>{{ t('rec_title') }}</h2>
     <div class="control-group">
-      <div class="mb-3">
+      <div class="mb-3 recorder-controls">
         <!-- Duration Select -->
-        <label for="recordDuration" class="form-label">{{ t('rec_duration') }}</label>
-        <select
-          id="recordDuration"
-          v-model.number="selectedDuration"
-          class="form-select"
-          style="display: inline-block; width: auto; margin-right: 1rem;"
-        >
-          <option :value="null" disabled>{{ t('rec_select') }}</option>
-          <option :value="60000">{{ t('rec_1min') }}</option>
-          <option :value="120000">{{ t('rec_2min') }}</option>
-          <option :value="180000">{{ t('rec_3min') }}</option>
-          <option :value="300000">{{ t('rec_5min') }}</option>
-        </select>
+        <div class="recorder-field">
+          <label for="recordDuration" class="form-label">{{ t('rec_duration') }}</label>
+          <select
+            id="recordDuration"
+            v-model.number="selectedDuration"
+            class="form-select"
+          >
+            <option :value="null" disabled>{{ t('rec_select') }}</option>
+            <option :value="60000">{{ t('rec_1min') }}</option>
+            <option :value="120000">{{ t('rec_2min') }}</option>
+            <option :value="180000">{{ t('rec_3min') }}</option>
+            <option :value="300000">{{ t('rec_5min') }}</option>
+          </select>
+        </div>
 
-        <!-- Format Info -->
-        <label class="form-label" style="margin-left: 1rem;">{{ t('rec_format') }}</label>
-        <select class="form-select" style="display: inline-block; width: auto; margin-right: 1rem;" disabled>
-          <option>{{ t('rec_auto') }}</option>
-        </select>
+        <!-- Format Select -->
+        <div class="recorder-field">
+          <label for="recordFormat" class="form-label">{{ t('rec_format') }}</label>
+          <select
+            id="recordFormat"
+            v-model="selectedFormat"
+            class="form-select"
+          >
+            <option value="auto">{{ t('rec_format_auto') }}</option>
+            <option value="webm-opus">{{ t('rec_format_webm') }}</option>
+            <option value="ogg-opus">{{ t('rec_format_ogg') }}</option>
+            <option value="wav">{{ t('rec_format_wav') }}</option>
+          </select>
+        </div>
 
         <!-- Start Recording Button -->
-        <button
-          id="startRecordingBtn"
-          class="btn btn-success"
-          style="margin-left: 0.5rem;"
-          :disabled="!canStartRecording"
-          @click="handleStartRecording"
-        >
-          <i class="fas fa-record-vinyl"></i> {{ t('rec_start') }}
-        </button>
+        <div class="recorder-field recorder-actions">
+          <button
+            id="startRecordingBtn"
+            class="btn btn-success"
+            :disabled="!canStartRecording"
+            @click="handleStartRecording"
+          >
+            <i class="fas fa-record-vinyl"></i> {{ t('rec_start') }}
+          </button>
 
-        <!-- Download Link -->
-        <a
-          v-if="showDownload"
-          :href="downloadUrl"
-          :download="downloadFilename"
-          class="btn btn-outline-secondary"
-          style="margin-left: 0.5rem;"
-          @click="handleDownload"
-        >
-          <i class="fas fa-download"></i> {{ t('rec_download') }}
-        </a>
+          <!-- Download Link -->
+          <a
+            v-if="showDownload"
+            :href="downloadUrl"
+            :download="downloadFilename"
+            class="btn btn-outline-secondary"
+            @click="handleDownload"
+          >
+            <i class="fas fa-download"></i> {{ t('rec_download') }}
+          </a>
+        </div>
       </div>
 
       <!-- Recording Feedback -->
@@ -88,6 +98,7 @@ const {
 } = useRecorder()
 
 const selectedDuration = ref(60000) // Default 1 minute
+const selectedFormat = ref('auto') // Default auto
 store.recordingDuration = selectedDuration.value
 
 const t = (key) => translations[store.currentLang]?.[key] || key
@@ -103,7 +114,7 @@ const progressPercentage = computed(() => {
 
 function handleStartRecording() {
   if (!canStartRecording.value) return
-  startRecording(selectedDuration.value)
+  startRecording(selectedDuration.value, selectedFormat.value)
 }
 
 function handleDownload() {
@@ -113,3 +124,45 @@ function handleDownload() {
   }, 100)
 }
 </script>
+
+<style scoped>
+.recorder-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.recorder-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.recorder-field .form-select {
+  width: auto;
+  min-width: 140px;
+}
+
+.recorder-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .recorder-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .recorder-field .form-select {
+    width: 100%;
+  }
+
+  .recorder-actions {
+    flex-direction: column;
+  }
+}
+</style>
