@@ -128,10 +128,17 @@ export function useOscillators() {
 
     const update = { [param]: value }
 
+    // For pattern changes, update store FIRST, then parse
+    if (param === 'pattern') {
+      store.updateOscillator(oscId, update)
+      parsePattern(oscId)
+      return
+    }
+
     // Update audio nodes if oscillator is running
     if (oscData.oscillator && store.audioCtx) {
       const now = store.audioCtx.currentTime
-      
+
       switch (param) {
         case 'frequency':
           oscData.oscillator.frequency.setValueAtTime(value, now)
@@ -143,10 +150,6 @@ export function useOscillators() {
           if (oscData.panNode) {
             oscData.panNode.pan.setValueAtTime(value, now)
           }
-          break
-        case 'pattern':
-          update.pattern = value
-          parsePattern(oscId)
           break
       }
     }
