@@ -92,7 +92,6 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: var(--titaniumgraphite-3);
   text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-  text-transform: lowercase;
   font-weight: 500;
   letter-spacing: 0.02em;
 }
@@ -166,7 +165,6 @@ h2 {
   align-items: center;
   gap: 5px;
   letter-spacing: 0.02em;
-  text-transform: lowercase;
 }
 
 .switcher-btn:hover:not(.active) {
@@ -200,13 +198,11 @@ h2 {
   font-weight: 500;
   margin-bottom: 0.4rem;
   letter-spacing: 0.01em;
-  text-transform: lowercase;
 }
 
 .app-subtitle {
   font-size: 0.95rem;
   color: var(--titaniumgraphite-5);
-  text-transform: lowercase;
   letter-spacing: 0.01em;
 }
 
@@ -237,7 +233,6 @@ h2 {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  text-transform: lowercase;
   font-size: 0.9rem;
   letter-spacing: 0.01em;
 }
@@ -301,7 +296,6 @@ h2 {
   color: var(--titaniumgraphite-3);
   display: block;
   font-size: 0.85rem;
-  text-transform: lowercase;
   letter-spacing: 0.01em;
 }
 
@@ -402,7 +396,6 @@ h2 {
   align-items: center;
   gap: 0.4rem;
   font-size: 0.85rem;
-  text-transform: lowercase;
   letter-spacing: 0.01em;
 }
 
@@ -548,7 +541,6 @@ h2 {
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--titaniumgraphite-1);
-  text-transform: lowercase;
   letter-spacing: 0.01em;
 }
 
@@ -680,7 +672,6 @@ h2 {
   color: var(--titaniumgraphite-3);
   transition: all 0.25s ease;
   user-select: none;
-  text-transform: lowercase;
 }
 
 .faq-question:hover {
@@ -797,7 +788,6 @@ h2 {
 .player-info .text-muted {
   font-size: 0.7rem;
   color: var(--color-slate);
-  text-transform: lowercase;
   letter-spacing: 0.02em;
 }
 
@@ -897,7 +887,6 @@ h2 {
   font-size: 0.8rem;
   color: var(--color-slate);
   margin-top: 0.2rem;
-  text-transform: lowercase;
   letter-spacing: 0.01em;
 }
 
