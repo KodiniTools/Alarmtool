@@ -2,7 +2,7 @@
   <footer class="app-footer">
     <div class="footer-content">
       <div class="footer-links">
-        <a href="/impressum">Impressum</a>
+        <a href="https://kodinitools.com/kontaktformular/">Kontakt</a>
         <a href="/datenschutz">Datenschutz</a>
         <button class="cookie-settings-btn" @click="$emit('openCookieSettings')">
           Cookie-Einstellungen
@@ -25,7 +25,7 @@ const currentYear = computed(() => new Date().getFullYear())
 
 <style scoped>
 .app-footer {
-  background-color: var(--bg-secondary, #1a1a2e);
+  background-color: inherit;
   color: var(--text-secondary, #b0b0b0);
   padding: 1.5rem;
   margin-top: 2rem;
