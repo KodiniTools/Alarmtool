@@ -2,11 +2,13 @@ import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useAudioContext } from './useAudioContext'
 import { useOscillators } from './useOscillators'
+import { useToast } from './useToast'
 
 export function usePlayer() {
   const store = useAlarmStore()
   const { initAudioContext, closeAudioContext } = useAudioContext()
   const { createOscillators, runOscPattern, stopOscillators } = useOscillators()
+  const toast = useToast()
   
   const playbackTimer = ref(null)
 
@@ -42,9 +44,11 @@ export function usePlayer() {
       // Start playback timer
       startPlaybackTimer()
 
+      toast.success('toast_alarm_started')
       console.log('Alarm started')
     } catch (error) {
       console.error('Error starting alarm:', error)
+      toast.error('toast_alarm_start_error')
       store.isPlaying = false
       store.isAlarmRunning = false
     }
@@ -66,6 +70,7 @@ export function usePlayer() {
       playbackTimer.value = null
     }
 
+    toast.info('toast_alarm_paused')
     console.log('Alarm paused')
   }
 
@@ -86,6 +91,7 @@ export function usePlayer() {
     // Resume timer
     startPlaybackTimer()
 
+    toast.info('toast_alarm_resumed')
     console.log('Alarm resumed')
   }
 
@@ -111,6 +117,7 @@ export function usePlayer() {
       closeAudioContext()
     }, 2000)
 
+    toast.info('toast_alarm_stopped')
     console.log('Alarm stopped')
   }
 
@@ -146,10 +153,13 @@ export function usePlayer() {
       const targetVolume = store.isMuted ? 0 : store.volume
       store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
     }
+
+    toast.info(store.isMuted ? 'toast_mute_on' : 'toast_mute_off')
   }
 
   function toggleLoop() {
     store.isLooping = !store.isLooping
+    toast.info(store.isLooping ? 'toast_loop_on' : 'toast_loop_off')
   }
 
   function formatTime(ms) {

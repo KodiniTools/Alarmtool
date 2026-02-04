@@ -48,11 +48,13 @@
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useAudioContext } from '@/composables/useAudioContext'
 import { useOscillators } from '@/composables/useOscillators'
+import { useToast } from '@/composables/useToast'
 import { translations } from '@/i18n/translations'
 
 const store = useAlarmStore()
 const { updateFilter } = useAudioContext()
 const { parsePattern } = useOscillators()
+const toast = useToast()
 
 const t = (key) => translations[store.currentLang]?.[key] || key
 
@@ -75,10 +77,10 @@ function saveSettings() {
       }))
     }
     localStorage.setItem('alarmToolSettings', JSON.stringify(settings))
-    alert('Einstellungen wurden gespeichert.')
+    toast.success('toast_settings_saved')
   } catch (error) {
     console.error('Fehler beim Speichern:', error)
-    alert('Fehler beim Speichern der Einstellungen.')
+    toast.error('toast_settings_save_error')
   }
 }
 
@@ -86,15 +88,15 @@ function loadSettings() {
   try {
     const settingsStr = localStorage.getItem('alarmToolSettings')
     if (!settingsStr) {
-      alert('Keine gespeicherten Einstellungen gefunden.')
+      toast.info('toast_settings_none')
       return
     }
     const settings = JSON.parse(settingsStr)
     applySettings(settings)
-    alert('Einstellungen wurden geladen.')
+    toast.success('toast_settings_loaded')
   } catch (error) {
     console.error('Fehler beim Laden:', error)
-    alert('Fehler beim Laden der Einstellungen.')
+    toast.error('toast_settings_load_error')
   }
 }
 
@@ -123,9 +125,10 @@ function exportSettings() {
     a.download = 'alarmToolSettings.json'
     a.click()
     URL.revokeObjectURL(url)
+    toast.success('toast_settings_exported')
   } catch (error) {
     console.error('Fehler beim Exportieren:', error)
-    alert('Fehler beim Exportieren der Einstellungen.')
+    toast.error('toast_settings_export_error')
   }
 }
 
@@ -138,10 +141,10 @@ function importSettings(event) {
     try {
       const settings = JSON.parse(e.target.result)
       applySettings(settings)
-      alert('Einstellungen wurden importiert.')
+      toast.success('toast_settings_imported')
     } catch (err) {
       console.error('Fehler beim Importieren:', err)
-      alert('Fehler beim Importieren der Einstellungen. Stelle sicher, dass die Datei korrekt ist.')
+      toast.error('toast_settings_import_error')
     }
   }
   reader.readAsText(file)
@@ -176,7 +179,7 @@ function applySettings(settings) {
     }
   } catch (error) {
     console.error('Fehler beim Anwenden der Einstellungen:', error)
-    alert('Fehler beim Anwenden der Einstellungen.')
+    toast.error('toast_settings_apply_error')
   }
 }
 </script>
