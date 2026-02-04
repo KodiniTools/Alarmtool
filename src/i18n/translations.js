@@ -197,6 +197,10 @@ export const translations = {
     toast_undo: "Änderung rückgängig gemacht.",
     toast_redo: "Änderung wiederhergestellt.",
 
+    // Toast Messages - Copy/Paste
+    toast_osc_copied: "Oszillator-Einstellungen kopiert.",
+    toast_osc_pasted: "Oszillator-Einstellungen eingefügt.",
+
     // Donate
     donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:",
     donate_button_text: "Spenden via PayPal"
@@ -398,6 +402,10 @@ export const translations = {
     // Toast Messages - Undo/Redo
     toast_undo: "Change undone.",
     toast_redo: "Change restored.",
+
+    // Toast Messages - Copy/Paste
+    toast_osc_copied: "Oscillator settings copied.",
+    toast_osc_pasted: "Oscillator settings pasted.",
 
     // Donate
     donate_message: "If you like this project and would like to support its development, feel free to donate:",
