@@ -707,6 +707,140 @@ h2 {
   padding: 0 1.25rem 1rem 1.25rem;
 }
 
+/* Presets */
+.presets-intro {
+  color: var(--at-text-dim);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.presets-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.preset-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  background: rgba(32, 32, 40, 0.5);
+  border: 1px solid rgba(94, 95, 105, 0.15);
+  transition: all 0.25s ease;
+}
+
+[data-theme="light"] .preset-card {
+  background: rgba(250, 250, 248, 0.7);
+  border: 1px solid rgba(94, 95, 105, 0.12);
+}
+
+.preset-card:hover {
+  border-color: rgba(242, 226, 142, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .preset-card:hover {
+  border-color: rgba(196, 168, 46, 0.35);
+}
+
+.preset-card.preset-active {
+  border-color: var(--titaniumgraphite-1);
+  box-shadow: 0 0 0 1px var(--titaniumgraphite-1), 0 4px 16px rgba(242, 226, 142, 0.15);
+}
+
+.preset-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(242, 226, 142, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  color: var(--titaniumgraphite-1);
+}
+
+[data-theme="light"] .preset-icon {
+  background: rgba(196, 168, 46, 0.1);
+}
+
+.preset-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.preset-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--at-text);
+  margin-bottom: 0.25rem;
+}
+
+.preset-name::after {
+  display: none;
+}
+
+.preset-description {
+  font-size: 0.8rem;
+  color: var(--at-text-dim);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.preset-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.preset-tag {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  background: rgba(242, 226, 142, 0.1);
+  color: var(--titaniumgraphite-1);
+  border: 1px solid rgba(242, 226, 142, 0.15);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="light"] .preset-tag {
+  background: rgba(196, 168, 46, 0.08);
+  color: var(--color-gold);
+  border: 1px solid rgba(196, 168, 46, 0.2);
+}
+
+.preset-load-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .preset-card {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .preset-icon {
+    align-self: center;
+  }
+
+  .preset-tags {
+    justify-content: center;
+  }
+
+  .preset-load-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Player - Modern Compact Design */
 .player-container {
   background: rgba(26, 26, 34, 0.6);
