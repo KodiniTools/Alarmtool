@@ -1,7 +1,9 @@
 import { useAlarmStore } from '@/stores/alarmStore'
+import { useUndoRedo } from './useUndoRedo'
 
 export function useOscillators() {
   const store = useAlarmStore()
+  const { recordChange } = useUndoRedo()
 
   function createOscillators() {
     if (!store.audioCtx || !store.masterGainNode) {
@@ -131,6 +133,8 @@ export function useOscillators() {
   function updateOscillatorParameter(oscId, param, value) {
     const oscData = store.oscillators[oscId]
     if (!oscData) return
+
+    recordChange()
 
     const update = { [param]: value }
 

@@ -65,6 +65,8 @@ export const translations = {
     
     // Oscillators
     osc_title: "12 Oszillator-Einstellungen",
+    osc_undo: "Rückgängig",
+    osc_redo: "Wiederherstellen",
     osc_title_prefix: "Oszillator",
     osc_enable: "Oszillator aktivieren",
     osc_disable: "Oszillator deaktivieren",
@@ -184,6 +186,10 @@ export const translations = {
     toast_preset_loaded: "Preset geladen.",
     toast_preset_load_error: "Fehler beim Laden des Presets.",
 
+    // Toast Messages - Undo/Redo
+    toast_undo: "Änderung rückgängig gemacht.",
+    toast_redo: "Änderung wiederhergestellt.",
+
     // Donate
     donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:",
     donate_button_text: "Spenden via PayPal"
@@ -254,6 +260,8 @@ export const translations = {
     
     // Oscillators
     osc_title: "12 Oscillator Settings",
+    osc_undo: "Undo",
+    osc_redo: "Redo",
     osc_title_prefix: "Oscillator",
     osc_enable: "Enable oscillator",
     osc_disable: "Disable oscillator",
@@ -372,6 +380,10 @@ export const translations = {
     // Toast Messages - Presets
     toast_preset_loaded: "Preset loaded.",
     toast_preset_load_error: "Error loading preset.",
+
+    // Toast Messages - Undo/Redo
+    toast_undo: "Change undone.",
+    toast_redo: "Change restored.",
 
     // Donate
     donate_message: "If you like this project and would like to support its development, feel free to donate:",
