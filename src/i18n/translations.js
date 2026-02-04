@@ -82,6 +82,8 @@ export const translations = {
     osc_decay: "Decay (ms)",
     osc_sustain: "Sustain",
     osc_release: "Release (ms)",
+    osc_copy: "Einstellungen kopieren",
+    osc_paste: "Einstellungen einfügen",
     osc_pattern: "Pattern",
     osc_pattern_help: "Kommagetrennt: Zeit in ms für (an, aus, an, aus, ...)",
     
@@ -282,6 +284,8 @@ export const translations = {
     osc_decay: "Decay (ms)",
     osc_sustain: "Sustain",
     osc_release: "Release (ms)",
+    osc_copy: "Copy settings",
+    osc_paste: "Paste settings",
     osc_pattern: "Pattern",
     osc_pattern_help: "Comma-separated: time in ms for (on, off, on, off, ...)",
     
