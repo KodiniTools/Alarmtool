@@ -490,6 +490,73 @@ h2 {
   border-color: var(--color-silver);
 }
 
+/* Oscillator Header with Undo/Redo */
+.osc-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.osc-header-row h2 {
+  margin-bottom: 0;
+}
+
+.undo-redo-controls {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.undo-redo-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem !important;
+  font-size: 0.78rem !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.undo-redo-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.undo-redo-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.undo-redo-count {
+  font-size: 0.65rem;
+  background: rgba(242, 226, 142, 0.15);
+  color: var(--titaniumgraphite-1);
+  padding: 0.05rem 0.35rem;
+  border-radius: 10px;
+  font-weight: 600;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+[data-theme="light"] .undo-redo-count {
+  background: rgba(196, 168, 46, 0.12);
+  color: var(--color-gold);
+}
+
+@media (max-width: 768px) {
+  .osc-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .undo-redo-label {
+    display: none;
+  }
+}
+
 /* Oscillators Grid */
 .oscillators-grid {
   display: grid;
