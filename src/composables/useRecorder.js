@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { usePlayer } from './usePlayer'
+import { useToast } from './useToast'
 
 export function useRecorder() {
   const store = useAlarmStore()
   const { stopAlarm } = usePlayer()
+  const toast = useToast()
   
   const mediaRecorder = ref(null)
   const recordedChunks = ref([])
@@ -57,12 +59,12 @@ export function useRecorder() {
 
   function startRecording(durationMs, format = 'auto') {
     if (!store.audioCtx || !store.masterGainNode) {
-      alert('Bitte starte zuerst den Alarm!')
+      toast.warning('toast_rec_no_alarm')
       return false
     }
 
     if (!durationMs || durationMs <= 0) {
-      alert('Bitte wähle eine gültige Aufnahmedauer.')
+      toast.warning('toast_rec_no_duration')
       return false
     }
 
@@ -98,6 +100,7 @@ export function useRecorder() {
         console.log(`Recorded chunks: ${recordedChunks.value.length}`)
         createDownloadURL()
         store.isRecording = false
+        toast.success('toast_rec_complete')
         console.log('Recording stopped and download URL created')
 
         // Auto-stop player when recording finishes
@@ -119,7 +122,7 @@ export function useRecorder() {
       return true
     } catch (error) {
       console.error('Error starting recording:', error)
-      alert('Fehler beim Starten der Aufnahme: ' + error.message)
+      toast.error('toast_rec_start_error')
       store.isRecording = false
       return false
     }
@@ -230,7 +233,7 @@ export function useRecorder() {
       console.log('showDownload set to:', showDownload.value)
     } catch (error) {
       console.error('Error creating download URL:', error)
-      alert('Fehler beim Erstellen der Aufnahme-Datei.')
+      toast.error('toast_rec_file_error')
     }
   }
 
@@ -238,19 +241,15 @@ export function useRecorder() {
     console.error('Recording error:', error)
     stopRecording()
 
-    let errorMessage = 'Unbekannter Fehler beim Aufnehmen.'
-
     if (error.name === 'NotSupportedError') {
-      errorMessage = 'Ihr Browser unterstützt diese Aufnahmefunktion nicht.'
+      toast.error('toast_rec_error_not_supported')
     } else if (error.name === 'SecurityError') {
-      errorMessage = 'Sicherheitsfehler: Aufnahme nicht erlaubt.'
+      toast.error('toast_rec_error_security')
     } else if (error.name === 'InvalidStateError') {
-      errorMessage = 'Aufnahme ist in einem ungültigen Zustand.'
-    } else if (error.message) {
-      errorMessage = error.message
+      toast.error('toast_rec_error_invalid_state')
+    } else {
+      toast.error('toast_rec_error_generic')
     }
-
-    alert(`Aufnahme-Fehler: ${errorMessage}`)
   }
 
   function formatTime(ms) {

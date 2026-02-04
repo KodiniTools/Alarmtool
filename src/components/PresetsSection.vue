@@ -38,11 +38,13 @@ import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useAudioContext } from '@/composables/useAudioContext'
 import { useOscillators } from '@/composables/useOscillators'
+import { useToast } from '@/composables/useToast'
 import { translations } from '@/i18n/translations'
 
 const store = useAlarmStore()
 const { updateFilter } = useAudioContext()
 const { parsePattern } = useOscillators()
+const toast = useToast()
 
 const t = (key) => translations[store.currentLang]?.[key] || key
 
@@ -177,8 +179,10 @@ function loadPreset(preset) {
     }
 
     activePreset.value = preset.id
+    toast.success('toast_preset_loaded')
   } catch (error) {
     console.error('Error loading preset:', error)
+    toast.error('toast_preset_load_error')
   }
 }
 </script>

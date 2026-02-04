@@ -145,6 +145,45 @@ export const translations = {
     faq_q10: "Ist das Tool kostenlos?",
     faq_a10: "Ja, das Alarm-Tool ist vollständig kostenlos und Open Source. Du kannst es frei nutzen und anpassen.",
 
+    // Toast Messages - Settings
+    toast_settings_saved: "Einstellungen erfolgreich gespeichert.",
+    toast_settings_save_error: "Fehler beim Speichern der Einstellungen.",
+    toast_settings_loaded: "Gespeicherte Einstellungen wurden geladen.",
+    toast_settings_load_error: "Fehler beim Laden der Einstellungen.",
+    toast_settings_none: "Keine gespeicherten Einstellungen gefunden.",
+    toast_settings_exported: "Einstellungen als JSON-Datei exportiert.",
+    toast_settings_export_error: "Fehler beim Exportieren der Einstellungen.",
+    toast_settings_imported: "Einstellungen erfolgreich importiert.",
+    toast_settings_import_error: "Import fehlgeschlagen. Bitte stelle sicher, dass die JSON-Datei korrekt ist.",
+    toast_settings_apply_error: "Fehler beim Anwenden der Einstellungen.",
+
+    // Toast Messages - Player
+    toast_alarm_started: "Alarm gestartet. Leertaste = Pause, Esc = Stop.",
+    toast_alarm_start_error: "Fehler beim Starten des Alarms.",
+    toast_alarm_paused: "Alarm pausiert. Leertaste zum Fortsetzen.",
+    toast_alarm_resumed: "Alarm fortgesetzt.",
+    toast_alarm_stopped: "Alarm gestoppt.",
+    toast_mute_on: "Ton stummgeschaltet.",
+    toast_mute_off: "Ton wieder aktiviert.",
+    toast_loop_on: "Loop-Modus aktiviert (5 Min. Zyklus).",
+    toast_loop_off: "Loop-Modus deaktiviert.",
+
+    // Toast Messages - Recording
+    toast_rec_no_alarm: "Bitte starte zuerst den Alarm, bevor du eine Aufnahme beginnst.",
+    toast_rec_no_duration: "Bitte wähle eine gültige Aufnahmedauer.",
+    toast_rec_started: "Aufnahme gestartet. Der Alarm wird aufgezeichnet.",
+    toast_rec_start_error: "Fehler beim Starten der Aufnahme.",
+    toast_rec_file_error: "Fehler beim Erstellen der Aufnahme-Datei.",
+    toast_rec_error_not_supported: "Dein Browser unterstützt diese Aufnahmefunktion nicht.",
+    toast_rec_error_security: "Sicherheitsfehler: Aufnahme nicht erlaubt.",
+    toast_rec_error_invalid_state: "Aufnahme befindet sich in einem ungültigen Zustand.",
+    toast_rec_error_generic: "Aufnahme-Fehler aufgetreten.",
+    toast_rec_complete: "Aufnahme abgeschlossen! Klicke auf Download, um die Datei zu speichern.",
+
+    // Toast Messages - Presets
+    toast_preset_loaded: "Preset geladen.",
+    toast_preset_load_error: "Fehler beim Laden des Presets.",
+
     // Donate
     donate_message: "Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:",
     donate_button_text: "Spenden via PayPal"
@@ -294,6 +333,45 @@ export const translations = {
     faq_a9: "Patterns define rhythms as number sequences: on-time, off-time, on-time, off-time... (e.g. '500,200' for 500ms on, 200ms off).",
     faq_q10: "Is the tool free?",
     faq_a10: "Yes, the Alarm Tool is completely free and Open Source. You can use and modify it freely.",
+
+    // Toast Messages - Settings
+    toast_settings_saved: "Settings saved successfully.",
+    toast_settings_save_error: "Error saving settings.",
+    toast_settings_loaded: "Saved settings have been loaded.",
+    toast_settings_load_error: "Error loading settings.",
+    toast_settings_none: "No saved settings found.",
+    toast_settings_exported: "Settings exported as JSON file.",
+    toast_settings_export_error: "Error exporting settings.",
+    toast_settings_imported: "Settings imported successfully.",
+    toast_settings_import_error: "Import failed. Please make sure the JSON file is valid.",
+    toast_settings_apply_error: "Error applying settings.",
+
+    // Toast Messages - Player
+    toast_alarm_started: "Alarm started. Space = Pause, Esc = Stop.",
+    toast_alarm_start_error: "Error starting the alarm.",
+    toast_alarm_paused: "Alarm paused. Press Space to resume.",
+    toast_alarm_resumed: "Alarm resumed.",
+    toast_alarm_stopped: "Alarm stopped.",
+    toast_mute_on: "Sound muted.",
+    toast_mute_off: "Sound unmuted.",
+    toast_loop_on: "Loop mode enabled (5 min cycle).",
+    toast_loop_off: "Loop mode disabled.",
+
+    // Toast Messages - Recording
+    toast_rec_no_alarm: "Please start the alarm first before recording.",
+    toast_rec_no_duration: "Please select a valid recording duration.",
+    toast_rec_started: "Recording started. The alarm is being captured.",
+    toast_rec_start_error: "Error starting the recording.",
+    toast_rec_file_error: "Error creating the recording file.",
+    toast_rec_error_not_supported: "Your browser does not support this recording feature.",
+    toast_rec_error_security: "Security error: Recording not allowed.",
+    toast_rec_error_invalid_state: "Recording is in an invalid state.",
+    toast_rec_error_generic: "A recording error occurred.",
+    toast_rec_complete: "Recording complete! Click Download to save the file.",
+
+    // Toast Messages - Presets
+    toast_preset_loaded: "Preset loaded.",
+    toast_preset_load_error: "Error loading preset.",
 
     // Donate
     donate_message: "If you like this project and would like to support its development, feel free to donate:",
