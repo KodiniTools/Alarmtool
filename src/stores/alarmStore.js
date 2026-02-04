@@ -10,6 +10,7 @@ export const useAlarmStore = defineStore('alarm', () => {
   const convolverNode = ref(null)
   const reverbGain = ref(null)
   const effectsOut = ref(null)
+  const finalOutputNode = ref(null)
 
   // Alarm State
   const isAlarmRunning = ref(false)
@@ -120,6 +121,7 @@ export const useAlarmStore = defineStore('alarm', () => {
     convolverNode,
     reverbGain,
     effectsOut,
+    finalOutputNode,
     isAlarmRunning,
     isPlaying,
     isPaused,

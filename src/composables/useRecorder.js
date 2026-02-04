@@ -58,7 +58,7 @@ export function useRecorder() {
   }
 
   function startRecording(durationMs, format = 'auto') {
-    if (!store.audioCtx || !store.masterGainNode) {
+    if (!store.audioCtx || !store.finalOutputNode) {
       toast.warning('toast_rec_no_alarm')
       return false
     }
@@ -75,9 +75,9 @@ export function useRecorder() {
       store.isRecording = true
       store.remainingTime = durationMs
 
-      // Create MediaStream from audio context
+      // Create MediaStream from final output (after filter, delay, reverb)
       const dest = store.audioCtx.createMediaStreamDestination()
-      store.masterGainNode.connect(dest)
+      store.finalOutputNode.connect(dest)
 
       // Get recording options based on selected format
       const options = getRecordingOptions(format)

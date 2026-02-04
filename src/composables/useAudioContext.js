@@ -16,12 +16,17 @@ export function useAudioContext() {
       // Setup Filter and Effects
       setupGlobalFilter()
       setupEffects()
-      
-      // Connect chain: Master -> Filter -> Delay -> Reverb -> Destination
+
+      // Final output node (tap point for recorder, after all effects)
+      store.finalOutputNode = store.audioCtx.createGain()
+      store.finalOutputNode.gain.value = 1.0
+
+      // Connect chain: Master -> Filter -> Delay -> Reverb -> FinalOutput -> Destination
       store.masterGainNode
         .connect(store.filterNode)
         .connect(store.delayNode)
         .connect(store.effectsOut)
+        .connect(store.finalOutputNode)
         .connect(store.audioCtx.destination)
     }
     
@@ -126,6 +131,7 @@ export function useAudioContext() {
       store.convolverNode = null
       store.reverbGain = null
       store.effectsOut = null
+      store.finalOutputNode = null
     }
   }
 
