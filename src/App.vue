@@ -40,6 +40,11 @@
         <RecorderControl />
       </div>
 
+      <!-- Presets Tab -->
+      <div v-show="activeTab === 'presets'" class="section">
+        <PresetsSection />
+      </div>
+
       <!-- FAQ Tab -->
       <div v-show="activeTab === 'faq'" class="section">
         <FAQSection />
@@ -75,6 +80,7 @@ import TopToolbar from '@/components/TopToolbar.vue'
 import FilterControl from '@/components/FilterControl.vue'
 import OscillatorGrid from '@/components/OscillatorGrid.vue'
 import RecorderControl from '@/components/RecorderControl.vue'
+import PresetsSection from '@/components/PresetsSection.vue'
 import FAQSection from '@/components/FAQSection.vue'
 import SettingsPanel from '@/components/SettingsPanel.vue'
 import PlayerControl from '@/components/PlayerControl.vue'
@@ -96,6 +102,7 @@ const tabs = [
   { id: 'filter', label: 'tab_filter', icon: 'fas fa-filter' },
   { id: 'oscillators', label: 'tab_oscillators', icon: 'fas fa-wave-square' },
   { id: 'recording', label: 'tab_recording', icon: 'fas fa-microphone' },
+  { id: 'presets', label: 'tab_presets', icon: 'fas fa-music' },
   { id: 'faq', label: 'tab_faq', icon: 'fas fa-question-circle' }
 ]
 
