@@ -258,6 +258,7 @@
 import { ref, watch } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useOscillators } from '@/composables/useOscillators'
+import { useToast } from '@/composables/useToast'
 import { translations } from '@/i18n/translations'
 
 const props = defineProps({
@@ -273,6 +274,7 @@ const props = defineProps({
 
 const store = useAlarmStore()
 const { updateOscillatorParameter, parsePattern } = useOscillators()
+const toast = useToast()
 
 const showAdvanced = ref(false)
 
@@ -328,6 +330,7 @@ function copySettings() {
     release: settings.value.release,
     pattern: settings.value.pattern
   }
+  toast.success('toast_osc_copied')
 }
 
 function pasteSettings() {
@@ -338,5 +341,6 @@ function pasteSettings() {
     updateOscillatorParameter(props.oscillatorId, param, clip[param])
   })
   parsePattern(props.oscillatorId)
+  toast.success('toast_osc_pasted')
 }
 </script>
