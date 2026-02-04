@@ -98,6 +98,7 @@ export const translations = {
     rec_format_wav: "WAV (unkomprimiert)",
     rec_start: "Aufnahme starten",
     rec_download: "Download",
+    rec_dismiss: "Abbrechen",
     rec_running: "Aufnahme läuft:",
     rec_remaining: "verbleibend",
     rec_success: "Aufnahme fertig! Klicke auf Download.",
@@ -181,6 +182,7 @@ export const translations = {
     toast_rec_error_invalid_state: "Aufnahme befindet sich in einem ungültigen Zustand.",
     toast_rec_error_generic: "Aufnahme-Fehler aufgetreten.",
     toast_rec_complete: "Aufnahme abgeschlossen! Klicke auf Download, um die Datei zu speichern.",
+    toast_rec_dismissed: "Aufnahme verworfen.",
 
     // Toast Messages - Presets
     toast_preset_loaded: "Preset geladen.",
@@ -293,6 +295,7 @@ export const translations = {
     rec_format_wav: "WAV (uncompressed)",
     rec_start: "Start Recording",
     rec_download: "Download",
+    rec_dismiss: "Dismiss",
     rec_running: "Recording in progress:",
     rec_remaining: "remaining",
     rec_success: "Recording complete! Click Download.",
@@ -376,6 +379,7 @@ export const translations = {
     toast_rec_error_invalid_state: "Recording is in an invalid state.",
     toast_rec_error_generic: "A recording error occurred.",
     toast_rec_complete: "Recording complete! Click Download to save the file.",
+    toast_rec_dismissed: "Recording dismissed.",
 
     // Toast Messages - Presets
     toast_preset_loaded: "Preset loaded.",

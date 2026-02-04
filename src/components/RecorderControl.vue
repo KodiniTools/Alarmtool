@@ -58,6 +58,16 @@
           >
             <i class="fas fa-download"></i> {{ t('rec_download') }}
           </a>
+
+          <!-- Dismiss Recording -->
+          <button
+            v-if="showDownload"
+            class="btn btn-danger"
+            @click="handleDismiss"
+            :title="t('rec_dismiss')"
+          >
+            <i class="fas fa-times"></i> {{ t('rec_dismiss') }}
+          </button>
         </div>
       </div>
 
@@ -93,6 +103,7 @@
 import { ref, computed } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useRecorder } from '@/composables/useRecorder'
+import { useToast } from '@/composables/useToast'
 import { translations } from '@/i18n/translations'
 
 const store = useAlarmStore()
@@ -104,6 +115,7 @@ const {
   showDownload,
   resetDownload
 } = useRecorder()
+const toast = useToast()
 
 const selectedDuration = ref(60000) // Default 1 minute
 store.recordingDuration = selectedDuration.value
@@ -152,6 +164,11 @@ function handleDownload() {
   setTimeout(() => {
     resetDownload()
   }, 100)
+}
+
+function handleDismiss() {
+  resetDownload()
+  toast.info('toast_rec_dismissed')
 }
 </script>
 
