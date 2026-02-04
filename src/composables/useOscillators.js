@@ -60,7 +60,7 @@ export function useOscillators() {
         })
       } else {
         store.updateOscillator(oscId, {
-          patternSteps: [300, 200, 500, 100],
+          patternSteps: [1500, 300],
           patternIndex: 0,
           toneIsOn: false
         })
@@ -105,23 +105,29 @@ export function useOscillators() {
 
   function setOscTone(oscId, on) {
     const oscData = store.oscillators[oscId]
-    
+
     if (!store.audioCtx || !oscData.gainNode) {
       return
     }
-    
+
     try {
       const now = store.audioCtx.currentTime
       const gain = oscData.gainNode.gain
       gain.cancelScheduledValues(now)
-      
+
       if (on) {
-        const attackSec = oscData.attack / 1000
-        const targetVol = oscData.volume
+        // ADSR: Attack -> Decay -> Sustain (hold until release)
+        const attackSec = (oscData.attack || 20) / 1000
+        const decaySec = (oscData.decay ?? 50) / 1000
+        const sustainLevel = oscData.sustain ?? 0.8
+        const peakVol = oscData.volume
+        const sustainVol = sustainLevel * peakVol
+
         gain.setValueAtTime(gain.value, now)
-        gain.linearRampToValueAtTime(targetVol, now + attackSec)
+        gain.linearRampToValueAtTime(peakVol, now + attackSec)
+        gain.linearRampToValueAtTime(sustainVol, now + attackSec + decaySec)
       } else {
-        const releaseSec = oscData.release / 1000
+        const releaseSec = (oscData.release || 80) / 1000
         gain.setValueAtTime(gain.value, now)
         gain.linearRampToValueAtTime(0, now + releaseSec)
       }
