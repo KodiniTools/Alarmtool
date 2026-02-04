@@ -36,17 +36,17 @@
       </div>
 
       <!-- Recording Tab -->
-      <div v-show="activeTab === 'recording'" class="section">
+      <div v-show="activeTab === 'recording'" class="section section-narrow">
         <RecorderControl />
       </div>
 
       <!-- Presets Tab -->
-      <div v-show="activeTab === 'presets'" class="section">
+      <div v-show="activeTab === 'presets'" class="section section-narrow">
         <PresetsSection />
       </div>
 
       <!-- FAQ Tab -->
-      <div v-show="activeTab === 'faq'" class="section">
+      <div v-show="activeTab === 'faq'" class="section section-narrow">
         <FAQSection />
       </div>
     </div>
