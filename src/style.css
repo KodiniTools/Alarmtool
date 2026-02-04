@@ -708,6 +708,12 @@ h2 {
   opacity: 0.4;
 }
 
+.osc-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .more-options-btn {
   background: none;
   border: none;
@@ -716,6 +722,11 @@ h2 {
   cursor: pointer;
   padding: 0.25rem;
   transition: color 0.3s ease;
+}
+
+.more-options-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .more-options-btn:hover {

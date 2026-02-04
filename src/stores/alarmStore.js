@@ -31,6 +31,9 @@ export const useAlarmStore = defineStore('alarm', () => {
   // Language & Theme
   const currentLang = ref(localStorage.getItem('alarmToolLang') || 'de')
   const currentTheme = ref(localStorage.getItem('alarmToolTheme') || 'dark')
+
+  // Oscillator Clipboard (for copy/paste between oscillators)
+  const oscClipboard = ref(null)
   
   // Filter Settings
   const filterSettings = ref({
@@ -134,6 +137,7 @@ export const useAlarmStore = defineStore('alarm', () => {
     remainingTime,
     currentLang,
     currentTheme,
+    oscClipboard,
     filterSettings,
     oscillators,
     

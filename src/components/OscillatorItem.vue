@@ -12,14 +12,31 @@
         </label>
         <h5 class="oscillator-title">{{ t('osc_title_prefix') }} {{ oscillatorId + 1 }}</h5>
       </div>
-      <button
-        class="more-options-btn"
-        @click="showAdvanced = !showAdvanced"
-        :title="showAdvanced ? 'Erweiterte Optionen ausblenden' : 'Erweiterte Optionen anzeigen'"
-        :disabled="!settings.enabled"
-      >
-        <i class="fas fa-cog"></i>
-      </button>
+      <div class="osc-actions">
+        <button
+          class="more-options-btn"
+          :title="t('osc_copy')"
+          @click="copySettings"
+        >
+          <i class="fas fa-copy"></i>
+        </button>
+        <button
+          class="more-options-btn"
+          :title="t('osc_paste')"
+          :disabled="!store.oscClipboard"
+          @click="pasteSettings"
+        >
+          <i class="fas fa-paste"></i>
+        </button>
+        <button
+          class="more-options-btn"
+          @click="showAdvanced = !showAdvanced"
+          :title="showAdvanced ? 'Erweiterte Optionen ausblenden' : 'Erweiterte Optionen anzeigen'"
+          :disabled="!settings.enabled"
+        >
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
     </div>
 
     <div class="control-group" :class="{ 'controls-disabled': !settings.enabled }">
@@ -255,7 +272,7 @@ const props = defineProps({
 })
 
 const store = useAlarmStore()
-const { updateOscillatorParameter } = useOscillators()
+const { updateOscillatorParameter, parsePattern } = useOscillators()
 
 const showAdvanced = ref(false)
 
@@ -297,5 +314,29 @@ watch(
 
 function updateParameter(param, value) {
   updateOscillatorParameter(props.oscillatorId, param, value)
+}
+
+function copySettings() {
+  store.oscClipboard = {
+    waveType: settings.value.waveType,
+    frequency: settings.value.frequency,
+    volume: settings.value.volume,
+    pan: settings.value.pan,
+    attack: settings.value.attack,
+    decay: settings.value.decay,
+    sustain: settings.value.sustain,
+    release: settings.value.release,
+    pattern: settings.value.pattern
+  }
+}
+
+function pasteSettings() {
+  if (!store.oscClipboard) return
+  const clip = store.oscClipboard
+  const params = ['waveType', 'frequency', 'volume', 'pan', 'attack', 'decay', 'sustain', 'release', 'pattern']
+  params.forEach(param => {
+    updateOscillatorParameter(props.oscillatorId, param, clip[param])
+  })
+  parsePattern(props.oscillatorId)
 }
 </script>
