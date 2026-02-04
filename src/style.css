@@ -343,6 +343,11 @@ h2 {
   background-color: rgba(255, 255, 255, 0.9);
 }
 
+.form-select option {
+  background-color: var(--at-panel);
+  color: var(--at-text);
+}
+
 .form-control:focus,
 .form-select:focus {
   outline: none;
@@ -1015,7 +1020,7 @@ h2 {
 .player-info small,
 .player-info .text-muted {
   font-size: 0.7rem;
-  color: var(--color-slate);
+  color: var(--color-silver);
   letter-spacing: 0.02em;
 }
 
@@ -1113,13 +1118,13 @@ h2 {
 .small-text,
 .form-text {
   font-size: 0.8rem;
-  color: var(--color-slate);
+  color: var(--color-silver);
   margin-top: 0.2rem;
   letter-spacing: 0.01em;
 }
 
 .text-muted {
-  color: var(--color-slate);
+  color: var(--color-silver);
 }
 
 /* Toast Notifications */
