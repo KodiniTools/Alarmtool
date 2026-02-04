@@ -28,6 +28,8 @@ function captureSnapshot() {
       volume: osc.volume,
       pan: osc.pan,
       attack: osc.attack,
+      decay: osc.decay,
+      sustain: osc.sustain,
       release: osc.release,
       pattern: osc.pattern
     }))
@@ -66,6 +68,12 @@ function applySnapshot(snapshot) {
     }
     if (current.attack !== oscSnap.attack) {
       store.updateOscillator(index, { attack: oscSnap.attack })
+    }
+    if (current.decay !== oscSnap.decay) {
+      store.updateOscillator(index, { decay: oscSnap.decay })
+    }
+    if (current.sustain !== oscSnap.sustain) {
+      store.updateOscillator(index, { sustain: oscSnap.sustain })
     }
     if (current.release !== oscSnap.release) {
       store.updateOscillator(index, { release: oscSnap.release })
