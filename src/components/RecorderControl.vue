@@ -12,6 +12,7 @@
             class="form-select"
           >
             <option :value="null" disabled>{{ t('rec_select') }}</option>
+            <option :value="30000">{{ t('rec_30sec') }}</option>
             <option :value="60000">{{ t('rec_1min') }}</option>
             <option :value="120000">{{ t('rec_2min') }}</option>
             <option :value="180000">{{ t('rec_3min') }}</option>
