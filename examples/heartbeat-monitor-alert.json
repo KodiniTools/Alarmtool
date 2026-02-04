@@ -1,0 +1,117 @@
+{
+  "globalFilter": {
+    "type": "bandpass",
+    "frequency": 1200,
+    "Q": 3
+  },
+  "oscillators": [
+    {
+      "waveType": "sine",
+      "frequency": 880,
+      "volume": 0.7,
+      "pan": 0,
+      "attack": 10,
+      "release": 40,
+      "pattern": "80,120,80,700"
+    },
+    {
+      "waveType": "triangle",
+      "frequency": 1760,
+      "volume": 0.25,
+      "pan": 0,
+      "attack": 5,
+      "release": 30,
+      "pattern": "80,120,80,700"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.35,
+      "pan": 0,
+      "attack": 5,
+      "release": 60,
+      "pattern": "60,140,60,720"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 660,
+      "volume": 0.15,
+      "pan": -0.5,
+      "attack": 0,
+      "release": 100,
+      "pattern": "50,50,50,830"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 660,
+      "volume": 0.15,
+      "pan": 0.5,
+      "attack": 0,
+      "release": 100,
+      "pattern": "830,50,50,50"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    },
+    {
+      "waveType": "sine",
+      "frequency": 440,
+      "volume": 0.5,
+      "pan": 0,
+      "attack": 100,
+      "release": 100,
+      "pattern": "300,200,500,100"
+    }
+  ]
+}
