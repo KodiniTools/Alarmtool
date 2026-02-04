@@ -269,6 +269,33 @@ h2 {
   border: 1px solid rgba(196, 168, 46, 0.1);
 }
 
+/* Narrow sections (Filter, Settings, Player) */
+.section-narrow {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-narrow h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.section-narrow .form-range {
+  height: 3px;
+}
+
+.section-narrow .form-range::-webkit-slider-thumb {
+  height: 12px;
+  width: 12px;
+}
+
+.section-narrow .form-range::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+}
+
 .section::before {
   content: '';
   position: absolute;
