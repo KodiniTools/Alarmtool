@@ -46,7 +46,7 @@ export const useAlarmStore = defineStore('alarm', () => {
     gainNode: null,
     panNode: null,
     patternTimeoutId: null,
-    patternSteps: [300, 200, 500, 100],
+    patternSteps: [1500, 300],
     patternIndex: 0,
     toneIsOn: false,
     // Settings
@@ -54,9 +54,11 @@ export const useAlarmStore = defineStore('alarm', () => {
     frequency: 440,
     volume: 0.5,
     pan: 0,
-    attack: 100,
-    release: 100,
-    pattern: '300,200,500,100'
+    attack: 20,
+    decay: 50,
+    sustain: 0.8,
+    release: 80,
+    pattern: '1500,300'
   })))
 
   // Computed

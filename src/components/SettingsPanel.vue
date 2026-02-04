@@ -72,6 +72,8 @@ function saveSettings() {
         volume: osc.volume,
         pan: osc.pan,
         attack: osc.attack,
+        decay: osc.decay,
+        sustain: osc.sustain,
         release: osc.release,
         pattern: osc.pattern
       }))
@@ -114,6 +116,8 @@ function exportSettings() {
         volume: osc.volume,
         pan: osc.pan,
         attack: osc.attack,
+        decay: osc.decay,
+        sustain: osc.sustain,
         release: osc.release,
         pattern: osc.pattern
       }))
@@ -169,10 +173,12 @@ function applySettings(settings) {
           volume: oscSettings.volume,
           pan: oscSettings.pan,
           attack: oscSettings.attack,
+          decay: oscSettings.decay ?? 50,
+          sustain: oscSettings.sustain ?? 0.8,
           release: oscSettings.release,
           pattern: oscSettings.pattern
         })
-        
+
         // Parse pattern for this oscillator
         parsePattern(index)
       })

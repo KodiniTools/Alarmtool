@@ -129,7 +129,7 @@
               class="form-range"
               min="0"
               max="2000"
-              step="50"
+              step="10"
               @input="updateParameter('attack', settings.attack)"
             />
             <input
@@ -138,8 +138,58 @@
               class="form-control"
               min="0"
               max="2000"
-              step="50"
+              step="10"
               @input="updateParameter('attack', settings.attack)"
+            />
+          </div>
+        </div>
+
+        <!-- Decay -->
+        <div class="mb-3 param-container">
+          <label class="form-label">{{ t('osc_decay') }}</label>
+          <div class="slider-input-group">
+            <input
+              v-model.number="settings.decay"
+              type="range"
+              class="form-range"
+              min="0"
+              max="2000"
+              step="10"
+              @input="updateParameter('decay', settings.decay)"
+            />
+            <input
+              v-model.number="settings.decay"
+              type="number"
+              class="form-control"
+              min="0"
+              max="2000"
+              step="10"
+              @input="updateParameter('decay', settings.decay)"
+            />
+          </div>
+        </div>
+
+        <!-- Sustain -->
+        <div class="mb-3 param-container">
+          <label class="form-label">{{ t('osc_sustain') }}</label>
+          <div class="slider-input-group">
+            <input
+              v-model.number="settings.sustain"
+              type="range"
+              class="form-range"
+              min="0"
+              max="1"
+              step="0.01"
+              @input="updateParameter('sustain', settings.sustain)"
+            />
+            <input
+              v-model.number="settings.sustain"
+              type="number"
+              class="form-control"
+              min="0"
+              max="1"
+              step="0.01"
+              @input="updateParameter('sustain', settings.sustain)"
             />
           </div>
         </div>
@@ -154,7 +204,7 @@
               class="form-range"
               min="0"
               max="2000"
-              step="50"
+              step="10"
               @input="updateParameter('release', settings.release)"
             />
             <input
@@ -163,7 +213,7 @@
               class="form-control"
               min="0"
               max="2000"
-              step="50"
+              step="10"
               @input="updateParameter('release', settings.release)"
             />
           </div>
@@ -217,6 +267,8 @@ const settings = ref({
   volume: props.oscillator.volume,
   pan: props.oscillator.pan,
   attack: props.oscillator.attack,
+  decay: props.oscillator.decay,
+  sustain: props.oscillator.sustain,
   release: props.oscillator.release,
   pattern: props.oscillator.pattern
 })
@@ -234,6 +286,8 @@ watch(
       volume: newOsc.volume,
       pan: newOsc.pan,
       attack: newOsc.attack,
+      decay: newOsc.decay,
+      sustain: newOsc.sustain,
       release: newOsc.release,
       pattern: newOsc.pattern
     }

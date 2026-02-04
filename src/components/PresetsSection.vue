@@ -55,9 +55,11 @@ const defaultOsc = {
   frequency: 440,
   volume: 0.5,
   pan: 0,
-  attack: 100,
-  release: 100,
-  pattern: '300,200,500,100'
+  attack: 20,
+  decay: 50,
+  sustain: 0.8,
+  release: 80,
+  pattern: '1500,300'
 }
 
 const presets = [
@@ -171,6 +173,8 @@ function loadPreset(preset) {
           volume: oscSettings.volume,
           pan: oscSettings.pan,
           attack: oscSettings.attack,
+          decay: oscSettings.decay ?? 50,
+          sustain: oscSettings.sustain ?? 0.8,
           release: oscSettings.release,
           pattern: oscSettings.pattern
         })
