@@ -138,8 +138,4 @@ function handlePlay() {
   box-shadow: 0 2px 8px rgba(196, 168, 46, 0.25);
 }
 
-h2 {
-  font-size: 1rem;
-  margin-bottom: 0.75rem;
-}
 </style>

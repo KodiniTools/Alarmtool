@@ -26,7 +26,7 @@
     <!-- Tab Content -->
     <div class="tab-content">
       <!-- Filter Tab -->
-      <div v-show="activeTab === 'filter'" class="section">
+      <div v-show="activeTab === 'filter'" class="section section-narrow">
         <FilterControl />
       </div>
 
@@ -52,12 +52,12 @@
     </div>
 
     <!-- Settings Management -->
-    <div class="section">
+    <div class="section section-narrow">
       <SettingsPanel />
     </div>
 
     <!-- Media Player -->
-    <div class="section">
+    <div class="section section-narrow">
       <PlayerControl />
     </div>
 
