@@ -68,7 +68,7 @@ export function useOscillators() {
     } catch (error) {
       console.error('Pattern parse error:', error)
       store.updateOscillator(oscId, {
-        patternSteps: [300, 200, 500, 100],
+        patternSteps: [1500, 300],
         patternIndex: 0,
         toneIsOn: false
       })
