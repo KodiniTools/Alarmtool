@@ -45,11 +45,6 @@ export default defineConfig({
     }
   },
   
-  // Pre-bundle CommonJS dependencies (lamejs)
-  optimizeDeps: {
-    include: ['lamejs']
-  },
-
   // Development Server Konfiguration
   server: {
     port: 5173,
