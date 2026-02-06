@@ -215,6 +215,9 @@ h2 {
   border-radius: 12px;
   padding: 0.25rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 [data-theme="light"] .tabs {
