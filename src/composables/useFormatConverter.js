@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import lamejs from 'lamejs'
 import { useToast } from './useToast'
 
 export function useFormatConverter() {
@@ -93,8 +94,7 @@ export function useFormatConverter() {
    * Encode AudioBuffer to MP3 format using lamejs
    */
   async function encodeMp3(audioBuffer) {
-    const lamejs = await import('lamejs')
-    const Mp3Encoder = lamejs.default?.Mp3Encoder || lamejs.Mp3Encoder
+    const Mp3Encoder = lamejs.Mp3Encoder
 
     const numChannels = audioBuffer.numberOfChannels
     const sampleRate = audioBuffer.sampleRate
