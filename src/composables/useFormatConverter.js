@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import lamejs from 'lamejs'
+import lamejs from '@breezystack/lamejs'
 import { useToast } from './useToast'
 
 export function useFormatConverter() {
