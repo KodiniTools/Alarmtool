@@ -21,6 +21,51 @@
               {{ t(tag) }}
             </span>
           </div>
+
+          <!-- Preview Player -->
+          <div class="preset-preview-player">
+            <div class="preview-controls">
+              <button
+                class="preview-btn preview-btn-play"
+                :class="{ active: activePresetId === preset.id && isPlaying && !isPaused }"
+                @click="handlePlay(preset)"
+                :title="t('preview_play')"
+              >
+                <i :class="activePresetId === preset.id && isPlaying && !isPaused ? 'fas fa-pause' : 'fas fa-play'"></i>
+              </button>
+              <button
+                class="preview-btn preview-btn-stop"
+                @click="handleStop(preset)"
+                :disabled="activePresetId !== preset.id || !isPlaying"
+                :title="t('preview_stop')"
+              >
+                <i class="fas fa-stop"></i>
+              </button>
+              <div class="preview-volume">
+                <i class="fas fa-volume-down preview-volume-icon"></i>
+                <input
+                  type="range"
+                  class="form-range preview-volume-slider"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  :value="previewVolume"
+                  @input="setPreviewVolume(parseFloat($event.target.value))"
+                  :title="t('preview_volume')"
+                />
+                <i class="fas fa-volume-up preview-volume-icon"></i>
+              </div>
+            </div>
+            <div
+              v-if="activePresetId === preset.id && isPlaying"
+              class="preview-indicator"
+            >
+              <span class="preview-indicator-dot"></span>
+              <span class="preview-indicator-text">
+                {{ isPaused ? t('preview_paused') : t('preview_playing') }}
+              </span>
+            </div>
+          </div>
         </div>
         <button
           class="btn btn-primary preset-load-btn"
@@ -39,12 +84,23 @@ import { useAlarmStore } from '@/stores/alarmStore'
 import { useAudioContext } from '@/composables/useAudioContext'
 import { useOscillators } from '@/composables/useOscillators'
 import { useToast } from '@/composables/useToast'
+import { usePresetPreview } from '@/composables/usePresetPreview'
 import { translations } from '@/i18n/translations'
 
 const store = useAlarmStore()
 const { updateFilter } = useAudioContext()
 const { parsePattern } = useOscillators()
 const toast = useToast()
+const {
+  activePresetId,
+  isPlaying,
+  isPaused,
+  previewVolume,
+  playPreset,
+  pausePreview,
+  stopPreview,
+  setPreviewVolume
+} = usePresetPreview()
 
 const t = (key) => translations[store.currentLang]?.[key] || key
 
@@ -157,8 +213,27 @@ const presets = [
   }
 ]
 
+function handlePlay(preset) {
+  if (activePresetId.value === preset.id && isPlaying.value && !isPaused.value) {
+    pausePreview()
+  } else {
+    playPreset(preset)
+  }
+}
+
+function handleStop(preset) {
+  if (activePresetId.value === preset.id) {
+    stopPreview()
+  }
+}
+
 function loadPreset(preset) {
   try {
+    // Stop any preview that is playing
+    if (isPlaying.value) {
+      stopPreview()
+    }
+
     const settings = preset.data
 
     if (settings.globalFilter) {
