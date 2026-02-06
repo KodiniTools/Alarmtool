@@ -10,6 +10,10 @@ import { ref, onUnmounted } from 'vue'
 let _audioCtx = null
 let _masterGain = null
 let _filterNode = null
+let _delayNode = null
+let _feedbackGain = null
+let _convolverNode = null
+let _reverbGain = null
 let _oscNodes = []        // { osc, gain, pan }
 let _patternTimeouts = [] // setTimeout IDs
 let _activePresetId = ref(null)
@@ -27,7 +31,47 @@ export function usePresetPreview() {
     _audioCtx = new AC()
     _masterGain = _audioCtx.createGain()
     _masterGain.gain.value = _volume.value
-    _masterGain.connect(_audioCtx.destination)
+
+    // Delay with feedback (matches main player)
+    _delayNode = _audioCtx.createDelay()
+    _delayNode.delayTime.value = 0.3
+    _feedbackGain = _audioCtx.createGain()
+    _feedbackGain.gain.value = 0.5
+    _delayNode.connect(_feedbackGain).connect(_delayNode)
+
+    // Reverb via ConvolverNode (matches main player)
+    _convolverNode = _audioCtx.createConvolver()
+    _createReverbImpulse()
+    _reverbGain = _audioCtx.createGain()
+    _reverbGain.gain.value = 0.5
+    _delayNode.connect(_convolverNode)
+    _convolverNode.connect(_reverbGain)
+
+    // Chain: MasterGain → Filter(placeholder) → Delay → ReverbGain → Destination
+    // Filter is inserted per-preset in _applyFilter, so connect delay→reverb→dest here
+    _delayNode.connect(_reverbGain)
+    _reverbGain.connect(_audioCtx.destination)
+  }
+
+  function _createReverbImpulse() {
+    if (!_audioCtx || !_convolverNode) return
+    try {
+      const rate = _audioCtx.sampleRate
+      const length = rate * 3 // 3 seconds
+      const impulse = _audioCtx.createBuffer(2, length, rate)
+      for (let ch = 0; ch < 2; ch++) {
+        const data = impulse.getChannelData(ch)
+        for (let i = 0; i < length; i++) {
+          const t = i / rate
+          const decay = Math.exp(-2.5 * t)
+          const early = t < 0.08 ? 0.4 * Math.exp(-30 * t) : 0
+          data[i] = (Math.random() * 2 - 1) * (decay + early)
+        }
+      }
+      _convolverNode.buffer = impulse
+    } catch (e) {
+      console.error('Preview: reverb impulse error', e)
+    }
   }
 
   function _applyFilter(filterCfg) {
@@ -37,7 +81,9 @@ export function usePresetPreview() {
     _filterNode.type = type
     _filterNode.frequency.setValueAtTime(filterCfg.frequency, _audioCtx.currentTime)
     _filterNode.Q.setValueAtTime(filterCfg.Q, _audioCtx.currentTime)
+    // Chain: Oscillators → Filter → MasterGain → Delay → ReverbGain → Destination
     _filterNode.connect(_masterGain)
+    _masterGain.connect(_delayNode)
   }
 
   function _parsePattern(patternStr) {
@@ -206,11 +252,15 @@ export function usePresetPreview() {
     })
     _oscNodes = []
 
-    // Disconnect filter
-    if (_filterNode) {
-      try { _filterNode.disconnect() } catch {}
-      _filterNode = null
+    // Disconnect effect chain nodes
+    for (const node of [_filterNode, _masterGain, _delayNode, _feedbackGain, _convolverNode, _reverbGain]) {
+      if (node) { try { node.disconnect() } catch {} }
     }
+    _filterNode = null
+    _delayNode = null
+    _feedbackGain = null
+    _convolverNode = null
+    _reverbGain = null
 
     // Close audio context
     if (_audioCtx && _audioCtx.state !== 'closed') {
