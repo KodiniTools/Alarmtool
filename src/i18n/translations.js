@@ -193,6 +193,13 @@ export const translations = {
     toast_convert_error: "Fehler bei der Konvertierung. Dein Browser unterstützt dieses Format möglicherweise nicht.",
     toast_rec_dismissed: "Aufnahme verworfen.",
 
+    // Preview Player
+    preview_play: "Vorschau abspielen / pausieren",
+    preview_stop: "Vorschau stoppen",
+    preview_volume: "Vorschau-Lautstärke",
+    preview_playing: "Vorschau läuft...",
+    preview_paused: "Vorschau pausiert",
+
     // Toast Messages - Presets
     toast_preset_loaded: "Preset geladen.",
     toast_preset_load_error: "Fehler beim Laden des Presets.",
@@ -402,6 +409,13 @@ export const translations = {
     toast_convert_complete: "Conversion complete! Click Download.",
     toast_convert_error: "Conversion error. Your browser may not support this format.",
     toast_rec_dismissed: "Recording dismissed.",
+
+    // Preview Player
+    preview_play: "Preview play / pause",
+    preview_stop: "Stop preview",
+    preview_volume: "Preview volume",
+    preview_playing: "Preview playing...",
+    preview_paused: "Preview paused",
 
     // Toast Messages - Presets
     toast_preset_loaded: "Preset loaded.",
