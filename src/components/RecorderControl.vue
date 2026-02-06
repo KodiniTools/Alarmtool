@@ -77,6 +77,58 @@
         <i class="fas fa-check-circle"></i> {{ t('rec_success') }}
       </div>
 
+      <!-- Format Conversion -->
+      <div v-if="showDownload && !isConverting" class="convert-section">
+        <span class="convert-label">{{ t('rec_convert_label') }}</span>
+        <div class="convert-actions">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            @click="handleConvert('mp3')"
+            :disabled="isConverting"
+          >
+            <i class="fas fa-file-audio"></i> MP3
+          </button>
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            @click="handleConvert('wav')"
+            :disabled="isConverting"
+          >
+            <i class="fas fa-file-audio"></i> WAV
+          </button>
+        </div>
+      </div>
+
+      <!-- Conversion Progress -->
+      <div v-if="isConverting" class="convert-progress">
+        <i class="fas fa-cog fa-spin"></i> {{ t('rec_converting') }}
+        <div class="progress mt-1" style="height: 14px;">
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated"
+            role="progressbar"
+            :style="{ width: conversionProgress + '%' }"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Converted Download -->
+      <div v-if="convertedUrl" class="convert-download">
+        <a
+          :href="convertedUrl"
+          :download="convertedFilename"
+          class="btn btn-outline-secondary download-ready"
+          @click="handleConvertedDownload"
+        >
+          <i class="fas fa-download"></i> {{ t('rec_download') }} {{ convertedFilename }}
+        </a>
+        <button
+          class="btn btn-sm btn-outline-danger"
+          @click="resetConversion"
+          :title="t('rec_dismiss')"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
       <!-- Recording Feedback -->
       <div v-if="store.isRecording" class="timer">
         <i class="fas fa-circle-notch fa-spin"></i> {{ t('rec_running') }}
@@ -104,6 +156,7 @@
 import { ref, computed } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useRecorder } from '@/composables/useRecorder'
+import { useFormatConverter } from '@/composables/useFormatConverter'
 import { useToast } from '@/composables/useToast'
 import { translations } from '@/i18n/translations'
 
@@ -114,8 +167,17 @@ const {
   downloadUrl,
   downloadFilename,
   showDownload,
-  resetDownload
+  resetDownload,
+  recordedBlob
 } = useRecorder()
+const {
+  isConverting,
+  conversionProgress,
+  convertedUrl,
+  convertedFilename,
+  convertBlob,
+  resetConversion
+} = useFormatConverter()
 const toast = useToast()
 
 const selectedDuration = ref(60000) // Default 1 minute
@@ -168,8 +230,25 @@ function handleDownload() {
 }
 
 function handleDismiss() {
+  resetConversion()
   resetDownload()
   toast.info('toast_rec_dismissed')
+}
+
+async function handleConvert(targetFormat) {
+  if (!recordedBlob.value) return
+  resetConversion()
+  try {
+    await convertBlob(recordedBlob.value, targetFormat, downloadFilename.value)
+  } catch (error) {
+    // Error already handled in composable
+  }
+}
+
+function handleConvertedDownload() {
+  setTimeout(() => {
+    resetConversion()
+  }, 100)
 }
 </script>
 
@@ -266,6 +345,46 @@ function handleDismiss() {
   }
 }
 
+/* Format conversion */
+.convert-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(100, 149, 237, 0.03));
+  border: 1px solid rgba(100, 149, 237, 0.25);
+  border-radius: 8px;
+}
+
+.convert-label {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.convert-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.convert-progress {
+  padding: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.03));
+  border: 1px solid rgba(255, 193, 7, 0.25);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.convert-download {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  animation: successFadeIn 0.4s ease-out;
+}
+
 @media (max-width: 768px) {
   .recorder-controls {
     flex-direction: column;
@@ -278,6 +397,16 @@ function handleDismiss() {
 
   .recorder-actions {
     flex-direction: column;
+  }
+
+  .convert-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .convert-download {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>

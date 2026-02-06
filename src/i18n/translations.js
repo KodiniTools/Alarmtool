@@ -107,6 +107,8 @@ export const translations = {
     rec_running: "Aufnahme läuft:",
     rec_remaining: "verbleibend",
     rec_success: "Aufnahme fertig! Klicke auf Download.",
+    rec_convert_label: "Umwandeln in:",
+    rec_converting: "Konvertierung läuft...",
     rec_help: "Erst den Alarm starten, dann Aufnahme; nach der gewählten Dauer wird ein Download-Link angezeigt.",
     
     // Settings
@@ -187,6 +189,8 @@ export const translations = {
     toast_rec_error_invalid_state: "Aufnahme befindet sich in einem ungültigen Zustand.",
     toast_rec_error_generic: "Aufnahme-Fehler aufgetreten.",
     toast_rec_complete: "Aufnahme abgeschlossen! Klicke auf Download, um die Datei zu speichern.",
+    toast_convert_complete: "Konvertierung abgeschlossen! Klicke auf Download.",
+    toast_convert_error: "Fehler bei der Konvertierung. Dein Browser unterstützt dieses Format möglicherweise nicht.",
     toast_rec_dismissed: "Aufnahme verworfen.",
 
     // Toast Messages - Presets
@@ -313,6 +317,8 @@ export const translations = {
     rec_running: "Recording in progress:",
     rec_remaining: "remaining",
     rec_success: "Recording complete! Click Download.",
+    rec_convert_label: "Convert to:",
+    rec_converting: "Converting...",
     rec_help: "Start the alarm first, then start recording; after the selected duration, a download link will appear.",
     
     // Settings
@@ -393,6 +399,8 @@ export const translations = {
     toast_rec_error_invalid_state: "Recording is in an invalid state.",
     toast_rec_error_generic: "A recording error occurred.",
     toast_rec_complete: "Recording complete! Click Download to save the file.",
+    toast_convert_complete: "Conversion complete! Click Download.",
+    toast_convert_error: "Conversion error. Your browser may not support this format.",
     toast_rec_dismissed: "Recording dismissed.",
 
     // Toast Messages - Presets

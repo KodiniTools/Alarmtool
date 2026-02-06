@@ -15,6 +15,7 @@ export function useRecorder() {
   const downloadUrl = ref('')
   const downloadFilename = ref('')
   const showDownload = ref(false)
+  const recordedBlob = ref(null)
 
   function getRecordingOptions(format) {
     // Format-specific options
@@ -202,6 +203,7 @@ export function useRecorder() {
 
       const blob = new Blob(recordedChunks.value, { type: mediaRecorder.value.mimeType })
       console.log('Blob created:', blob.size, 'bytes, type:', blob.type)
+      recordedBlob.value = blob
       recordedChunks.value = []
 
       // Determine file extension and quality info
@@ -265,6 +267,7 @@ export function useRecorder() {
     downloadUrl.value = ''
     downloadFilename.value = ''
     showDownload.value = false
+    recordedBlob.value = null
   }
 
   function cleanup() {
@@ -284,6 +287,7 @@ export function useRecorder() {
     cleanup,
     downloadUrl,
     downloadFilename,
-    showDownload
+    showDownload,
+    recordedBlob
   }
 }
