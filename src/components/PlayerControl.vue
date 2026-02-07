@@ -135,7 +135,7 @@ function handlePlay() {
 }
 
 [data-theme="light"] .player-btn.active {
-  box-shadow: 0 2px 8px rgba(196, 168, 46, 0.25);
+  box-shadow: 0 2px 8px rgba(201, 152, 77, 0.25);
 }
 
 </style>
