@@ -131,7 +131,7 @@ function handlePlay() {
 .player-btn.active {
   background-color: var(--titaniumgraphite-1) !important;
   color: var(--titaniumgraphite-4) !important;
-  box-shadow: 0 2px 8px rgba(242, 226, 142, 0.3);
+  box-shadow: 0 2px 8px rgba(201, 152, 77, 0.3);
 }
 
 [data-theme="light"] .player-btn.active {
