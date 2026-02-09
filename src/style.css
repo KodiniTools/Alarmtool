@@ -114,81 +114,6 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
-/* Top Toolbar */
-.top-toolbar {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  background: rgba(20, 20, 26, 0.95);
-  padding: 8px 16px;
-  border-radius: 40px;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-  border: 1px solid rgba(242, 226, 142, 0.1);
-}
-
-[data-theme="light"] .top-toolbar {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 20px rgba(0, 57, 113, 0.1);
-  border: 1px solid rgba(0, 57, 113, 0.1);
-}
-
-.switcher-group {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(60, 60, 60, 0.5);
-  padding: 4px;
-  border-radius: 25px;
-}
-
-[data-theme="light"] .switcher-group {
-  background: rgba(248, 225, 169, 0.4);
-}
-
-[data-theme="light"] .switcher-btn.active {
-  box-shadow: 0 2px 8px rgba(0, 57, 113, 0.2);
-}
-
-.switcher-divider {
-  width: 1px;
-  height: 24px;
-  background: rgba(184, 184, 184, 0.3);
-  margin: 0 8px;
-}
-
-.switcher-btn {
-  background: transparent;
-  border: none;
-  color: var(--titaniumgraphite-5);
-  padding: 6px 14px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.8rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  letter-spacing: 0.02em;
-}
-
-.switcher-btn:hover:not(.active) {
-  color: var(--titaniumgraphite-3);
-  transform: scale(1.02);
-}
-
-.switcher-btn.active {
-  background: var(--titaniumgraphite-1);
-  color: var(--titaniumgraphite-4);
-  box-shadow: 0 2px 8px rgba(184, 184, 184, 0.25);
-  font-weight: 600;
-}
-
 /* Main Container */
 .main-container {
   max-width: 1400px;
@@ -200,7 +125,6 @@ h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   padding: 1.25rem 0;
-  margin-top: 56px;
 }
 
 .app-title {
@@ -1269,25 +1193,7 @@ h2 {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-  
-  .top-toolbar {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-    justify-content: center;
-    padding: 10px 15px;
-    gap: 12px;
-  }
-  
-  .switcher-btn {
-    padding: 7px 12px;
-    font-size: 0.8rem;
-  }
-  
-  .app-header {
-    margin-top: 70px;
-  }
-  
+
   .player-controls {
     flex-direction: column;
   }

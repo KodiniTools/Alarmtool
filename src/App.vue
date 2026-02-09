@@ -1,8 +1,5 @@
 <template>
   <div class="main-container">
-    <!-- Top Toolbar -->
-    <TopToolbar />
-
     <!-- App Header -->
     <div class="app-header">
       <h1 class="app-title">{{ t('app_title') }}</h1>
@@ -77,7 +74,6 @@ import { useAlarmStore } from '@/stores/alarmStore'
 import { translations } from '@/i18n/translations'
 import { usePlayer } from '@/composables/usePlayer'
 
-import TopToolbar from '@/components/TopToolbar.vue'
 import FilterControl from '@/components/FilterControl.vue'
 import OscillatorGrid from '@/components/OscillatorGrid.vue'
 import RecorderControl from '@/components/RecorderControl.vue'
@@ -113,17 +109,43 @@ const t = (key) => {
   return translations[store.currentLang]?.[key] || key
 }
 
+// SSI nav event handlers
+const onLanguageChanged = (e) => {
+  if (e.detail?.lang) {
+    store.setLanguage(e.detail.lang)
+  }
+}
+
+const onThemeChanged = (e) => {
+  if (e.detail?.theme) {
+    store.setTheme(e.detail.theme)
+  }
+}
+
 onMounted(() => {
-  // Set theme on mount
-  document.body.setAttribute('data-theme', store.currentTheme)
-  
+  // Sync with SSI nav's current state (it may have initialized before Vue)
+  const ssiTheme = document.documentElement.getAttribute('data-theme')
+  if (ssiTheme) {
+    store.currentTheme = ssiTheme
+  }
+  const ssiLang = document.documentElement.getAttribute('lang')
+  if (ssiLang && (ssiLang === 'de' || ssiLang === 'en')) {
+    store.currentLang = ssiLang
+  }
+
+  // Listen for SSI nav language/theme changes
+  window.addEventListener('language-changed', onLanguageChanged)
+  window.addEventListener('theme-changed', onThemeChanged)
+
   // Add keyboard event listener
   document.addEventListener('keydown', handleKeyboard)
-  
+
   console.log('Alarm Tool Vue initialized')
 })
 
 onUnmounted(() => {
+  window.removeEventListener('language-changed', onLanguageChanged)
+  window.removeEventListener('theme-changed', onThemeChanged)
   document.removeEventListener('keydown', handleKeyboard)
 })
 </script>

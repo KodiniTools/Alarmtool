@@ -28,9 +28,9 @@ export const useAlarmStore = defineStore('alarm', () => {
   const recordingDuration = ref(60000)
   const remainingTime = ref(0)
   
-  // Language & Theme
-  const currentLang = ref(localStorage.getItem('alarmToolLang') || 'de')
-  const currentTheme = ref(localStorage.getItem('alarmToolTheme') || 'dark')
+  // Language & Theme (synced with SSI nav's localStorage keys)
+  const currentLang = ref(localStorage.getItem('locale') || 'de')
+  const currentTheme = ref(localStorage.getItem('theme') || 'dark')
 
   // Oscillator Clipboard (for copy/paste between oscillators)
   const oscClipboard = ref(null)
@@ -77,13 +77,12 @@ export const useAlarmStore = defineStore('alarm', () => {
   // Actions
   function setLanguage(lang) {
     currentLang.value = lang
-    localStorage.setItem('alarmToolLang', lang)
+    localStorage.setItem('locale', lang)
   }
 
   function setTheme(theme) {
     currentTheme.value = theme
-    localStorage.setItem('alarmToolTheme', theme)
-    document.body.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
   }
 
   function updateFilterSettings(settings) {
