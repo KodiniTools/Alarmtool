@@ -61,9 +61,6 @@
     <!-- Donate Button -->
     <DonateButton />
 
-    <!-- Footer -->
-    <AppFooter @openCookieSettings="openCookieSettings" />
-    <CookieBanner ref="cookieBannerRef" />
     <ToastContainer />
   </div>
 </template>
@@ -82,20 +79,12 @@ import FAQSection from '@/components/FAQSection.vue'
 import SettingsPanel from '@/components/SettingsPanel.vue'
 import PlayerControl from '@/components/PlayerControl.vue'
 import DonateButton from '@/components/DonateButton.vue'
-import AppFooter from '@/components/AppFooter.vue'
-import CookieBanner from '@/components/CookieBanner.vue'
 import ToastContainer from '@/components/ToastContainer.vue'
 
 const store = useAlarmStore()
 const { handleKeyboard } = usePlayer()
 
 const activeTab = ref('filter')
-const cookieBannerRef = ref(null)
-
-const openCookieSettings = () => {
-  cookieBannerRef.value?.openSettings()
-}
-
 const tabs = [
   { id: 'filter', label: 'tab_filter', icon: 'fas fa-filter' },
   { id: 'oscillators', label: 'tab_oscillators', icon: 'fas fa-wave-square' },
