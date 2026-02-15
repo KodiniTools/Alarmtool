@@ -227,6 +227,13 @@ function handleStop(preset) {
   }
 }
 
+function isDefaultOsc(oscSettings) {
+  return oscSettings.frequency === defaultOsc.frequency
+    && oscSettings.volume === defaultOsc.volume
+    && oscSettings.waveType === defaultOsc.waveType
+    && oscSettings.pattern === defaultOsc.pattern
+}
+
 function loadPreset(preset) {
   try {
     // Stop any preview that is playing
@@ -242,7 +249,9 @@ function loadPreset(preset) {
 
     if (settings.oscillators && settings.oscillators.length === store.oscillators.length) {
       settings.oscillators.forEach((oscSettings, index) => {
+        const shouldEnable = !isDefaultOsc(oscSettings)
         store.updateOscillator(index, {
+          enabled: shouldEnable,
           waveType: oscSettings.waveType,
           frequency: oscSettings.frequency,
           volume: oscSettings.volume,
