@@ -38,6 +38,19 @@
           </select>
         </div>
 
+        <!-- Channel Mode Select -->
+        <div class="recorder-field">
+          <label for="channelMode" class="form-label">{{ t('rec_channels') }}</label>
+          <select
+            id="channelMode"
+            v-model="selectedChannelMode"
+            class="form-select"
+          >
+            <option value="stereo">{{ t('rec_channels_stereo') }}</option>
+            <option value="mono">{{ t('rec_channels_mono') }}</option>
+          </select>
+        </div>
+
         <!-- Start Recording Button -->
         <div class="recorder-field recorder-actions">
           <button
@@ -208,6 +221,9 @@ const availableFormats = computed(() => {
 // Default to first available format
 const selectedFormat = ref(availableFormats.value[0]?.value || 'auto')
 
+// Channel mode: stereo or mono
+const selectedChannelMode = ref('mono')
+
 const canStartRecording = computed(() => {
   return selectedDuration.value && store.isAlarmRunning && !store.isRecording
 })
@@ -219,7 +235,7 @@ const progressPercentage = computed(() => {
 
 function handleStartRecording() {
   if (!canStartRecording.value) return
-  startRecording(selectedDuration.value, selectedFormat.value)
+  startRecording(selectedDuration.value, selectedFormat.value, selectedChannelMode.value === 'mono')
 }
 
 function handleDownload() {
@@ -239,7 +255,7 @@ async function handleConvert(targetFormat) {
   if (!recordedBlob.value) return
   resetConversion()
   try {
-    await convertBlob(recordedBlob.value, targetFormat, downloadFilename.value)
+    await convertBlob(recordedBlob.value, targetFormat, downloadFilename.value, selectedChannelMode.value === 'mono')
   } catch (error) {
     // Error already handled in composable
   }
