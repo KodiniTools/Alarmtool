@@ -20,6 +20,7 @@ export function useRecorder() {
   const downloadFilename = ref('')
   const showDownload = ref(false)
   const recordedBlob = ref(null)
+  const streamDest = ref(null)
 
   function getRecordingOptions(format) {
     // Format-specific options
@@ -80,9 +81,15 @@ export function useRecorder() {
       store.isRecording = true
       store.remainingTime = durationMs
 
+      // Disconnect previous stream destination if still connected
+      if (streamDest.value) {
+        try { store.finalOutputNode.disconnect(streamDest.value) } catch {}
+      }
+
       // Create MediaStream from final output (after filter, delay, reverb)
       const dest = store.audioCtx.createMediaStreamDestination()
       store.finalOutputNode.connect(dest)
+      streamDest.value = dest
 
       // Get recording options based on selected format
       const options = getRecordingOptions(format)
@@ -130,6 +137,12 @@ export function useRecorder() {
   function stopRecording() {
     if (mediaRecorder.value && mediaRecorder.value.state === 'recording') {
       mediaRecorder.value.stop()
+    }
+
+    // Disconnect the stream destination from the output node
+    if (streamDest.value && store.finalOutputNode) {
+      try { store.finalOutputNode.disconnect(streamDest.value) } catch {}
+      streamDest.value = null
     }
 
     clearRecordingTimers()
@@ -189,6 +202,12 @@ export function useRecorder() {
     try {
       if (!mediaRecorder.value || recordedChunks.value.length === 0) {
         return
+      }
+
+      // Revoke previous blob URL to prevent memory leak
+      if (downloadUrl.value) {
+        URL.revokeObjectURL(downloadUrl.value)
+        downloadUrl.value = ''
       }
 
       const blob = new Blob(recordedChunks.value, { type: mediaRecorder.value.mimeType })

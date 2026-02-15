@@ -219,7 +219,7 @@ export function usePresetPreview() {
     _patternTimeouts.forEach(tid => clearTimeout(tid))
     _patternTimeouts = []
 
-    // Stop & disconnect oscillators
+    // Stop & disconnect oscillators immediately (no delay needed for cleanup-only stop)
     _oscNodes.forEach(entry => {
       try {
         if (entry.gain && _audioCtx) {
@@ -240,11 +240,24 @@ export function usePresetPreview() {
     })
     _oscNodes = []
 
+    // Disconnect filter (rebuilt per-preset in _applyFilter), keep effect chain alive
+    if (_filterNode) {
+      try { _filterNode.disconnect() } catch {}
+      _filterNode = null
+    }
+
+    _activePresetId.value = null
+    _isPlaying.value = false
+    _isPaused.value = false
+  }
+
+  function _destroyCtx() {
+    stopPreview()
+
     // Disconnect effect chain nodes
-    for (const node of [_filterNode, _masterGain, _delayNode, _feedbackGain, _convolverNode, _reverbGain]) {
+    for (const node of [_masterGain, _delayNode, _feedbackGain, _convolverNode, _reverbGain]) {
       if (node) { try { node.disconnect() } catch {} }
     }
-    _filterNode = null
     _delayNode = null
     _feedbackGain = null
     _convolverNode = null
@@ -255,14 +268,8 @@ export function usePresetPreview() {
       const ctx = _audioCtx
       _audioCtx = null
       _masterGain = null
-      setTimeout(() => {
-        try { ctx.close() } catch {}
-      }, 200)
+      try { ctx.close() } catch {}
     }
-
-    _activePresetId.value = null
-    _isPlaying.value = false
-    _isPaused.value = false
   }
 
   function setPreviewVolume(val) {
@@ -274,7 +281,7 @@ export function usePresetPreview() {
 
   // Clean up when the component using this composable is destroyed
   onUnmounted(() => {
-    stopPreview()
+    _destroyCtx()
   })
 
   return {
