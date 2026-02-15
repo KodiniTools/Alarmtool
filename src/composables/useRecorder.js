@@ -3,6 +3,10 @@ import { useAlarmStore } from '@/stores/alarmStore'
 import { usePlayer } from './usePlayer'
 import { useToast } from './useToast'
 
+const WAV_CHUNK_INTERVAL_MS = 2000
+const DEFAULT_CHUNK_INTERVAL_MS = 1000
+const TIMER_INTERVAL_MS = 100
+
 export function useRecorder() {
   const store = useAlarmStore()
   const { stopAlarm } = usePlayer()
@@ -86,27 +90,20 @@ export function useRecorder() {
       // Create MediaRecorder
       mediaRecorder.value = new MediaRecorder(dest.stream, options)
 
-      console.log(`Recording with: ${mediaRecorder.value.mimeType}, Bitrate: ${options.audioBitsPerSecond || 'Standard'}`)
-
       // Event handlers
       mediaRecorder.value.ondataavailable = (e) => {
         if (e.data.size > 0) {
           recordedChunks.value.push(e.data)
-          console.log(`Data chunk received: ${e.data.size} bytes`)
         }
       }
 
       mediaRecorder.value.onstop = () => {
-        console.log('MediaRecorder onstop event fired')
-        console.log(`Recorded chunks: ${recordedChunks.value.length}`)
         createDownloadURL()
         store.isRecording = false
         toast.success('toast_rec_complete')
-        console.log('Recording stopped and download URL created')
 
         // Auto-stop player when recording finishes
         stopAlarm()
-        console.log('Player auto-stopped after recording')
       }
 
       mediaRecorder.value.onerror = (event) => {
@@ -114,15 +111,16 @@ export function useRecorder() {
       }
 
       // Start recording
-      const chunkSize = mediaRecorder.value.mimeType === 'audio/wav' ? 2000 : 1000
-      mediaRecorder.value.start(chunkSize)
+      const chunkInterval = mediaRecorder.value.mimeType === 'audio/wav'
+        ? WAV_CHUNK_INTERVAL_MS
+        : DEFAULT_CHUNK_INTERVAL_MS
+      mediaRecorder.value.start(chunkInterval)
 
       // Start timer
       startRecordingTimer(durationMs)
 
       return true
     } catch (error) {
-      console.error('Error starting recording:', error)
       toast.error('toast_rec_start_error')
       store.isRecording = false
       return false
@@ -158,15 +156,12 @@ export function useRecorder() {
       }
 
       store.remainingTime = remainingMs
-    }, 100)
+    }, TIMER_INTERVAL_MS)
 
     recordingTimeout.value = setTimeout(() => {
-      console.log('Recording timeout reached - stopping recording')
-      
       // Aufnahme stoppen
       if (mediaRecorder.value && mediaRecorder.value.state === 'recording') {
         mediaRecorder.value.stop()
-        console.log('MediaRecorder stopped')
       }
       
       // Alle Timer clearen
@@ -192,17 +187,11 @@ export function useRecorder() {
 
   function createDownloadURL() {
     try {
-      console.log('createDownloadURL called')
-      console.log('mediaRecorder:', mediaRecorder.value)
-      console.log('recordedChunks length:', recordedChunks.value.length)
-      
       if (!mediaRecorder.value || recordedChunks.value.length === 0) {
-        console.warn('No mediaRecorder or no recorded chunks!')
         return
       }
 
       const blob = new Blob(recordedChunks.value, { type: mediaRecorder.value.mimeType })
-      console.log('Blob created:', blob.size, 'bytes, type:', blob.type)
       recordedBlob.value = blob
       recordedChunks.value = []
 
@@ -230,17 +219,12 @@ export function useRecorder() {
       downloadUrl.value = URL.createObjectURL(blob)
       showDownload.value = true
 
-      const fileSizeMB = (blob.size / (1024 * 1024)).toFixed(1)
-      console.log(`✅ Recording created: ${downloadFilename.value}, Size: ${fileSizeMB} MB`)
-      console.log('showDownload set to:', showDownload.value)
     } catch (error) {
-      console.error('Error creating download URL:', error)
       toast.error('toast_rec_file_error')
     }
   }
 
   function handleRecordingError(error) {
-    console.error('Recording error:', error)
     stopRecording()
 
     if (error.name === 'NotSupportedError') {

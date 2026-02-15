@@ -2,31 +2,28 @@
   <div>
     <h2>{{ t('faq_title') }}</h2>
     <div>
-      <div
+      <details
         v-for="(faq, index) in faqData"
         :key="index"
         class="faq-item"
-        :class="{ active: activeFaq === index }"
       >
-        <div class="faq-question" @click="toggleFaq(index)">
+        <summary class="faq-question">
           <span>{{ t(faq.q) }}</span>
-          <i class="fas fa-chevron-down"></i>
-        </div>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </summary>
         <div class="faq-answer">
           {{ t(faq.a) }}
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { translations } from '@/i18n/translations'
 
 const store = useAlarmStore()
-const activeFaq = ref(null)
 
 const t = (key) => translations[store.currentLang]?.[key] || key
 
@@ -42,8 +39,4 @@ const faqData = [
   { q: 'faq_q9', a: 'faq_a9' },
   { q: 'faq_q10', a: 'faq_a10' }
 ]
-
-function toggleFaq(index) {
-  activeFaq.value = activeFaq.value === index ? null : index
-}
 </script>

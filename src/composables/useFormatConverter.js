@@ -1,5 +1,4 @@
 import { ref } from 'vue'
-import { Mp3Encoder } from '@/lib/lamejs.js'
 import { useToast } from './useToast'
 
 export function useFormatConverter() {
@@ -94,6 +93,8 @@ export function useFormatConverter() {
    * Encode AudioBuffer to MP3 format using lamejs
    */
   async function encodeMp3(audioBuffer) {
+    const { Mp3Encoder } = await import('@/lib/lamejs.js')
+
     const numChannels = audioBuffer.numberOfChannels
     const sampleRate = audioBuffer.sampleRate
     const kbps = 192
@@ -193,13 +194,9 @@ export function useFormatConverter() {
       convertedUrl.value = url
       convertedFilename.value = filename
 
-      const sizeMB = (resultBlob.size / (1024 * 1024)).toFixed(1)
-      console.log(`Converted to ${targetFormat.toUpperCase()}: ${filename}, Size: ${sizeMB} MB`)
-
       toast.success('toast_convert_complete')
       return { url, filename }
     } catch (error) {
-      console.error('Conversion error:', error)
       toast.error('toast_convert_error')
       throw error
     } finally {

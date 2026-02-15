@@ -1,4 +1,5 @@
 import { ref, onUnmounted } from 'vue'
+import { createReverbImpulse } from './useReverbImpulse'
 
 /**
  * Self-contained preset preview player.
@@ -55,22 +56,9 @@ export function usePresetPreview() {
 
   function _createReverbImpulse() {
     if (!_audioCtx || !_convolverNode) return
-    try {
-      const rate = _audioCtx.sampleRate
-      const length = rate * 3 // 3 seconds
-      const impulse = _audioCtx.createBuffer(2, length, rate)
-      for (let ch = 0; ch < 2; ch++) {
-        const data = impulse.getChannelData(ch)
-        for (let i = 0; i < length; i++) {
-          const t = i / rate
-          const decay = Math.exp(-2.5 * t)
-          const early = t < 0.08 ? 0.4 * Math.exp(-30 * t) : 0
-          data[i] = (Math.random() * 2 - 1) * (decay + early)
-        }
-      }
+    const impulse = createReverbImpulse(_audioCtx)
+    if (impulse) {
       _convolverNode.buffer = impulse
-    } catch (e) {
-      console.error('Preview: reverb impulse error', e)
     }
   }
 
@@ -188,7 +176,7 @@ export function usePresetPreview() {
 
         _oscNodes.push(entry)
       } catch (e) {
-        console.error('Preview: error creating oscillator', e)
+        // Oscillator creation failed — skip this one
       }
     })
 

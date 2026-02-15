@@ -4,12 +4,16 @@ import { useAudioContext } from './useAudioContext'
 import { useOscillators } from './useOscillators'
 import { useToast } from './useToast'
 
+const TIMER_INTERVAL_MS = 100
+const LOOP_DURATION_MS = 300000 // 5 minutes
+const AUDIO_CONTEXT_CLOSE_DELAY_MS = 2000
+
 export function usePlayer() {
   const store = useAlarmStore()
   const { initAudioContext, closeAudioContext } = useAudioContext()
   const { createOscillators, runOscPattern, stopOscillators } = useOscillators()
   const toast = useToast()
-  
+
   const playbackTimer = ref(null)
 
   function startAlarm() {
@@ -45,9 +49,7 @@ export function usePlayer() {
       startPlaybackTimer()
 
       toast.success('toast_alarm_started')
-      console.log('Alarm started')
     } catch (error) {
-      console.error('Error starting alarm:', error)
       toast.error('toast_alarm_start_error')
       store.isPlaying = false
       store.isAlarmRunning = false
@@ -71,7 +73,6 @@ export function usePlayer() {
     }
 
     toast.info('toast_alarm_paused')
-    console.log('Alarm paused')
   }
 
   function resumeAlarm() {
@@ -92,7 +93,6 @@ export function usePlayer() {
     startPlaybackTimer()
 
     toast.info('toast_alarm_resumed')
-    console.log('Alarm resumed')
   }
 
   function stopAlarm() {
@@ -112,13 +112,12 @@ export function usePlayer() {
     // Stop oscillators
     stopOscillators()
 
-    // Close audio context after delay
+    // Close audio context after delay (allow release envelopes to finish)
     setTimeout(() => {
       closeAudioContext()
-    }, 2000)
+    }, AUDIO_CONTEXT_CLOSE_DELAY_MS)
 
     toast.info('toast_alarm_stopped')
-    console.log('Alarm stopped')
   }
 
   function startPlaybackTimer() {
@@ -128,14 +127,13 @@ export function usePlayer() {
 
     playbackTimer.value = setInterval(() => {
       if (store.isPlaying && !store.isPaused) {
-        store.currentTime += 100
+        store.currentTime += TIMER_INTERVAL_MS
 
-        // Loop functionality (optional, after 5 minutes)
-        if (store.isLooping && store.currentTime >= 300000) {
+        if (store.isLooping && store.currentTime >= LOOP_DURATION_MS) {
           store.currentTime = 0
         }
       }
-    }, 100)
+    }, TIMER_INTERVAL_MS)
   }
 
   function updateVolume(value) {

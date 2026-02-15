@@ -7,7 +7,6 @@ export function useOscillators() {
 
   function createOscillators() {
     if (!store.audioCtx || !store.masterGainNode) {
-      console.error('Audio context not initialized')
       return
     }
 
@@ -38,7 +37,7 @@ export function useOscillators() {
           panNode: panNode
         })
       } catch (error) {
-        console.error(`Error creating oscillator ${index + 1}:`, error)
+        // Oscillator creation failed — skip this one
       }
     })
   }
@@ -66,7 +65,6 @@ export function useOscillators() {
         })
       }
     } catch (error) {
-      console.error('Pattern parse error:', error)
       store.updateOscillator(oscId, {
         patternSteps: [1500, 300],
         patternIndex: 0,
@@ -132,7 +130,7 @@ export function useOscillators() {
         gain.linearRampToValueAtTime(0, now + releaseSec)
       }
     } catch (error) {
-      console.error('setOscTone error:', error)
+      // Audio parameter update failed — non-critical
     }
   }
 
@@ -224,7 +222,7 @@ export function useOscillators() {
         runOscPattern(oscId)
       }
     } catch (error) {
-      console.error(`Error starting oscillator ${oscId + 1}:`, error)
+      // Oscillator start failed — skip
     }
   }
 
@@ -270,7 +268,7 @@ export function useOscillators() {
           toneIsOn: false
         })
       } catch (e) {
-        console.error('Error stopping single oscillator:', e)
+        // Stop failed — node may already be disconnected
       }
     }
   }
@@ -307,7 +305,7 @@ export function useOscillators() {
             })
           }, releaseSec * 1000)
         } catch (e) {
-          console.error('Error stopping oscillator:', e)
+          // Stop failed — node may already be disconnected
         }
       }
     })
