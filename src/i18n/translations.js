@@ -200,9 +200,15 @@ export const translations = {
     preview_playing: "Vorschau läuft...",
     preview_paused: "Vorschau pausiert",
 
+    // Preset Reset
+    preset_active_label: "Aktives Preset",
+    preset_reset: "Zurücksetzen",
+    preset_reset_title: "Preset entfernen und Oszillatoren auf Grundeinstellungen zurücksetzen",
+
     // Toast Messages - Presets
     toast_preset_loaded: "Preset geladen.",
     toast_preset_load_error: "Fehler beim Laden des Presets.",
+    toast_preset_reset: "Preset entfernt. Oszillatoren auf Grundeinstellungen zurückgesetzt.",
 
     // Toast Messages - Undo/Redo
     toast_undo: "Änderung rückgängig gemacht.",
@@ -417,9 +423,15 @@ export const translations = {
     preview_playing: "Preview playing...",
     preview_paused: "Preview paused",
 
+    // Preset Reset
+    preset_active_label: "Active Preset",
+    preset_reset: "Reset",
+    preset_reset_title: "Remove preset and reset oscillators to defaults",
+
     // Toast Messages - Presets
     toast_preset_loaded: "Preset loaded.",
     toast_preset_load_error: "Error loading preset.",
+    toast_preset_reset: "Preset removed. Oscillators reset to defaults.",
 
     // Toast Messages - Undo/Redo
     toast_undo: "Change undone.",
