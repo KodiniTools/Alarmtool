@@ -155,20 +155,47 @@ export function useFormatConverter() {
   }
 
   /**
+   * Downmix a stereo AudioBuffer to mono by averaging L+R channels
+   */
+  function downmixToMono(audioBuffer) {
+    if (audioBuffer.numberOfChannels === 1) return audioBuffer
+
+    const sampleRate = audioBuffer.sampleRate
+    const length = audioBuffer.length
+    const monoBuffer = new OfflineAudioContext(1, length, sampleRate).createBuffer(1, length, sampleRate)
+    const monoData = monoBuffer.getChannelData(0)
+
+    const left = audioBuffer.getChannelData(0)
+    const right = audioBuffer.numberOfChannels > 1 ? audioBuffer.getChannelData(1) : left
+
+    for (let i = 0; i < length; i++) {
+      monoData[i] = (left[i] + right[i]) * 0.5
+    }
+
+    return monoBuffer
+  }
+
+  /**
    * Convert a recorded audio Blob to the target format
    * @param {Blob} sourceBlob - The original recorded blob
    * @param {string} targetFormat - 'wav' or 'mp3'
    * @param {string} baseFilename - Base filename without extension
+   * @param {boolean} mono - Whether to downmix to mono
    * @returns {Promise<{url: string, filename: string}>}
    */
-  async function convertBlob(sourceBlob, targetFormat, baseFilename) {
+  async function convertBlob(sourceBlob, targetFormat, baseFilename, mono = false) {
     isConverting.value = true
     conversionProgress.value = 0
 
     try {
       // Step 1: Decode source to AudioBuffer
       conversionProgress.value = 10
-      const audioBuffer = await decodeBlob(sourceBlob)
+      let audioBuffer = await decodeBlob(sourceBlob)
+
+      // Step 1b: Downmix to mono if requested
+      if (mono) {
+        audioBuffer = downmixToMono(audioBuffer)
+      }
 
       // Step 2: Encode to target format
       let resultBlob

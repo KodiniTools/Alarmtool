@@ -63,7 +63,9 @@ export function useRecorder() {
     return {}
   }
 
-  function startRecording(durationMs, format = 'auto') {
+  const monoMixNode = ref(null)
+
+  function startRecording(durationMs, format = 'auto', mono = false) {
     if (!store.audioCtx || !store.finalOutputNode) {
       toast.warning('toast_rec_no_alarm')
       return false
@@ -85,10 +87,27 @@ export function useRecorder() {
       if (streamDest.value) {
         try { store.finalOutputNode.disconnect(streamDest.value) } catch {}
       }
+      if (monoMixNode.value) {
+        try { monoMixNode.value.disconnect() } catch {}
+        monoMixNode.value = null
+      }
 
       // Create MediaStream from final output (after filter, delay, reverb)
       const dest = store.audioCtx.createMediaStreamDestination()
-      store.finalOutputNode.connect(dest)
+
+      if (mono) {
+        // Insert a GainNode that forces downmix to mono
+        const mixDown = store.audioCtx.createGain()
+        mixDown.channelCount = 1
+        mixDown.channelCountMode = 'explicit'
+        mixDown.channelInterpretation = 'speakers'
+        mixDown.gain.value = 1
+        store.finalOutputNode.connect(mixDown)
+        mixDown.connect(dest)
+        monoMixNode.value = mixDown
+      } else {
+        store.finalOutputNode.connect(dest)
+      }
       streamDest.value = dest
 
       // Get recording options based on selected format
@@ -139,11 +158,17 @@ export function useRecorder() {
       mediaRecorder.value.stop()
     }
 
-    // Disconnect the stream destination from the output node
-    if (streamDest.value && store.finalOutputNode) {
+    // Disconnect recording chain
+    if (monoMixNode.value) {
+      // Mono path: finalOutputNode → monoMixNode → streamDest
+      try { store.finalOutputNode.disconnect(monoMixNode.value) } catch {}
+      try { monoMixNode.value.disconnect() } catch {}
+      monoMixNode.value = null
+    } else if (streamDest.value && store.finalOutputNode) {
+      // Stereo path: finalOutputNode → streamDest
       try { store.finalOutputNode.disconnect(streamDest.value) } catch {}
-      streamDest.value = null
     }
+    streamDest.value = null
 
     clearRecordingTimers()
     store.isRecording = false
