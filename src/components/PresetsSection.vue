@@ -3,6 +3,21 @@
     <h2>{{ t('presets_title') }}</h2>
     <p class="presets-intro">{{ t('presets_intro') }}</p>
 
+    <!-- Active Preset Banner -->
+    <div v-if="activePreset" class="preset-active-banner">
+      <div class="preset-active-info">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ t('preset_active_label') }}: <strong>{{ getActivePresetName() }}</strong></span>
+      </div>
+      <button
+        class="btn btn-secondary preset-reset-btn"
+        @click="resetToDefaults"
+        :title="t('preset_reset_title')"
+      >
+        <i class="fas fa-undo"></i> {{ t('preset_reset') }}
+      </button>
+    </div>
+
     <div class="presets-grid">
       <div
         v-for="preset in presets"
@@ -225,6 +240,33 @@ function handleStop(preset) {
   if (activePresetId.value === preset.id) {
     stopPreview()
   }
+}
+
+function getActivePresetName() {
+  const preset = presets.find(p => p.id === activePreset.value)
+  return preset ? t(preset.nameKey) : ''
+}
+
+function resetToDefaults() {
+  // Stop any preview
+  if (isPlaying.value) {
+    stopPreview()
+  }
+
+  // Reset filter to none
+  updateFilter({ type: 'none', frequency: 1000, Q: 1 })
+
+  // Reset all oscillators to defaults, first 3 enabled
+  store.oscillators.forEach((_, index) => {
+    store.updateOscillator(index, {
+      enabled: index < 3,
+      ...defaultOsc
+    })
+    parsePattern(index)
+  })
+
+  activePreset.value = null
+  toast.info('toast_preset_reset')
 }
 
 function isDefaultOsc(oscSettings) {
