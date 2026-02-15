@@ -128,8 +128,6 @@ onMounted(() => {
 
   // Add keyboard event listener
   document.addEventListener('keydown', handleKeyboard)
-
-  console.log('Alarm Tool Vue initialized')
 })
 
 onUnmounted(() => {

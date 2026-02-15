@@ -748,6 +748,11 @@ h2 {
   color: var(--titaniumgraphite-3);
   transition: all 0.25s ease;
   user-select: none;
+  list-style: none;
+}
+
+.faq-question::-webkit-details-marker {
+  display: none;
 }
 
 .faq-question:hover {
@@ -764,7 +769,7 @@ h2 {
   font-size: 0.8rem;
 }
 
-.faq-item.active .faq-question i {
+.faq-item[open] .faq-question i {
   transform: rotate(180deg);
 }
 
@@ -778,7 +783,7 @@ h2 {
   font-size: 0.85rem;
 }
 
-.faq-item.active .faq-answer {
+.faq-item[open] .faq-answer {
   max-height: 500px;
   padding: 0 1.25rem 1rem 1.25rem;
 }

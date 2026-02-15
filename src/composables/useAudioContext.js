@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
+import { createReverbImpulse } from './useReverbImpulse'
 
 export function useAudioContext() {
   const store = useAlarmStore()
@@ -77,26 +78,9 @@ export function useAudioContext() {
   function loadReverbImpulseResponse() {
     if (!store.audioCtx || !store.convolverNode) return
 
-    try {
-      const rate = store.audioCtx.sampleRate
-      const length = rate * 3 // 3 seconds
-      const impulse = store.audioCtx.createBuffer(2, length, rate)
-
-      for (let channel = 0; channel < 2; channel++) {
-        const channelData = impulse.getChannelData(channel)
-        for (let i = 0; i < length; i++) {
-          const t = i / rate
-          // Exponential decay for natural room feel
-          const decay = Math.exp(-2.5 * t)
-          // Early reflections in first 80ms add spatial depth
-          const early = t < 0.08 ? 0.4 * Math.exp(-30 * t) : 0
-          channelData[i] = (Math.random() * 2 - 1) * (decay + early)
-        }
-      }
-
+    const impulse = createReverbImpulse(store.audioCtx)
+    if (impulse) {
       store.convolverNode.buffer = impulse
-    } catch (error) {
-      console.error('Error loading reverb impulse response:', error)
     }
   }
 
