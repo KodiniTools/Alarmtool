@@ -99,9 +99,9 @@ const t = (key) => {
 }
 
 // SSI nav event handlers
-const onLanguageChanged = (e) => {
-  if (e.detail?.lang) {
-    store.setLanguage(e.detail.lang)
+const onLocaleChanged = (e) => {
+  if (e.detail?.locale) {
+    store.setLanguage(e.detail.locale)
   }
 }
 
@@ -123,7 +123,7 @@ onMounted(() => {
   }
 
   // Listen for SSI nav language/theme changes
-  window.addEventListener('language-changed', onLanguageChanged)
+  window.addEventListener('locale-changed', onLocaleChanged)
   window.addEventListener('theme-changed', onThemeChanged)
 
   // Add keyboard event listener
@@ -131,7 +131,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('language-changed', onLanguageChanged)
+  window.removeEventListener('locale-changed', onLocaleChanged)
   window.removeEventListener('theme-changed', onThemeChanged)
   document.removeEventListener('keydown', handleKeyboard)
 })
