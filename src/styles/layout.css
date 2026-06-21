@@ -1,0 +1,228 @@
+/* Main Container */
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+/* App Header */
+.app-header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+  padding: var(--space-5) 0;
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.01em;
+}
+
+.app-subtitle {
+  font-size: 0.95rem;
+  color: var(--at-info);
+  letter-spacing: 0.01em;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  background-color: rgba(9, 20, 40, 0.5);
+  border-radius: var(--at-radius);
+  padding: var(--space-1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[data-theme='light'] .tabs {
+  background-color: rgba(248, 225, 169, 0.4);
+}
+
+.tab-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--at-info);
+  border-radius: var(--at-radius-sm);
+  font-weight: 500;
+  padding: 0.6rem var(--space-5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.tab-btn:hover {
+  background-color: rgba(201, 152, 77, 0.1);
+  color: var(--at-text);
+  transform: translateY(-1px);
+}
+
+.tab-btn.active {
+  background-color: var(--at-primary);
+  color: var(--at-primary-fg);
+  box-shadow: 0 2px 8px rgba(201, 152, 77, 0.3);
+}
+
+[data-theme='light'] .tab-btn.active {
+  box-shadow: 0 2px 8px rgba(0, 57, 113, 0.2);
+}
+
+/* Section */
+.section {
+  border: none;
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  border-radius: var(--at-radius);
+  background: rgba(14, 28, 50, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(201, 152, 77, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='light'] .section {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 24px rgba(0, 57, 113, 0.06);
+  border: 1px solid rgba(0, 57, 113, 0.1);
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--at-primary), var(--at-text));
+}
+
+.section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--at-primary);
+}
+
+/* Narrow sections (Filter, Settings, Player) */
+.section-narrow {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-narrow h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+}
+
+.section-narrow .form-range {
+  height: 3px;
+}
+
+.section-narrow .form-range::-webkit-slider-thumb {
+  height: 12px;
+  width: 12px;
+}
+
+.section-narrow .form-range::-moz-range-thumb {
+  height: 12px;
+  width: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 0 10px;
+  }
+
+  .app-header {
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) 0;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .app-subtitle {
+    font-size: 0.85rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: var(--space-1);
+    padding: 0.2rem;
+  }
+
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .section {
+    padding: 1.1rem;
+    margin-bottom: var(--space-4);
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    padding: 0 6px;
+  }
+
+  .app-header {
+    margin-bottom: var(--space-3);
+    padding: var(--space-2) 0;
+  }
+
+  .app-title {
+    font-size: 1.3rem;
+  }
+
+  .tabs {
+    margin-bottom: var(--space-5);
+  }
+
+  .tab-btn {
+    padding: 0.45rem 0.6rem;
+  }
+
+  .tab-btn span {
+    display: none;
+  }
+
+  .tab-btn i {
+    font-size: 1rem;
+  }
+
+  .section {
+    padding: 0.85rem;
+    border-radius: var(--at-radius-sm);
+  }
+}

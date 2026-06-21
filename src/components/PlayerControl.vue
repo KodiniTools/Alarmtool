@@ -143,8 +143,8 @@
 
 <style scoped>
   .player-btn.active {
-    background-color: var(--titaniumgraphite-1) !important;
-    color: var(--titaniumgraphite-4) !important;
+    background-color: var(--at-primary) !important;
+    color: var(--at-primary-fg) !important;
     box-shadow: 0 2px 8px rgba(201, 152, 77, 0.3);
   }
 
