@@ -6,6 +6,7 @@
 @import './components/form.css';
 @import './components/oscillator.css';
 @import './components/player.css';
+@import './components/settings.css';
 @import './components/presets.css';
 @import './components/faq.css';
 @import './components/toast.css';
