@@ -19,57 +19,20 @@ export const useAlarmStore = defineStore('alarm', () => {
   const recorder = useRecorderStore()
   const settings = useSettingsStore()
 
-  // ── Audio nodes (plain object, not reactive — see stores/audioNodes.js) ──
-  // Exposed as pass-through getters so composables can still use store.audioCtx.
-  // These are intentionally non-reactive; no Vue template depends on them.
-  const audioCtx = rw(
-    () => nodes.audioCtx,
-    (v) => {
-      nodes.audioCtx = v
-    }
-  )
-  const masterGainNode = rw(
-    () => nodes.masterGainNode,
-    (v) => {
-      nodes.masterGainNode = v
-    }
-  )
-  const filterNode = rw(
-    () => nodes.filterNode,
-    (v) => {
-      nodes.filterNode = v
-    }
-  )
-  const delayNode = rw(
-    () => nodes.delayNode,
-    (v) => {
-      nodes.delayNode = v
-    }
-  )
-  const convolverNode = rw(
-    () => nodes.convolverNode,
-    (v) => {
-      nodes.convolverNode = v
-    }
-  )
-  const reverbGain = rw(
-    () => nodes.reverbGain,
-    (v) => {
-      nodes.reverbGain = v
-    }
-  )
-  const effectsOut = rw(
-    () => nodes.effectsOut,
-    (v) => {
-      nodes.effectsOut = v
-    }
-  )
-  const finalOutputNode = rw(
-    () => nodes.finalOutputNode,
-    (v) => {
-      nodes.finalOutputNode = v
-    }
-  )
+  // ── Audio nodes ──
+  // shallowRef in audioNodes.js tracks reference changes (null ↔ AudioContext)
+  // without deep-proxying Web Audio internals. Returned directly so Pinia
+  // auto-unwraps them — store.audioCtx reads/writes the shallowRef value.
+  const {
+    audioCtx,
+    masterGainNode,
+    filterNode,
+    delayNode,
+    convolverNode,
+    reverbGain,
+    effectsOut,
+    finalOutputNode,
+  } = nodes
 
   // ── Oscillator store ──
   const oscillators = computed(() => osc.oscillators)
@@ -152,7 +115,7 @@ export const useAlarmStore = defineStore('alarm', () => {
   const filterSettings = computed(() => settings.filterSettings)
 
   return {
-    // Audio nodes
+    // Audio nodes (shallowRefs — Pinia auto-unwraps, assignment updates .value)
     audioCtx,
     masterGainNode,
     filterNode,
