@@ -1,38 +1,61 @@
 <template>
-  <div>
-    <h2>{{ t('settings_title') }}</h2>
-    <div class="settings-panel">
-      <!-- Save Button -->
-      <button id="saveSettings" class="btn btn-secondary" @click="saveSettings">
-        <i class="fas fa-save"></i> {{ t('settings_save') }}
-      </button>
+  <div class="settings">
+    <!-- Local group: Save / Load -->
+    <div class="settings-group">
+      <span class="settings-group-label">{{ t('settings_group_local') }}</span>
+      <div class="settings-actions">
+        <button class="settings-action-btn" @click="saveSettings">
+          <span class="settings-action-icon"><i class="fas fa-save"></i></span>
+          <span class="settings-action-body">
+            <span class="settings-action-name">{{ t('settings_save') }}</span>
+            <span class="settings-action-desc">{{ t('settings_save_desc') }}</span>
+          </span>
+        </button>
+        <button class="settings-action-btn" @click="loadSettings">
+          <span class="settings-action-icon"><i class="fas fa-folder-open"></i></span>
+          <span class="settings-action-body">
+            <span class="settings-action-name">{{ t('settings_load') }}</span>
+            <span class="settings-action-desc">{{ t('settings_load_desc') }}</span>
+          </span>
+        </button>
+      </div>
+    </div>
 
-      <!-- Load Button -->
-      <button id="loadSettings" class="btn btn-secondary" @click="loadSettings">
-        <i class="fas fa-folder-open"></i> {{ t('settings_load') }}
-      </button>
+    <!-- Divider -->
+    <div class="settings-divider"></div>
 
-      <!-- Export Button -->
-      <button id="exportSettings" class="btn btn-secondary" @click="exportSettings">
-        <i class="fas fa-file-export"></i> {{ t('settings_export') }}
-      </button>
-
-      <!-- Import Button -->
-      <label for="importSettings" class="btn btn-secondary" style="margin-bottom: 0">
-        <i class="fas fa-file-import"></i> {{ t('settings_import') }}
-      </label>
-      <input
-        id="importSettings"
-        type="file"
-        accept=".json"
-        style="display: none"
-        @change="importSettings"
-      />
+    <!-- File group: Export / Import -->
+    <div class="settings-group">
+      <span class="settings-group-label">{{ t('settings_group_file') }}</span>
+      <div class="settings-actions">
+        <button class="settings-action-btn" @click="exportSettings">
+          <span class="settings-action-icon"><i class="fas fa-file-export"></i></span>
+          <span class="settings-action-body">
+            <span class="settings-action-name">{{ t('settings_export') }}</span>
+            <span class="settings-action-desc">{{ t('settings_export_desc') }}</span>
+          </span>
+        </button>
+        <label class="settings-action-btn" tabindex="0" @keydown.enter="triggerImport">
+          <span class="settings-action-icon"><i class="fas fa-file-import"></i></span>
+          <span class="settings-action-body">
+            <span class="settings-action-name">{{ t('settings_import') }}</span>
+            <span class="settings-action-desc">{{ t('settings_import_desc') }}</span>
+          </span>
+          <input
+            ref="importInput"
+            type="file"
+            accept=".json"
+            class="settings-import-input"
+            @change="importSettings"
+          />
+        </label>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+  import { ref } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useAudioContext } from '@/composables/useAudioContext'
   import { useOscillators } from '@/composables/useOscillators'
@@ -43,74 +66,63 @@
   const { updateFilter } = useAudioContext()
   const { parsePattern } = useOscillators()
   const toast = useToast()
+  const importInput = ref(null)
 
-  const t = (key) => translations[store.currentLang]?.[key] || key
+  const t = (key) => translations[store.currentLang]?.[key] ?? key
+
+  function triggerImport() {
+    importInput.value?.click()
+  }
+
+  function buildSnapshot() {
+    return {
+      globalFilter: {
+        type: store.filterSettings.type,
+        frequency: store.filterSettings.frequency,
+        Q: store.filterSettings.Q,
+      },
+      oscillators: store.oscillators.map((osc) => ({
+        waveType: osc.waveType,
+        frequency: osc.frequency,
+        volume: osc.volume,
+        pan: osc.pan,
+        attack: osc.attack,
+        decay: osc.decay,
+        sustain: osc.sustain,
+        release: osc.release,
+        pattern: osc.pattern,
+      })),
+    }
+  }
 
   function saveSettings() {
     try {
-      const settings = {
-        globalFilter: {
-          type: store.filterSettings.type,
-          frequency: store.filterSettings.frequency,
-          Q: store.filterSettings.Q,
-        },
-        oscillators: store.oscillators.map((osc) => ({
-          waveType: osc.waveType,
-          frequency: osc.frequency,
-          volume: osc.volume,
-          pan: osc.pan,
-          attack: osc.attack,
-          decay: osc.decay,
-          sustain: osc.sustain,
-          release: osc.release,
-          pattern: osc.pattern,
-        })),
-      }
-      localStorage.setItem('alarmToolSettings', JSON.stringify(settings))
+      localStorage.setItem('alarmToolSettings', JSON.stringify(buildSnapshot()))
       toast.success('toast_settings_saved')
-    } catch (error) {
-      console.error('Fehler beim Speichern:', error)
+    } catch (_e) {
       toast.error('toast_settings_save_error')
     }
   }
 
   function loadSettings() {
     try {
-      const settingsStr = localStorage.getItem('alarmToolSettings')
-      if (!settingsStr) {
+      const raw = localStorage.getItem('alarmToolSettings')
+      if (!raw) {
         toast.info('toast_settings_none')
         return
       }
-      const settings = JSON.parse(settingsStr)
-      applySettings(settings)
+      applySettings(JSON.parse(raw))
       toast.success('toast_settings_loaded')
-    } catch (error) {
-      console.error('Fehler beim Laden:', error)
+    } catch (_e) {
       toast.error('toast_settings_load_error')
     }
   }
 
   function exportSettings() {
     try {
-      const settings = {
-        globalFilter: {
-          type: store.filterSettings.type,
-          frequency: store.filterSettings.frequency,
-          Q: store.filterSettings.Q,
-        },
-        oscillators: store.oscillators.map((osc) => ({
-          waveType: osc.waveType,
-          frequency: osc.frequency,
-          volume: osc.volume,
-          pan: osc.pan,
-          attack: osc.attack,
-          decay: osc.decay,
-          sustain: osc.sustain,
-          release: osc.release,
-          pattern: osc.pattern,
-        })),
-      }
-      const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' })
+      const blob = new Blob([JSON.stringify(buildSnapshot(), null, 2)], {
+        type: 'application/json',
+      })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -118,8 +130,7 @@
       a.click()
       URL.revokeObjectURL(url)
       toast.success('toast_settings_exported')
-    } catch (error) {
-      console.error('Fehler beim Exportieren:', error)
+    } catch (_e) {
       toast.error('toast_settings_export_error')
     }
   }
@@ -127,53 +138,36 @@
   function importSettings(event) {
     const file = event.target.files[0]
     if (!file) return
-
     const reader = new FileReader()
     reader.onload = (e) => {
       try {
-        const settings = JSON.parse(e.target.result)
-        applySettings(settings)
+        applySettings(JSON.parse(e.target.result))
         toast.success('toast_settings_imported')
-      } catch (err) {
-        console.error('Fehler beim Importieren:', err)
+      } catch (_err) {
         toast.error('toast_settings_import_error')
       }
     }
     reader.readAsText(file)
-
-    // Reset input
     event.target.value = ''
   }
 
   function applySettings(settings) {
-    try {
-      // Apply filter settings
-      if (settings.globalFilter) {
-        updateFilter(settings.globalFilter)
-      }
-
-      // Apply oscillator settings
-      if (settings.oscillators && settings.oscillators.length === store.oscillators.length) {
-        settings.oscillators.forEach((oscSettings, index) => {
-          store.updateOscillator(index, {
-            waveType: oscSettings.waveType,
-            frequency: oscSettings.frequency,
-            volume: oscSettings.volume,
-            pan: oscSettings.pan,
-            attack: oscSettings.attack,
-            decay: oscSettings.decay ?? 50,
-            sustain: oscSettings.sustain ?? 0.8,
-            release: oscSettings.release,
-            pattern: oscSettings.pattern,
-          })
-
-          // Parse pattern for this oscillator
-          parsePattern(index)
+    if (settings.globalFilter) updateFilter(settings.globalFilter)
+    if (settings.oscillators?.length === store.oscillators.length) {
+      settings.oscillators.forEach((s, i) => {
+        store.updateOscillator(i, {
+          waveType: s.waveType,
+          frequency: s.frequency,
+          volume: s.volume,
+          pan: s.pan,
+          attack: s.attack,
+          decay: s.decay ?? 50,
+          sustain: s.sustain ?? 0.8,
+          release: s.release,
+          pattern: s.pattern,
         })
-      }
-    } catch (error) {
-      console.error('Fehler beim Anwenden der Einstellungen:', error)
-      toast.error('toast_settings_apply_error')
+        parsePattern(i)
+      })
     }
   }
 </script>

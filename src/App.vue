@@ -48,14 +48,14 @@
       </div>
     </div>
 
-    <!-- Settings Management -->
-    <div class="section section-narrow">
-      <SettingsPanel />
-    </div>
-
-    <!-- Media Player -->
-    <div class="section section-narrow">
-      <PlayerControl />
+    <!-- Bottom control bar: Player + Settings side-by-side -->
+    <div class="app-control-bar">
+      <div class="app-control-bar__player">
+        <PlayerControl />
+      </div>
+      <div class="app-control-bar__settings">
+        <SettingsPanel />
+      </div>
     </div>
 
     <!-- Donate Button -->

@@ -141,6 +141,27 @@
   width: 12px;
 }
 
+/* ─── Bottom Control Bar ────────────────────────────────────────── */
+
+.app-control-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  max-width: 960px;
+  margin: 0 auto var(--space-5);
+}
+
+.app-control-bar__player,
+.app-control-bar__settings {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .app-control-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .main-container {
