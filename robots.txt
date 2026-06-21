@@ -1,9 +1,0 @@
-# robots.txt – https://kodinitools.com/
-# HINWEIS: Diese Datei muss im Server-Root (/) abgelegt werden, nicht unter /alarmtool/
-# Deployment: Datei nach /var/www/html/robots.txt oder äquivalent kopieren
-
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://kodinitools.com/sitemap.xml

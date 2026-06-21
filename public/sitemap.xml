@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  sitemap.xml – https://kodinitools.com/
-  HINWEIS: Diese Datei muss im Server-Root (/) abgelegt werden, nicht unter /alarmtool/
-  Deployment: Datei nach /var/www/html/sitemap.xml oder äquivalent kopieren
+  Alarmtool-spezifische Sitemap
+  Erreichbar unter: https://kodinitools.com/alarmtool/sitemap.xml
+
+  Einbindung in die bestehende Root-Sitemap (kodinitools.com/sitemap.xml):
+  Entweder als <sitemap>-Eintrag in einem Sitemap-Index, oder direkt in
+  Google Search Console unter https://search.google.com/search-console
+  als zusätzliche Sitemap einreichen.
+
   Letzte Aktualisierung: 2026-06-21
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
