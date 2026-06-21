@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sitemap.xml – https://kodinitools.com/
+  HINWEIS: Diese Datei muss im Server-Root (/) abgelegt werden, nicht unter /alarmtool/
+  Deployment: Datei nach /var/www/html/sitemap.xml oder äquivalent kopieren
+  Letzte Aktualisierung: 2026-06-21
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://kodinitools.com/alarmtool/</loc>
+    <lastmod>2026-06-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://kodinitools.com/alarmtool/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://kodinitools.com/alarmtool/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://kodinitools.com/alarmtool/" />
+  </url>
+
+</urlset>
