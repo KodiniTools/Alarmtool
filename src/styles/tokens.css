@@ -1,0 +1,94 @@
+@font-face {
+  font-family: 'Supreme';
+  src: url('/fonts/Supreme-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Typography */
+  --at-font-sans:
+    'Supreme', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+
+  /* Shape */
+  --at-radius: 12px;
+  --at-radius-sm: 8px;
+  --at-radius-xs: 6px;
+
+  /* Elevation */
+  --at-shadow-1: 0 4px 16px rgba(9, 20, 40, 0.2);
+  --at-shadow-2: 0 8px 32px rgba(9, 20, 40, 0.3);
+
+  /* Motion */
+  --at-speed: 200ms;
+  --at-speed-slow: 300ms;
+
+  /* Spacing Scale */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+
+  /* Dark theme (default) — Navy & Gold */
+  --at-bg: #091428;
+  --at-gradient: linear-gradient(
+    145deg,
+    #091428 0%,
+    #0e1c32 25%,
+    #142640 50%,
+    #0e1c32 75%,
+    #091428 100%
+  );
+  --at-surface: #0e1c32;
+  --at-panel: #142640;
+  --at-elev: #1a3050;
+  --at-text: #f9f2d5;
+  --at-text-dim: #f8e1a9;
+  --at-muted: #7a8da0;
+
+  --at-primary: #c9984d;
+  --at-primary-600: #b8873e;
+  --at-primary-700: #a87630;
+  --at-primary-fg: #091428; /* text/icon color on primary background */
+
+  --at-success: #7ec89b;
+  --at-danger: #e07070;
+  --at-warning: #c9984d;
+  --at-info: #014f99;
+
+  --at-border: 1px solid rgba(122, 141, 160, 0.25);
+}
+
+[data-theme='light'] {
+  --at-bg: #f9f2d5;
+  --at-gradient: linear-gradient(
+    145deg,
+    #f9f2d5 0%,
+    #ffffff 25%,
+    #faf5e6 50%,
+    #f8e1a9 75%,
+    #f9f2d5 100%
+  );
+  --at-surface: #ffffff;
+  --at-panel: #ffffff;
+  --at-elev: #faf5e6;
+  --at-text: #003971;
+  --at-text-dim: #2c5f8a;
+  --at-muted: #5a7a94;
+
+  --at-primary: #c9984d;
+  --at-primary-600: #b8873e;
+  --at-primary-700: #a87630;
+  --at-primary-fg: #003971; /* text/icon color on primary background */
+
+  --at-warning: #c9984d;
+  --at-info: #014f99;
+  --at-border: 1px solid rgba(0, 57, 113, 0.15);
+  --at-shadow-1: 0 4px 16px rgba(0, 57, 113, 0.08);
+  --at-shadow-2: 0 8px 32px rgba(0, 57, 113, 0.12);
+}
