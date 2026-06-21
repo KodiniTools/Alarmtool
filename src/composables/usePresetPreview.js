@@ -1,171 +1,108 @@
 import { ref, onUnmounted } from 'vue'
-import { createReverbImpulse } from './useReverbImpulse'
+import {
+  initCtx,
+  applyFilter,
+  detachFilter,
+  destroyCtx,
+  getCtx,
+  getMasterGain,
+  getFilterNode,
+} from './previewAudioGraph'
 
-/**
- * Self-contained preset preview player.
- * Uses its own AudioContext so it never interferes with the main alarm player.
- * Only one preset can play at a time – starting a new one stops the previous.
- */
+const DEFAULT_PATTERN = [1500, 300]
 
-// Shared across all component instances so only one preview plays at a time
-let _audioCtx = null
-let _masterGain = null
-let _filterNode = null
-let _delayNode = null
-let _feedbackGain = null
-let _convolverNode = null
-let _reverbGain = null
-let _oscNodes = [] // { osc, gain, pan }
-let _patternTimeouts = [] // setTimeout IDs
-let _activePresetId = ref(null)
-let _isPlaying = ref(false)
-let _isPaused = ref(false)
-let _volume = ref(0.6)
+const _activePresetId = ref(null)
+const _isPlaying = ref(false)
+const _isPaused = ref(false)
+const _volume = ref(0.6)
+
+// Active oscillator node records shared across all component instances
+let _oscNodes = []
+let _patternTimeouts = []
+
+function _parsePattern(str) {
+  try {
+    const nums = str
+      .split(',')
+      .map((x) => parseFloat(x.trim()))
+      .filter((n) => !isNaN(n) && n > 0)
+    return nums.length >= 2 && nums.length % 2 === 0 ? nums : DEFAULT_PATTERN
+  } catch {
+    return DEFAULT_PATTERN
+  }
+}
+
+function _setTone(entry, on) {
+  const ctx = getCtx()
+  if (!ctx || !entry.gain) return
+  const now = ctx.currentTime
+  const g = entry.gain.gain
+  g.cancelScheduledValues(now)
+  if (on) {
+    const attackSec = (entry.cfg.attack || 20) / 1000
+    const decaySec = (entry.cfg.decay ?? 50) / 1000
+    const peak = entry.cfg.volume
+    g.setValueAtTime(g.value, now)
+    g.linearRampToValueAtTime(peak, now + attackSec)
+    g.linearRampToValueAtTime((entry.cfg.sustain ?? 0.8) * peak, now + attackSec + decaySec)
+  } else {
+    const relSec = (entry.cfg.release || 80) / 1000
+    g.setValueAtTime(g.value, now)
+    g.linearRampToValueAtTime(0, now + relSec)
+  }
+}
+
+function _runPattern(entry) {
+  if (!_isPlaying.value || _isPaused.value || !entry.steps?.length) return
+  const toneOn = !entry.toneIsOn
+  _setTone(entry, toneOn)
+  entry.toneIsOn = toneOn
+  const dur = entry.steps[entry.stepIdx]
+  entry.stepIdx = (entry.stepIdx + 1) % entry.steps.length
+  const tid = setTimeout(() => _runPattern(entry), dur)
+  _patternTimeouts.push(tid)
+  entry.timeoutId = tid
+}
+
+function _clearPatternTimeouts() {
+  _patternTimeouts.forEach(clearTimeout)
+  _patternTimeouts = []
+}
 
 export function usePresetPreview() {
-  // ── helpers ───────────────────────────────────────────────────────────
-
-  function _initCtx() {
-    if (_audioCtx && _audioCtx.state !== 'closed') return
-    const AC = window.AudioContext || window.webkitAudioContext
-    _audioCtx = new AC()
-    _masterGain = _audioCtx.createGain()
-    _masterGain.gain.value = _volume.value
-
-    // Delay with feedback (matches main player)
-    _delayNode = _audioCtx.createDelay()
-    _delayNode.delayTime.value = 0.3
-    _feedbackGain = _audioCtx.createGain()
-    _feedbackGain.gain.value = 0.5
-    _delayNode.connect(_feedbackGain).connect(_delayNode)
-
-    // Reverb via ConvolverNode (matches main player)
-    _convolverNode = _audioCtx.createConvolver()
-    _createReverbImpulse()
-    _reverbGain = _audioCtx.createGain()
-    _reverbGain.gain.value = 0.5
-    _delayNode.connect(_convolverNode)
-    _convolverNode.connect(_reverbGain)
-
-    // Chain: MasterGain → Filter(placeholder) → Delay → ReverbGain → Destination
-    // Filter is inserted per-preset in _applyFilter, so connect delay→reverb→dest here
-    _delayNode.connect(_reverbGain)
-    _reverbGain.connect(_audioCtx.destination)
-  }
-
-  function _createReverbImpulse() {
-    if (!_audioCtx || !_convolverNode) return
-    const impulse = createReverbImpulse(_audioCtx)
-    if (impulse) {
-      _convolverNode.buffer = impulse
-    }
-  }
-
-  function _applyFilter(filterCfg) {
-    if (!_audioCtx) return
-    _filterNode = _audioCtx.createBiquadFilter()
-    const type = filterCfg.type === 'none' ? 'allpass' : filterCfg.type
-    _filterNode.type = type
-    _filterNode.frequency.setValueAtTime(filterCfg.frequency, _audioCtx.currentTime)
-    _filterNode.Q.setValueAtTime(filterCfg.Q, _audioCtx.currentTime)
-    // Chain: Oscillators → Filter → MasterGain → Delay → ReverbGain → Destination
-    _filterNode.connect(_masterGain)
-    _masterGain.connect(_delayNode)
-  }
-
-  function _parsePattern(patternStr) {
-    try {
-      const nums = patternStr
-        .split(',')
-        .map((x) => parseFloat(x.trim()))
-        .filter((n) => !isNaN(n) && n > 0)
-      return nums.length >= 2 && nums.length % 2 === 0 ? nums : [1500, 300]
-    } catch {
-      return [1500, 300]
-    }
-  }
-
-  function _setTone(entry, on) {
-    if (!_audioCtx || !entry.gain) return
-    const now = _audioCtx.currentTime
-    const g = entry.gain.gain
-    g.cancelScheduledValues(now)
-    if (on) {
-      const attackSec = (entry.cfg.attack || 20) / 1000
-      const decaySec = (entry.cfg.decay ?? 50) / 1000
-      const sustainLevel = entry.cfg.sustain ?? 0.8
-      const peak = entry.cfg.volume
-      g.setValueAtTime(g.value, now)
-      g.linearRampToValueAtTime(peak, now + attackSec)
-      g.linearRampToValueAtTime(sustainLevel * peak, now + attackSec + decaySec)
-    } else {
-      const relSec = (entry.cfg.release || 80) / 1000
-      g.setValueAtTime(g.value, now)
-      g.linearRampToValueAtTime(0, now + relSec)
-    }
-  }
-
-  function _runPattern(entry) {
-    if (!_isPlaying.value || _isPaused.value) return
-    const steps = entry.steps
-    if (!steps || !steps.length) return
-
-    const toneOn = !entry.toneIsOn
-    _setTone(entry, toneOn)
-    entry.toneIsOn = toneOn
-
-    const dur = steps[entry.stepIdx]
-    entry.stepIdx = (entry.stepIdx + 1) % steps.length
-
-    const tid = setTimeout(() => _runPattern(entry), dur)
-    _patternTimeouts.push(tid)
-    entry.timeoutId = tid
-  }
-
-  // ── public API ────────────────────────────────────────────────────────
-
   function playPreset(preset) {
-    // If same preset is paused, resume instead
     if (_activePresetId.value === preset.id && _isPaused.value) {
       resumePreview()
       return
     }
 
-    // Stop any currently playing preview
     stopPreview()
+    initCtx(_volume.value)
 
-    _initCtx()
-    if (_audioCtx.state === 'suspended') _audioCtx.resume()
-
-    _masterGain.gain.setValueAtTime(_volume.value, _audioCtx.currentTime)
+    const ctx = getCtx()
+    if (ctx.state === 'suspended') ctx.resume()
+    getMasterGain().gain.setValueAtTime(_volume.value, ctx.currentTime)
 
     const data = preset.data
+    applyFilter(data.globalFilter || { type: 'none', frequency: 1000, Q: 1 })
 
-    // Filter
-    _applyFilter(data.globalFilter || { type: 'none', frequency: 1000, Q: 1 })
-
-    // Create oscillators for non-default entries only
+    const filterNode = getFilterNode()
     const defaultPattern = '1500,300'
+
     data.oscillators.forEach((oscCfg) => {
-      // Skip default/placeholder oscillators (volume 0.5 + freq 440 + default pattern)
-      if (oscCfg.frequency === 440 && oscCfg.volume === 0.5 && oscCfg.pattern === defaultPattern) {
+      if (oscCfg.frequency === 440 && oscCfg.volume === 0.5 && oscCfg.pattern === defaultPattern)
         return
-      }
-
       try {
-        const osc = _audioCtx.createOscillator()
-        const gainNode = _audioCtx.createGain()
-        const panNode = _audioCtx.createStereoPanner()
-
+        const osc = ctx.createOscillator()
+        const gainNode = ctx.createGain()
+        const panNode = ctx.createStereoPanner()
         osc.type = oscCfg.waveType
-        osc.frequency.setValueAtTime(oscCfg.frequency, _audioCtx.currentTime)
-        panNode.pan.setValueAtTime(oscCfg.pan, _audioCtx.currentTime)
-        gainNode.gain.setValueAtTime(0, _audioCtx.currentTime)
-
-        osc.connect(gainNode).connect(panNode).connect(_filterNode)
+        osc.frequency.setValueAtTime(oscCfg.frequency, ctx.currentTime)
+        panNode.pan.setValueAtTime(oscCfg.pan, ctx.currentTime)
+        gainNode.gain.setValueAtTime(0, ctx.currentTime)
+        osc.connect(gainNode).connect(panNode).connect(filterNode)
         osc.start()
-
-        const entry = {
+        _oscNodes.push({
           osc,
           gain: gainNode,
           pan: panNode,
@@ -174,58 +111,44 @@ export function usePresetPreview() {
           stepIdx: 0,
           toneIsOn: false,
           timeoutId: null,
-        }
-
-        _oscNodes.push(entry)
-      } catch (_e) {
-        // Oscillator creation failed — skip this one
+        })
+      } catch {
+        /* ignore — oscillator creation failed */
       }
     })
 
     _activePresetId.value = preset.id
     _isPlaying.value = true
     _isPaused.value = false
-
-    // Start patterns
     _oscNodes.forEach((entry) => _runPattern(entry))
   }
 
   function pausePreview() {
     if (!_isPlaying.value || _isPaused.value) return
     _isPaused.value = true
-
-    // Silence gain
-    if (_masterGain && _audioCtx) {
-      _masterGain.gain.setValueAtTime(0, _audioCtx.currentTime)
-    }
-
-    // Clear pattern timeouts
-    _patternTimeouts.forEach((tid) => clearTimeout(tid))
-    _patternTimeouts = []
+    const ctx = getCtx()
+    const master = getMasterGain()
+    if (master && ctx) master.gain.setValueAtTime(0, ctx.currentTime)
+    _clearPatternTimeouts()
   }
 
   function resumePreview() {
     if (!_isPlaying.value || !_isPaused.value) return
     _isPaused.value = false
-
-    if (_masterGain && _audioCtx) {
-      _masterGain.gain.setValueAtTime(_volume.value, _audioCtx.currentTime)
-    }
-
-    // Re-start patterns
+    const ctx = getCtx()
+    const master = getMasterGain()
+    if (master && ctx) master.gain.setValueAtTime(_volume.value, ctx.currentTime)
     _oscNodes.forEach((entry) => _runPattern(entry))
   }
 
   function stopPreview() {
-    // Clear all pattern timeouts
-    _patternTimeouts.forEach((tid) => clearTimeout(tid))
-    _patternTimeouts = []
+    _clearPatternTimeouts()
 
-    // Stop & disconnect oscillators immediately (no delay needed for cleanup-only stop)
+    const ctx = getCtx()
     _oscNodes.forEach((entry) => {
       try {
-        if (entry.gain && _audioCtx) {
-          const now = _audioCtx.currentTime
+        if (entry.gain && ctx) {
+          const now = ctx.currentTime
           entry.gain.gain.cancelScheduledValues(now)
           entry.gain.gain.setValueAtTime(entry.gain.gain.value, now)
           entry.gain.gain.linearRampToValueAtTime(0, now + 0.05)
@@ -246,62 +169,23 @@ export function usePresetPreview() {
     })
     _oscNodes = []
 
-    // Disconnect filter (rebuilt per-preset in _applyFilter), keep effect chain alive
-    if (_filterNode) {
-      try {
-        _filterNode.disconnect()
-      } catch {
-        /* ignore */
-      }
-      _filterNode = null
-    }
-
+    detachFilter()
     _activePresetId.value = null
     _isPlaying.value = false
     _isPaused.value = false
   }
 
-  function _destroyCtx() {
-    stopPreview()
-
-    // Disconnect effect chain nodes
-    for (const node of [_masterGain, _delayNode, _feedbackGain, _convolverNode, _reverbGain]) {
-      if (node) {
-        try {
-          node.disconnect()
-        } catch {
-          /* ignore */
-        }
-      }
-    }
-    _delayNode = null
-    _feedbackGain = null
-    _convolverNode = null
-    _reverbGain = null
-
-    // Close audio context
-    if (_audioCtx && _audioCtx.state !== 'closed') {
-      const ctx = _audioCtx
-      _audioCtx = null
-      _masterGain = null
-      try {
-        ctx.close()
-      } catch {
-        /* ignore */
-      }
-    }
-  }
-
   function setPreviewVolume(val) {
     _volume.value = val
-    if (_masterGain && _audioCtx && _isPlaying.value && !_isPaused.value) {
-      _masterGain.gain.setValueAtTime(val, _audioCtx.currentTime)
+    const ctx = getCtx()
+    const master = getMasterGain()
+    if (master && ctx && _isPlaying.value && !_isPaused.value) {
+      master.gain.setValueAtTime(val, ctx.currentTime)
     }
   }
 
-  // Clean up when the component using this composable is destroyed
   onUnmounted(() => {
-    _destroyCtx()
+    destroyCtx()
   })
 
   return {
