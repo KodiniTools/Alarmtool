@@ -42,7 +42,6 @@ export const useAlarmStore = defineStore('alarm', () => {
       osc.oscClipboard = v
     }
   )
-  const activeOscillators = computed(() => osc.activeOscillators)
   const enabledOscillators = computed(() => osc.enabledOscillators)
 
   // ── Player store ──
@@ -127,7 +126,6 @@ export const useAlarmStore = defineStore('alarm', () => {
     // Oscillators
     oscillators,
     oscClipboard,
-    activeOscillators,
     enabledOscillators,
     updateOscillator: osc.updateOscillator,
     resetOscillators: osc.resetOscillators,

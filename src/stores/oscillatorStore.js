@@ -5,13 +5,6 @@ function makeOscillator(i) {
   return {
     id: i,
     enabled: i < 3,
-    oscillator: null,
-    gainNode: null,
-    panNode: null,
-    patternTimeoutId: null,
-    patternSteps: [1500, 300],
-    patternIndex: 0,
-    toneIsOn: false,
     waveType: 'sine',
     frequency: 440,
     volume: 0.5,
@@ -28,7 +21,6 @@ export const useOscillatorStore = defineStore('oscillators', () => {
   const oscillators = ref(Array.from({ length: 12 }, (_, i) => makeOscillator(i)))
   const oscClipboard = ref(null)
 
-  const activeOscillators = computed(() => oscillators.value.filter((o) => o.oscillator !== null))
   const enabledOscillators = computed(() => oscillators.value.filter((o) => o.enabled))
 
   function updateOscillator(id, patch) {
@@ -37,29 +29,12 @@ export const useOscillatorStore = defineStore('oscillators', () => {
   }
 
   function resetOscillators() {
-    oscillators.value.forEach((osc) => {
-      if (osc.oscillator) {
-        try {
-          osc.oscillator.stop()
-          osc.oscillator.disconnect()
-        } catch (_e) {
-          /* ignore — node may already be disconnected */
-        }
-        osc.oscillator = null
-        osc.gainNode = null
-        osc.panNode = null
-      }
-      if (osc.patternTimeoutId) {
-        clearTimeout(osc.patternTimeoutId)
-        osc.patternTimeoutId = null
-      }
-    })
+    // Audio node cleanup is handled by useOscillatorLifecycle / useOscillatorRuntime
   }
 
   return {
     oscillators,
     oscClipboard,
-    activeOscillators,
     enabledOscillators,
     updateOscillator,
     resetOscillators,
