@@ -2,67 +2,20 @@ import { ref } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { usePlayer } from './usePlayer'
 import { useToast } from './useToast'
-
-const WAV_CHUNK_INTERVAL_MS = 2000
-const DEFAULT_CHUNK_INTERVAL_MS = 1000
-const TIMER_INTERVAL_MS = 100
+import { useRecordingTimer } from './useRecordingTimer'
+import { useRecordingDownload } from './useRecordingDownload'
+import { getRecordingOptions, connectStream, disconnectStream } from './useRecordingStream'
 
 export function useRecorder() {
   const store = useAlarmStore()
   const { stopAlarm } = usePlayer()
   const toast = useToast()
+  const timer = useRecordingTimer()
+  const download = useRecordingDownload()
 
   const mediaRecorder = ref(null)
   const recordedChunks = ref([])
-  const recordingTimerInterval = ref(null)
-  const recordingTimeout = ref(null)
-  const downloadUrl = ref('')
-  const downloadFilename = ref('')
-  const showDownload = ref(false)
-  const recordedBlob = ref(null)
   const streamDest = ref(null)
-
-  function getRecordingOptions(format) {
-    // Format-specific options
-    const formatOptions = {
-      'webm-opus': {
-        mimeType: 'audio/webm;codecs=opus',
-        audioBitsPerSecond: 320000,
-      },
-      'ogg-opus': {
-        mimeType: 'audio/ogg;codecs=opus',
-        audioBitsPerSecond: 320000,
-      },
-      wav: {
-        mimeType: 'audio/wav',
-        audioBitsPerSecond: 1411200,
-      },
-    }
-
-    // If specific format requested, check if supported
-    if (format && format !== 'auto' && formatOptions[format]) {
-      const requested = formatOptions[format]
-      if (MediaRecorder.isTypeSupported(requested.mimeType)) {
-        return requested
-      }
-      console.warn(`Format ${format} not supported, falling back to auto`)
-    }
-
-    // Auto: find best supported format
-    if (MediaRecorder.isTypeSupported('audio/wav')) {
-      return { mimeType: 'audio/wav', audioBitsPerSecond: 1411200 }
-    } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-      return { mimeType: 'audio/webm;codecs=opus', audioBitsPerSecond: 320000 }
-    } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
-      return { mimeType: 'audio/ogg;codecs=opus', audioBitsPerSecond: 320000 }
-    } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-      return { mimeType: 'audio/webm', audioBitsPerSecond: 256000 }
-    } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-      return { mimeType: 'audio/mp4', audioBitsPerSecond: 256000 }
-    }
-    return {}
-  }
-
   const monoMixNode = ref(null)
 
   function startRecording(durationMs, format = 'auto', mono = false) {
@@ -70,89 +23,53 @@ export function useRecorder() {
       toast.warning('toast_rec_no_alarm')
       return false
     }
-
     if (!durationMs || durationMs <= 0) {
       toast.warning('toast_rec_no_duration')
       return false
     }
 
     try {
-      // Reset
       recordedChunks.value = []
-      showDownload.value = false
+      download.showDownload.value = false
       store.isRecording = true
       store.remainingTime = durationMs
 
-      // Disconnect previous stream destination if still connected
-      if (streamDest.value) {
-        try {
-          store.finalOutputNode.disconnect(streamDest.value)
-        } catch {
-          /* ignore */
-        }
-      }
-      if (monoMixNode.value) {
-        try {
-          monoMixNode.value.disconnect()
-        } catch {
-          /* ignore */
-        }
-        monoMixNode.value = null
-      }
+      // Disconnect any previous stream
+      disconnectStream(store.finalOutputNode, streamDest.value, monoMixNode.value)
 
-      // Create MediaStream from final output (after filter, delay, reverb)
-      const dest = store.audioCtx.createMediaStreamDestination()
-
-      if (mono) {
-        // Insert a GainNode that forces downmix to mono
-        const mixDown = store.audioCtx.createGain()
-        mixDown.channelCount = 1
-        mixDown.channelCountMode = 'explicit'
-        mixDown.channelInterpretation = 'speakers'
-        mixDown.gain.value = 1
-        store.finalOutputNode.connect(mixDown)
-        mixDown.connect(dest)
-        monoMixNode.value = mixDown
-      } else {
-        store.finalOutputNode.connect(dest)
-      }
+      const { dest, monoMixNode: mixNode } = connectStream(
+        store.audioCtx,
+        store.finalOutputNode,
+        mono
+      )
       streamDest.value = dest
+      monoMixNode.value = mixNode
 
-      // Get recording options based on selected format
       const options = getRecordingOptions(format)
-
-      // Create MediaRecorder
       mediaRecorder.value = new MediaRecorder(dest.stream, options)
 
-      // Event handlers
       mediaRecorder.value.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          recordedChunks.value.push(e.data)
-        }
+        if (e.data.size > 0) recordedChunks.value.push(e.data)
       }
 
       mediaRecorder.value.onstop = () => {
-        createDownloadURL()
+        download.create(mediaRecorder.value.mimeType, recordedChunks.value)
+        recordedChunks.value = []
         store.isRecording = false
         toast.success('toast_rec_complete')
-
-        // Auto-stop player when recording finishes
         stopAlarm()
       }
 
       mediaRecorder.value.onerror = (event) => {
-        handleRecordingError(event.error || new Error('MediaRecorder error'))
+        handleError(event.error || new Error('MediaRecorder error'))
       }
 
-      // Start recording
-      const chunkInterval =
-        mediaRecorder.value.mimeType === 'audio/wav'
-          ? WAV_CHUNK_INTERVAL_MS
-          : DEFAULT_CHUNK_INTERVAL_MS
+      const chunkInterval = mediaRecorder.value.mimeType === 'audio/wav' ? 2000 : 1000
       mediaRecorder.value.start(chunkInterval)
 
-      // Start timer
-      startRecordingTimer(durationMs)
+      timer.start(durationMs, () => {
+        if (mediaRecorder.value?.state === 'recording') mediaRecorder.value.stop()
+      })
 
       return true
     } catch (_error) {
@@ -163,179 +80,44 @@ export function useRecorder() {
   }
 
   function stopRecording() {
-    if (mediaRecorder.value && mediaRecorder.value.state === 'recording') {
-      mediaRecorder.value.stop()
-    }
-
-    // Disconnect recording chain
-    if (monoMixNode.value) {
-      // Mono path: finalOutputNode → monoMixNode → streamDest
-      try {
-        store.finalOutputNode.disconnect(monoMixNode.value)
-      } catch {
-        /* ignore */
-      }
-      try {
-        monoMixNode.value.disconnect()
-      } catch {
-        /* ignore */
-      }
-      monoMixNode.value = null
-    } else if (streamDest.value && store.finalOutputNode) {
-      // Stereo path: finalOutputNode → streamDest
-      try {
-        store.finalOutputNode.disconnect(streamDest.value)
-      } catch {
-        /* ignore */
-      }
-    }
+    if (mediaRecorder.value?.state === 'recording') mediaRecorder.value.stop()
+    disconnectStream(store.finalOutputNode, streamDest.value, monoMixNode.value)
     streamDest.value = null
-
-    clearRecordingTimers()
+    monoMixNode.value = null
+    timer.clear()
     store.isRecording = false
     store.remainingTime = 0
   }
 
-  function startRecordingTimer(durationMs) {
-    const startTime = Date.now()
-    const endTime = startTime + durationMs
-
-    recordingTimerInterval.value = setInterval(() => {
-      const now = Date.now()
-      const remainingMs = endTime - now
-
-      if (remainingMs <= 0) {
-        store.remainingTime = 0
-        // Interval stoppen
-        if (recordingTimerInterval.value) {
-          clearInterval(recordingTimerInterval.value)
-          recordingTimerInterval.value = null
-        }
-        return
-      }
-
-      store.remainingTime = remainingMs
-    }, TIMER_INTERVAL_MS)
-
-    recordingTimeout.value = setTimeout(() => {
-      // Aufnahme stoppen
-      if (mediaRecorder.value && mediaRecorder.value.state === 'recording') {
-        mediaRecorder.value.stop()
-      }
-
-      // Alle Timer clearen
-      clearRecordingTimers()
-
-      // State aktualisieren
-      store.isRecording = false
-      store.remainingTime = 0
-    }, durationMs)
-  }
-
-  function clearRecordingTimers() {
-    if (recordingTimeout.value) {
-      clearTimeout(recordingTimeout.value)
-      recordingTimeout.value = null
-    }
-
-    if (recordingTimerInterval.value) {
-      clearInterval(recordingTimerInterval.value)
-      recordingTimerInterval.value = null
-    }
-  }
-
-  function createDownloadURL() {
-    try {
-      if (!mediaRecorder.value || recordedChunks.value.length === 0) {
-        return
-      }
-
-      // Revoke previous blob URL to prevent memory leak
-      if (downloadUrl.value) {
-        URL.revokeObjectURL(downloadUrl.value)
-        downloadUrl.value = ''
-      }
-
-      const blob = new Blob(recordedChunks.value, { type: mediaRecorder.value.mimeType })
-      recordedBlob.value = blob
-      recordedChunks.value = []
-
-      // Determine file extension and quality info
-      let extension = 'webm'
-      let qualityInfo = ''
-
-      if (mediaRecorder.value.mimeType.includes('opus')) {
-        extension = mediaRecorder.value.mimeType.includes('ogg') ? 'ogg' : 'webm'
-        qualityInfo = ' (Opus HQ)'
-      } else if (mediaRecorder.value.mimeType.includes('ogg')) {
-        extension = 'ogg'
-        qualityInfo = ' (OGG)'
-      } else if (mediaRecorder.value.mimeType.includes('mp4')) {
-        extension = 'mp4'
-        qualityInfo = ' (MP4)'
-      } else if (mediaRecorder.value.mimeType.includes('wav')) {
-        extension = 'wav'
-        qualityInfo = ' (WAV)'
-      }
-
-      // Create filename with timestamp
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-')
-      downloadFilename.value = `alarm_recording_${timestamp}_HQ.${extension}`
-      downloadUrl.value = URL.createObjectURL(blob)
-      showDownload.value = true
-    } catch (_error) {
-      toast.error('toast_rec_file_error')
-    }
-  }
-
-  function handleRecordingError(error) {
+  function handleError(error) {
     stopRecording()
-
-    if (error.name === 'NotSupportedError') {
-      toast.error('toast_rec_error_not_supported')
-    } else if (error.name === 'SecurityError') {
-      toast.error('toast_rec_error_security')
-    } else if (error.name === 'InvalidStateError') {
-      toast.error('toast_rec_error_invalid_state')
-    } else {
-      toast.error('toast_rec_error_generic')
-    }
-  }
-
-  function formatTime(ms) {
-    const seconds = Math.floor((ms / 1000) % 60)
-    const minutes = Math.floor((ms / (1000 * 60)) % 60)
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-  }
-
-  function resetDownload() {
-    if (downloadUrl.value) {
-      URL.revokeObjectURL(downloadUrl.value)
-    }
-    downloadUrl.value = ''
-    downloadFilename.value = ''
-    showDownload.value = false
-    recordedBlob.value = null
+    const key =
+      error.name === 'NotSupportedError'
+        ? 'toast_rec_error_not_supported'
+        : error.name === 'SecurityError'
+          ? 'toast_rec_error_security'
+          : error.name === 'InvalidStateError'
+            ? 'toast_rec_error_invalid_state'
+            : 'toast_rec_error_generic'
+    toast.error(key)
   }
 
   function cleanup() {
     stopRecording()
-    if (mediaRecorder.value) {
-      mediaRecorder.value = null
-    }
+    mediaRecorder.value = null
     recordedChunks.value = []
-    resetDownload()
+    download.reset()
   }
 
   return {
     startRecording,
     stopRecording,
-    formatTime,
-    resetDownload,
     cleanup,
-    downloadUrl,
-    downloadFilename,
-    showDownload,
-    recordedBlob,
+    formatTime: download.formatTime,
+    resetDownload: download.reset,
+    downloadUrl: download.downloadUrl,
+    downloadFilename: download.downloadFilename,
+    showDownload: download.showDownload,
+    recordedBlob: download.recordedBlob,
   }
 }
