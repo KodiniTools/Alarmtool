@@ -1,123 +1,158 @@
+// Facade store — composes domain stores so all existing callers work unchanged.
+// New code should import domain stores directly instead of this facade.
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import { useAudioNodes } from './audioNodes'
+import { useOscillatorStore } from './oscillatorStore'
+import { usePlayerStore } from './playerStore'
+import { useRecorderStore } from './recorderStore'
+import { useSettingsStore } from './settingsStore'
+
+function rw(get, set) {
+  return computed({ get, set })
+}
 
 export const useAlarmStore = defineStore('alarm', () => {
-  // Audio Context & Nodes
-  const audioCtx = ref(null)
-  const masterGainNode = ref(null)
-  const filterNode = ref(null)
-  const delayNode = ref(null)
-  const convolverNode = ref(null)
-  const reverbGain = ref(null)
-  const effectsOut = ref(null)
-  const finalOutputNode = ref(null)
+  const nodes = useAudioNodes()
+  const osc = useOscillatorStore()
+  const player = usePlayerStore()
+  const recorder = useRecorderStore()
+  const settings = useSettingsStore()
 
-  // Alarm State
-  const isAlarmRunning = ref(false)
-
-  // Player State
-  const isPlaying = ref(false)
-  const isPaused = ref(false)
-  const currentTime = ref(0)
-  const volume = ref(0.8)
-  const isMuted = ref(false)
-  const isLooping = ref(false)
-
-  // Recording State
-  const isRecording = ref(false)
-  const recordingDuration = ref(60000)
-  const remainingTime = ref(0)
-
-  // Language & Theme (synced with SSI nav's localStorage keys)
-  const currentLang = ref(localStorage.getItem('locale') || 'de')
-  const currentTheme = ref(localStorage.getItem('theme') || 'dark')
-
-  // Oscillator Clipboard (for copy/paste between oscillators)
-  const oscClipboard = ref(null)
-
-  // Filter Settings
-  const filterSettings = ref({
-    type: 'none',
-    frequency: 1000,
-    Q: 1,
-  })
-
-  // Oscillator Data (12 oscillators)
-  const oscillators = ref(
-    Array.from({ length: 12 }, (_, i) => ({
-      id: i,
-      enabled: i < 3, // First 3 oscillators enabled by default
-      oscillator: null,
-      gainNode: null,
-      panNode: null,
-      patternTimeoutId: null,
-      patternSteps: [1500, 300],
-      patternIndex: 0,
-      toneIsOn: false,
-      // Settings
-      waveType: 'sine',
-      frequency: 440,
-      volume: 0.5,
-      pan: 0,
-      attack: 20,
-      decay: 50,
-      sustain: 0.8,
-      release: 80,
-      pattern: '1500,300',
-    }))
-  )
-
-  // Computed
-  const activeOscillators = computed(() =>
-    oscillators.value.filter((osc) => osc.oscillator !== null)
-  )
-
-  const enabledOscillators = computed(() => oscillators.value.filter((osc) => osc.enabled))
-
-  // Actions
-  function setLanguage(lang) {
-    currentLang.value = lang
-    localStorage.setItem('locale', lang)
-  }
-
-  function setTheme(theme) {
-    currentTheme.value = theme
-    localStorage.setItem('theme', theme)
-  }
-
-  function updateFilterSettings(settings) {
-    filterSettings.value = { ...filterSettings.value, ...settings }
-  }
-
-  function updateOscillator(id, settings) {
-    const osc = oscillators.value[id]
-    if (osc) {
-      Object.assign(osc, settings)
+  // ── Audio nodes (plain object, not reactive — see stores/audioNodes.js) ──
+  // Exposed as pass-through getters so composables can still use store.audioCtx.
+  // These are intentionally non-reactive; no Vue template depends on them.
+  const audioCtx = rw(
+    () => nodes.audioCtx,
+    (v) => {
+      nodes.audioCtx = v
     }
-  }
+  )
+  const masterGainNode = rw(
+    () => nodes.masterGainNode,
+    (v) => {
+      nodes.masterGainNode = v
+    }
+  )
+  const filterNode = rw(
+    () => nodes.filterNode,
+    (v) => {
+      nodes.filterNode = v
+    }
+  )
+  const delayNode = rw(
+    () => nodes.delayNode,
+    (v) => {
+      nodes.delayNode = v
+    }
+  )
+  const convolverNode = rw(
+    () => nodes.convolverNode,
+    (v) => {
+      nodes.convolverNode = v
+    }
+  )
+  const reverbGain = rw(
+    () => nodes.reverbGain,
+    (v) => {
+      nodes.reverbGain = v
+    }
+  )
+  const effectsOut = rw(
+    () => nodes.effectsOut,
+    (v) => {
+      nodes.effectsOut = v
+    }
+  )
+  const finalOutputNode = rw(
+    () => nodes.finalOutputNode,
+    (v) => {
+      nodes.finalOutputNode = v
+    }
+  )
 
-  function resetOscillators() {
-    oscillators.value.forEach((osc) => {
-      if (osc.oscillator) {
-        try {
-          osc.oscillator.stop()
-          osc.oscillator.disconnect()
-        } catch (_e) {
-          /* ignore */
-        }
-        osc.oscillator = null
-        osc.gainNode = null
-        osc.panNode = null
-      }
-      if (osc.patternTimeoutId) {
-        clearTimeout(osc.patternTimeoutId)
-        osc.patternTimeoutId = null
-      }
-    })
-  }
+  // ── Oscillator store ──
+  const oscillators = computed(() => osc.oscillators)
+  const oscClipboard = rw(
+    () => osc.oscClipboard,
+    (v) => {
+      osc.oscClipboard = v
+    }
+  )
+  const activeOscillators = computed(() => osc.activeOscillators)
+  const enabledOscillators = computed(() => osc.enabledOscillators)
+
+  // ── Player store ──
+  const isAlarmRunning = rw(
+    () => player.isAlarmRunning,
+    (v) => {
+      player.isAlarmRunning = v
+    }
+  )
+  const isPlaying = rw(
+    () => player.isPlaying,
+    (v) => {
+      player.isPlaying = v
+    }
+  )
+  const isPaused = rw(
+    () => player.isPaused,
+    (v) => {
+      player.isPaused = v
+    }
+  )
+  const currentTime = rw(
+    () => player.currentTime,
+    (v) => {
+      player.currentTime = v
+    }
+  )
+  const volume = rw(
+    () => player.volume,
+    (v) => {
+      player.volume = v
+    }
+  )
+  const isMuted = rw(
+    () => player.isMuted,
+    (v) => {
+      player.isMuted = v
+    }
+  )
+  const isLooping = rw(
+    () => player.isLooping,
+    (v) => {
+      player.isLooping = v
+    }
+  )
+
+  // ── Recorder store ──
+  const isRecording = rw(
+    () => recorder.isRecording,
+    (v) => {
+      recorder.isRecording = v
+    }
+  )
+  const recordingDuration = rw(
+    () => recorder.recordingDuration,
+    (v) => {
+      recorder.recordingDuration = v
+    }
+  )
+  const remainingTime = rw(
+    () => recorder.remainingTime,
+    (v) => {
+      recorder.remainingTime = v
+    }
+  )
+
+  // ── Settings store ──
+  const currentLang = computed(() => settings.currentLang)
+  const currentTheme = computed(() => settings.currentTheme)
+  const filterSettings = computed(() => settings.filterSettings)
 
   return {
-    // State
+    // Audio nodes
     audioCtx,
     masterGainNode,
     filterNode,
@@ -126,6 +161,14 @@ export const useAlarmStore = defineStore('alarm', () => {
     reverbGain,
     effectsOut,
     finalOutputNode,
+    // Oscillators
+    oscillators,
+    oscClipboard,
+    activeOscillators,
+    enabledOscillators,
+    updateOscillator: osc.updateOscillator,
+    resetOscillators: osc.resetOscillators,
+    // Player
     isAlarmRunning,
     isPlaying,
     isPaused,
@@ -133,24 +176,16 @@ export const useAlarmStore = defineStore('alarm', () => {
     volume,
     isMuted,
     isLooping,
+    // Recorder
     isRecording,
     recordingDuration,
     remainingTime,
+    // Settings
     currentLang,
     currentTheme,
-    oscClipboard,
     filterSettings,
-    oscillators,
-
-    // Computed
-    activeOscillators,
-    enabledOscillators,
-
-    // Actions
-    setLanguage,
-    setTheme,
-    updateFilterSettings,
-    updateOscillator,
-    resetOscillators,
+    setLanguage: settings.setLanguage,
+    setTheme: settings.setTheme,
+    updateFilterSettings: settings.updateFilterSettings,
   }
 })
