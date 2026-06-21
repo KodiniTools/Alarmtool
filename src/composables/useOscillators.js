@@ -2,6 +2,7 @@ import { useAlarmStore } from '@/stores/alarmStore'
 import { useUndoRedo } from './useUndoRedo'
 import { useOscillatorPattern } from './useOscillatorPattern'
 import { useOscillatorLifecycle } from './useOscillatorLifecycle'
+import { getOscRuntime } from './useOscillatorRuntime'
 
 export function useOscillators() {
   const store = useAlarmStore()
@@ -20,7 +21,7 @@ export function useOscillators() {
       store.updateOscillator(oscId, { enabled: value })
       if (value && store.isAlarmRunning) {
         startSingleOscillator(oscId)
-      } else if (!value && oscData.oscillator) {
+      } else if (!value && getOscRuntime(oscId)?.osc) {
         stopSingleOscillator(oscId)
       }
       return
@@ -32,17 +33,18 @@ export function useOscillators() {
       return
     }
 
-    if (oscData.oscillator && store.audioCtx) {
+    const rt = getOscRuntime(oscId)
+    if (rt?.osc && store.audioCtx) {
       const now = store.audioCtx.currentTime
       switch (param) {
         case 'frequency':
-          oscData.oscillator.frequency.setValueAtTime(value, now)
+          rt.osc.frequency.setValueAtTime(value, now)
           break
         case 'waveType':
-          oscData.oscillator.type = value
+          rt.osc.type = value
           break
         case 'pan':
-          if (oscData.panNode) oscData.panNode.pan.setValueAtTime(value, now)
+          if (rt.panNode) rt.panNode.pan.setValueAtTime(value, now)
           break
       }
     }

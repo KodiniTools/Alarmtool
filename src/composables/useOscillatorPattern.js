@@ -1,4 +1,5 @@
 import { useAlarmStore } from '@/stores/alarmStore'
+import { getOscRuntime, setOscRuntime } from './useOscillatorRuntime'
 
 const FALLBACK_PATTERN = [1500, 300]
 
@@ -16,24 +17,22 @@ export function useOscillatorPattern() {
         .filter((n) => !isNaN(n) && n > 0)
 
       const steps = numbers.length >= 2 && numbers.length % 2 === 0 ? numbers : FALLBACK_PATTERN
-
-      store.updateOscillator(oscId, { patternSteps: steps, patternIndex: 0, toneIsOn: false })
+      setOscRuntime(oscId, { patternSteps: steps, patternIndex: 0, toneIsOn: false })
     } catch (_error) {
-      store.updateOscillator(oscId, {
-        patternSteps: FALLBACK_PATTERN,
-        patternIndex: 0,
-        toneIsOn: false,
-      })
+      setOscRuntime(oscId, { patternSteps: FALLBACK_PATTERN, patternIndex: 0, toneIsOn: false })
     }
   }
 
   function setOscTone(oscId, on) {
+    const rt = getOscRuntime(oscId)
+    if (!store.audioCtx || !rt?.gainNode) return
+
     const oscData = store.oscillators[oscId]
-    if (!store.audioCtx || !oscData?.gainNode) return
+    if (!oscData) return
 
     try {
       const now = store.audioCtx.currentTime
-      const gain = oscData.gainNode.gain
+      const gain = rt.gainNode.gain
       gain.cancelScheduledValues(now)
 
       if (on) {
@@ -58,18 +57,20 @@ export function useOscillatorPattern() {
 
   function runOscPattern(oscId) {
     const oscData = store.oscillators[oscId]
-    if (!oscData?.enabled || !store.isAlarmRunning || !oscData.patternSteps.length) return
+    const rt = getOscRuntime(oscId)
+    if (!oscData?.enabled || !store.isAlarmRunning || !rt?.patternSteps?.length) return
 
-    const newToneState = !oscData.toneIsOn
+    const newToneState = !rt.toneIsOn
     setOscTone(oscId, newToneState)
 
-    const stepDuration = oscData.patternSteps[oscData.patternIndex]
-    const nextIndex = (oscData.patternIndex + 1) % oscData.patternSteps.length
+    const stepDuration = rt.patternSteps[rt.patternIndex]
+    const nextIndex = (rt.patternIndex + 1) % rt.patternSteps.length
 
-    store.updateOscillator(oscId, { toneIsOn: newToneState, patternIndex: nextIndex })
+    // Update runtime state without touching Vue reactive system
+    setOscRuntime(oscId, { toneIsOn: newToneState, patternIndex: nextIndex })
 
     const timeoutId = setTimeout(() => runOscPattern(oscId), stepDuration)
-    store.updateOscillator(oscId, { patternTimeoutId: timeoutId })
+    setOscRuntime(oscId, { patternTimeoutId: timeoutId })
   }
 
   return { parsePattern, setOscTone, runOscPattern }

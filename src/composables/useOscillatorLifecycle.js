@@ -1,5 +1,11 @@
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useOscillatorPattern } from './useOscillatorPattern'
+import {
+  getOscRuntime,
+  setOscRuntime,
+  clearOscRuntime,
+  clearAllOscRuntime,
+} from './useOscillatorRuntime'
 
 export function useOscillatorLifecycle() {
   const store = useAlarmStore()
@@ -20,21 +26,24 @@ export function useOscillatorLifecycle() {
     return { osc, gainNode, panNode }
   }
 
-  function _releaseNode(oscData, oscId) {
-    if (!oscData.oscillator || !oscData.gainNode) return
+  function _releaseNode(oscId) {
+    const rt = getOscRuntime(oscId)
+    if (!rt?.osc || !rt?.gainNode) return
+
+    const oscData = store.oscillators[oscId]
 
     try {
       const now = store.audioCtx.currentTime
-      const releaseSec = oscData.release / 1000 + 0.05
-      const currentVal = oscData.gainNode.gain.value
+      const releaseSec = (oscData?.release ?? 80) / 1000 + 0.05
+      const currentVal = rt.gainNode.gain.value
 
-      oscData.gainNode.gain.cancelScheduledValues(now)
-      oscData.gainNode.gain.setValueAtTime(currentVal, now)
-      oscData.gainNode.gain.linearRampToValueAtTime(0, now + releaseSec)
+      rt.gainNode.gain.cancelScheduledValues(now)
+      rt.gainNode.gain.setValueAtTime(currentVal, now)
+      rt.gainNode.gain.linearRampToValueAtTime(0, now + releaseSec)
 
-      const oscRef = oscData.oscillator
-      const gainRef = oscData.gainNode
-      const panRef = oscData.panNode
+      const oscRef = rt.osc
+      const gainRef = rt.gainNode
+      const panRef = rt.panNode
 
       setTimeout(() => {
         try {
@@ -60,8 +69,9 @@ export function useOscillatorLifecycle() {
       try {
         const { osc, gainNode, panNode } = _buildNode(oscData)
         parsePattern(index)
+        // Store nodes in non-reactive runtime map — keeps Web Audio objects out of Vue proxy
+        setOscRuntime(index, { osc, gainNode, panNode })
         osc.start()
-        store.updateOscillator(index, { oscillator: osc, gainNode, panNode })
       } catch (_error) {
         // Oscillator creation failed — skip this one
       }
@@ -72,13 +82,14 @@ export function useOscillatorLifecycle() {
     if (!store.audioCtx || !store.masterGainNode) return
 
     const oscData = store.oscillators[oscId]
-    if (!oscData || !oscData.enabled || oscData.oscillator) return
+    const rt = getOscRuntime(oscId)
+    if (!oscData || !oscData.enabled || rt?.osc) return
 
     try {
       const { osc, gainNode, panNode } = _buildNode(oscData)
       parsePattern(oscId)
+      setOscRuntime(oscId, { osc, gainNode, panNode })
       osc.start()
-      store.updateOscillator(oscId, { oscillator: osc, gainNode, panNode })
 
       if (store.isAlarmRunning) {
         runOscPattern(oscId)
@@ -89,46 +100,38 @@ export function useOscillatorLifecycle() {
   }
 
   function stopSingleOscillator(oscId) {
-    const oscData = store.oscillators[oscId]
-    if (!oscData) return
+    const rt = getOscRuntime(oscId)
+    if (!rt) return
 
-    if (oscData.patternTimeoutId) {
-      clearTimeout(oscData.patternTimeoutId)
+    if (rt.patternTimeoutId) {
+      clearTimeout(rt.patternTimeoutId)
     }
 
-    _releaseNode(oscData, oscId)
-
-    store.updateOscillator(oscId, {
-      oscillator: null,
-      gainNode: null,
-      panNode: null,
-      patternTimeoutId: null,
-      toneIsOn: false,
-    })
+    _releaseNode(oscId)
+    clearOscRuntime(oscId)
   }
 
   function stopOscillators() {
-    store.oscillators.forEach((oscData, index) => {
-      if (oscData.patternTimeoutId) {
-        clearTimeout(oscData.patternTimeoutId)
+    store.oscillators.forEach((_oscData, index) => {
+      const rt = getOscRuntime(index)
+      if (!rt) return
+
+      if (rt.patternTimeoutId) {
+        clearTimeout(rt.patternTimeoutId)
       }
 
-      if (oscData.oscillator && oscData.gainNode) {
-        _releaseNode(oscData, index)
+      if (rt.osc && rt.gainNode) {
+        _releaseNode(index)
 
-        setTimeout(
-          () => {
-            store.updateOscillator(index, {
-              oscillator: null,
-              gainNode: null,
-              panNode: null,
-              patternTimeoutId: null,
-            })
-          },
-          (oscData.release / 1000 + 0.05) * 1000
-        )
+        const releaseSec = (store.oscillators[index]?.release ?? 80) / 1000 + 0.05
+        setTimeout(() => {
+          clearOscRuntime(index)
+        }, releaseSec * 1000)
       }
     })
+
+    // Clear any orphaned entries
+    setTimeout(() => clearAllOscRuntime(), 2000)
   }
 
   return { createOscillators, startSingleOscillator, stopSingleOscillator, stopOscillators }
