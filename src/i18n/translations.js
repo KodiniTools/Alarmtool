@@ -90,6 +90,8 @@ export const translations = {
     osc_release: 'Release (ms)',
     osc_copy: 'Einstellungen kopieren',
     osc_paste: 'Einstellungen einfügen',
+    osc_advanced_show: 'Erweiterte Optionen anzeigen',
+    osc_advanced_hide: 'Erweiterte Optionen ausblenden',
     osc_pattern: 'Pattern',
     osc_pattern_help: 'Kommagetrennt: Zeit in ms für (an, aus, an, aus, ...)',
 
@@ -335,6 +337,8 @@ export const translations = {
     osc_release: 'Release (ms)',
     osc_copy: 'Copy settings',
     osc_paste: 'Paste settings',
+    osc_advanced_show: 'Show advanced options',
+    osc_advanced_hide: 'Hide advanced options',
     osc_pattern: 'Pattern',
     osc_pattern_help: 'Comma-separated: time in ms for (on, off, on, off, ...)',
 
