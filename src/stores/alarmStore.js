@@ -14,7 +14,7 @@ export const useAlarmStore = defineStore('alarm', () => {
 
   // Alarm State
   const isAlarmRunning = ref(false)
-  
+
   // Player State
   const isPlaying = ref(false)
   const isPaused = ref(false)
@@ -22,57 +22,57 @@ export const useAlarmStore = defineStore('alarm', () => {
   const volume = ref(0.8)
   const isMuted = ref(false)
   const isLooping = ref(false)
-  
+
   // Recording State
   const isRecording = ref(false)
   const recordingDuration = ref(60000)
   const remainingTime = ref(0)
-  
+
   // Language & Theme (synced with SSI nav's localStorage keys)
   const currentLang = ref(localStorage.getItem('locale') || 'de')
   const currentTheme = ref(localStorage.getItem('theme') || 'dark')
 
   // Oscillator Clipboard (for copy/paste between oscillators)
   const oscClipboard = ref(null)
-  
+
   // Filter Settings
   const filterSettings = ref({
     type: 'none',
     frequency: 1000,
-    Q: 1
+    Q: 1,
   })
 
   // Oscillator Data (12 oscillators)
-  const oscillators = ref(Array.from({ length: 12 }, (_, i) => ({
-    id: i,
-    enabled: i < 3, // First 3 oscillators enabled by default
-    oscillator: null,
-    gainNode: null,
-    panNode: null,
-    patternTimeoutId: null,
-    patternSteps: [1500, 300],
-    patternIndex: 0,
-    toneIsOn: false,
-    // Settings
-    waveType: 'sine',
-    frequency: 440,
-    volume: 0.5,
-    pan: 0,
-    attack: 20,
-    decay: 50,
-    sustain: 0.8,
-    release: 80,
-    pattern: '1500,300'
-  })))
+  const oscillators = ref(
+    Array.from({ length: 12 }, (_, i) => ({
+      id: i,
+      enabled: i < 3, // First 3 oscillators enabled by default
+      oscillator: null,
+      gainNode: null,
+      panNode: null,
+      patternTimeoutId: null,
+      patternSteps: [1500, 300],
+      patternIndex: 0,
+      toneIsOn: false,
+      // Settings
+      waveType: 'sine',
+      frequency: 440,
+      volume: 0.5,
+      pan: 0,
+      attack: 20,
+      decay: 50,
+      sustain: 0.8,
+      release: 80,
+      pattern: '1500,300',
+    }))
+  )
 
   // Computed
   const activeOscillators = computed(() =>
-    oscillators.value.filter(osc => osc.oscillator !== null)
+    oscillators.value.filter((osc) => osc.oscillator !== null)
   )
 
-  const enabledOscillators = computed(() =>
-    oscillators.value.filter(osc => osc.enabled)
-  )
+  const enabledOscillators = computed(() => oscillators.value.filter((osc) => osc.enabled))
 
   // Actions
   function setLanguage(lang) {
@@ -97,12 +97,14 @@ export const useAlarmStore = defineStore('alarm', () => {
   }
 
   function resetOscillators() {
-    oscillators.value.forEach(osc => {
+    oscillators.value.forEach((osc) => {
       if (osc.oscillator) {
         try {
           osc.oscillator.stop()
           osc.oscillator.disconnect()
-        } catch (e) {}
+        } catch (_e) {
+          /* ignore */
+        }
         osc.oscillator = null
         osc.gainNode = null
         osc.panNode = null
@@ -139,7 +141,7 @@ export const useAlarmStore = defineStore('alarm', () => {
     oscClipboard,
     filterSettings,
     oscillators,
-    
+
     // Computed
     activeOscillators,
     enabledOscillators,
@@ -149,6 +151,6 @@ export const useAlarmStore = defineStore('alarm', () => {
     setTheme,
     updateFilterSettings,
     updateOscillator,
-    resetOscillators
+    resetOscillators,
   }
 })

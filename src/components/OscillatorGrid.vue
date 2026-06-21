@@ -37,52 +37,52 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from 'vue'
-import { useAlarmStore } from '@/stores/alarmStore'
-import { useUndoRedo } from '@/composables/useUndoRedo'
-import { useToast } from '@/composables/useToast'
-import { translations } from '@/i18n/translations'
-import OscillatorItem from './OscillatorItem.vue'
+  import { onMounted, onUnmounted } from 'vue'
+  import { useAlarmStore } from '@/stores/alarmStore'
+  import { useUndoRedo } from '@/composables/useUndoRedo'
+  import { useToast } from '@/composables/useToast'
+  import { translations } from '@/i18n/translations'
+  import OscillatorItem from './OscillatorItem.vue'
 
-const store = useAlarmStore()
-const { canUndo, canRedo, undoCount, redoCount, undo, redo } = useUndoRedo()
-const toast = useToast()
+  const store = useAlarmStore()
+  const { canUndo, canRedo, undoCount, redoCount, undo, redo } = useUndoRedo()
+  const toast = useToast()
 
-const t = (key) => translations[store.currentLang]?.[key] || key
+  const t = (key) => translations[store.currentLang]?.[key] || key
 
-function handleUndo() {
-  undo()
-  toast.info('toast_undo')
-}
-
-function handleRedo() {
-  redo()
-  toast.info('toast_redo')
-}
-
-function handleKeyboard(event) {
-  // Ignore if typing in an input/textarea/select
-  const tag = event.target.tagName
-  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
-
-  if ((event.ctrlKey || event.metaKey) && !event.shiftKey && event.key === 'z') {
-    event.preventDefault()
-    if (canUndo.value) handleUndo()
-  } else if (
-    ((event.ctrlKey || event.metaKey) && event.key === 'y') ||
-    ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'z') ||
-    ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'Z')
-  ) {
-    event.preventDefault()
-    if (canRedo.value) handleRedo()
+  function handleUndo() {
+    undo()
+    toast.info('toast_undo')
   }
-}
 
-onMounted(() => {
-  document.addEventListener('keydown', handleKeyboard)
-})
+  function handleRedo() {
+    redo()
+    toast.info('toast_redo')
+  }
 
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeyboard)
-})
+  function handleKeyboard(event) {
+    // Ignore if typing in an input/textarea/select
+    const tag = event.target.tagName
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+
+    if ((event.ctrlKey || event.metaKey) && !event.shiftKey && event.key === 'z') {
+      event.preventDefault()
+      if (canUndo.value) handleUndo()
+    } else if (
+      ((event.ctrlKey || event.metaKey) && event.key === 'y') ||
+      ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'z') ||
+      ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'Z')
+    ) {
+      event.preventDefault()
+      if (canRedo.value) handleRedo()
+    }
+  }
+
+  onMounted(() => {
+    document.addEventListener('keydown', handleKeyboard)
+  })
+
+  onUnmounted(() => {
+    document.removeEventListener('keydown', handleKeyboard)
+  })
 </script>

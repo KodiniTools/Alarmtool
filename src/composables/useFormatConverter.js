@@ -75,7 +75,7 @@ export function useFormatConverter() {
     let offset = 44
     for (let i = 0; i < interleaved.length; i++) {
       const sample = Math.max(-1, Math.min(1, interleaved[i]))
-      const val = sample < 0 ? sample * 0x8000 : sample * 0x7FFF
+      const val = sample < 0 ? sample * 0x8000 : sample * 0x7fff
       view.setInt16(offset, val, true)
       offset += 2
     }
@@ -103,9 +103,7 @@ export function useFormatConverter() {
 
     // Get channel data as Int16
     const left = floatTo16BitPCM(audioBuffer.getChannelData(0))
-    const right = numChannels > 1
-      ? floatTo16BitPCM(audioBuffer.getChannelData(1))
-      : left
+    const right = numChannels > 1 ? floatTo16BitPCM(audioBuffer.getChannelData(1)) : left
 
     const mp3Data = []
     const blockSize = 1152
@@ -133,7 +131,7 @@ export function useFormatConverter() {
 
       // Yield to UI thread every 100 blocks
       if (processedBlocks % 100 === 0) {
-        await new Promise(resolve => setTimeout(resolve, 0))
+        await new Promise((resolve) => setTimeout(resolve, 0))
       }
     }
 
@@ -149,7 +147,7 @@ export function useFormatConverter() {
     const int16 = new Int16Array(float32Array.length)
     for (let i = 0; i < float32Array.length; i++) {
       const s = Math.max(-1, Math.min(1, float32Array[i]))
-      int16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF
+      int16[i] = s < 0 ? s * 0x8000 : s * 0x7fff
     }
     return int16
   }
@@ -162,7 +160,11 @@ export function useFormatConverter() {
 
     const sampleRate = audioBuffer.sampleRate
     const length = audioBuffer.length
-    const monoBuffer = new OfflineAudioContext(1, length, sampleRate).createBuffer(1, length, sampleRate)
+    const monoBuffer = new OfflineAudioContext(1, length, sampleRate).createBuffer(
+      1,
+      length,
+      sampleRate
+    )
     const monoData = monoBuffer.getChannelData(0)
 
     const left = audioBuffer.getChannelData(0)
@@ -246,6 +248,6 @@ export function useFormatConverter() {
     convertedUrl,
     convertedFilename,
     convertBlob,
-    resetConversion
+    resetConversion,
   }
 }

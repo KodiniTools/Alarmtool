@@ -6,7 +6,7 @@
       class="toast-item"
       :class="[
         `toast-${toast.type}`,
-        { 'toast-visible': toast.visible, 'toast-leaving': toast.leaving }
+        { 'toast-visible': toast.visible, 'toast-leaving': toast.leaving },
       ]"
       role="alert"
     >
@@ -16,7 +16,7 @@
       <div class="toast-body">
         {{ toast.message }}
       </div>
-      <button class="toast-close" @click="dismiss(toast.id)" aria-label="Close">
+      <button class="toast-close" aria-label="Close" @click="dismiss(toast.id)">
         <i class="fas fa-times"></i>
       </button>
       <div
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { useToast } from '@/composables/useToast'
+  import { useToast } from '@/composables/useToast'
 
-const { toasts, dismiss } = useToast()
+  const { toasts, dismiss } = useToast()
 </script>

@@ -10,7 +10,7 @@ const state = reactive({
   redoStack: [],
   isApplying: false,
   debounceTimer: null,
-  hasPendingSnapshot: false
+  hasPendingSnapshot: false,
 })
 
 function captureSnapshot() {
@@ -19,9 +19,9 @@ function captureSnapshot() {
     filter: {
       type: store.filterSettings.type,
       frequency: store.filterSettings.frequency,
-      Q: store.filterSettings.Q
+      Q: store.filterSettings.Q,
     },
-    oscillators: store.oscillators.map(osc => ({
+    oscillators: store.oscillators.map((osc) => ({
       enabled: osc.enabled,
       waveType: osc.waveType,
       frequency: osc.frequency,
@@ -31,8 +31,8 @@ function captureSnapshot() {
       decay: osc.decay,
       sustain: osc.sustain,
       release: osc.release,
-      pattern: osc.pattern
-    }))
+      pattern: osc.pattern,
+    })),
   }
 }
 
@@ -173,6 +173,6 @@ export function useUndoRedo() {
     recordChange,
     undo,
     redo,
-    clear
+    clear,
   }
 }

@@ -11,7 +11,7 @@ export function useRecorder() {
   const store = useAlarmStore()
   const { stopAlarm } = usePlayer()
   const toast = useToast()
-  
+
   const mediaRecorder = ref(null)
   const recordedChunks = ref([])
   const recordingTimerInterval = ref(null)
@@ -27,16 +27,16 @@ export function useRecorder() {
     const formatOptions = {
       'webm-opus': {
         mimeType: 'audio/webm;codecs=opus',
-        audioBitsPerSecond: 320000
+        audioBitsPerSecond: 320000,
       },
       'ogg-opus': {
         mimeType: 'audio/ogg;codecs=opus',
-        audioBitsPerSecond: 320000
+        audioBitsPerSecond: 320000,
       },
-      'wav': {
+      wav: {
         mimeType: 'audio/wav',
-        audioBitsPerSecond: 1411200
-      }
+        audioBitsPerSecond: 1411200,
+      },
     }
 
     // If specific format requested, check if supported
@@ -85,10 +85,18 @@ export function useRecorder() {
 
       // Disconnect previous stream destination if still connected
       if (streamDest.value) {
-        try { store.finalOutputNode.disconnect(streamDest.value) } catch {}
+        try {
+          store.finalOutputNode.disconnect(streamDest.value)
+        } catch {
+          /* ignore */
+        }
       }
       if (monoMixNode.value) {
-        try { monoMixNode.value.disconnect() } catch {}
+        try {
+          monoMixNode.value.disconnect()
+        } catch {
+          /* ignore */
+        }
         monoMixNode.value = null
       }
 
@@ -137,16 +145,17 @@ export function useRecorder() {
       }
 
       // Start recording
-      const chunkInterval = mediaRecorder.value.mimeType === 'audio/wav'
-        ? WAV_CHUNK_INTERVAL_MS
-        : DEFAULT_CHUNK_INTERVAL_MS
+      const chunkInterval =
+        mediaRecorder.value.mimeType === 'audio/wav'
+          ? WAV_CHUNK_INTERVAL_MS
+          : DEFAULT_CHUNK_INTERVAL_MS
       mediaRecorder.value.start(chunkInterval)
 
       // Start timer
       startRecordingTimer(durationMs)
 
       return true
-    } catch (error) {
+    } catch (_error) {
       toast.error('toast_rec_start_error')
       store.isRecording = false
       return false
@@ -161,12 +170,24 @@ export function useRecorder() {
     // Disconnect recording chain
     if (monoMixNode.value) {
       // Mono path: finalOutputNode → monoMixNode → streamDest
-      try { store.finalOutputNode.disconnect(monoMixNode.value) } catch {}
-      try { monoMixNode.value.disconnect() } catch {}
+      try {
+        store.finalOutputNode.disconnect(monoMixNode.value)
+      } catch {
+        /* ignore */
+      }
+      try {
+        monoMixNode.value.disconnect()
+      } catch {
+        /* ignore */
+      }
       monoMixNode.value = null
     } else if (streamDest.value && store.finalOutputNode) {
       // Stereo path: finalOutputNode → streamDest
-      try { store.finalOutputNode.disconnect(streamDest.value) } catch {}
+      try {
+        store.finalOutputNode.disconnect(streamDest.value)
+      } catch {
+        /* ignore */
+      }
     }
     streamDest.value = null
 
@@ -201,10 +222,10 @@ export function useRecorder() {
       if (mediaRecorder.value && mediaRecorder.value.state === 'recording') {
         mediaRecorder.value.stop()
       }
-      
+
       // Alle Timer clearen
       clearRecordingTimers()
-      
+
       // State aktualisieren
       store.isRecording = false
       store.remainingTime = 0
@@ -262,8 +283,7 @@ export function useRecorder() {
       downloadFilename.value = `alarm_recording_${timestamp}_HQ.${extension}`
       downloadUrl.value = URL.createObjectURL(blob)
       showDownload.value = true
-
-    } catch (error) {
+    } catch (_error) {
       toast.error('toast_rec_file_error')
     }
   }
@@ -316,6 +336,6 @@ export function useRecorder() {
     downloadUrl,
     downloadFilename,
     showDownload,
-    recordedBlob
+    recordedBlob,
   }
 }

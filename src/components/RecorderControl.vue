@@ -6,11 +6,7 @@
         <!-- Duration Select -->
         <div class="recorder-field">
           <label for="recordDuration" class="form-label">{{ t('rec_duration') }}</label>
-          <select
-            id="recordDuration"
-            v-model.number="selectedDuration"
-            class="form-select"
-          >
+          <select id="recordDuration" v-model.number="selectedDuration" class="form-select">
             <option :value="null" disabled>{{ t('rec_select') }}</option>
             <option :value="30000">{{ t('rec_30sec') }}</option>
             <option :value="60000">{{ t('rec_1min') }}</option>
@@ -23,16 +19,8 @@
         <!-- Format Select -->
         <div class="recorder-field">
           <label for="recordFormat" class="form-label">{{ t('rec_format') }}</label>
-          <select
-            id="recordFormat"
-            v-model="selectedFormat"
-            class="form-select"
-          >
-            <option
-              v-for="fmt in availableFormats"
-              :key="fmt.value"
-              :value="fmt.value"
-            >
+          <select id="recordFormat" v-model="selectedFormat" class="form-select">
+            <option v-for="fmt in availableFormats" :key="fmt.value" :value="fmt.value">
               {{ t(fmt.labelKey) }}
             </option>
           </select>
@@ -41,11 +29,7 @@
         <!-- Channel Mode Select -->
         <div class="recorder-field">
           <label for="channelMode" class="form-label">{{ t('rec_channels') }}</label>
-          <select
-            id="channelMode"
-            v-model="selectedChannelMode"
-            class="form-select"
-          >
+          <select id="channelMode" v-model="selectedChannelMode" class="form-select">
             <option value="stereo">{{ t('rec_channels_stereo') }}</option>
             <option value="mono">{{ t('rec_channels_mono') }}</option>
           </select>
@@ -77,8 +61,8 @@
           <button
             v-if="showDownload"
             class="btn btn-danger"
-            @click="handleDismiss"
             :title="t('rec_dismiss')"
+            @click="handleDismiss"
           >
             <i class="fas fa-times"></i> {{ t('rec_dismiss') }}
           </button>
@@ -96,15 +80,15 @@
         <div class="convert-actions">
           <button
             class="btn btn-outline-secondary btn-sm"
-            @click="handleConvert('mp3')"
             :disabled="isConverting"
+            @click="handleConvert('mp3')"
           >
             <i class="fas fa-file-audio"></i> MP3
           </button>
           <button
             class="btn btn-outline-secondary btn-sm"
-            @click="handleConvert('wav')"
             :disabled="isConverting"
+            @click="handleConvert('wav')"
           >
             <i class="fas fa-file-audio"></i> WAV
           </button>
@@ -114,7 +98,7 @@
       <!-- Conversion Progress -->
       <div v-if="isConverting" class="convert-progress">
         <i class="fas fa-cog fa-spin"></i> {{ t('rec_converting') }}
-        <div class="progress mt-1" style="height: 14px;">
+        <div class="progress mt-1" style="height: 14px">
           <div
             class="progress-bar progress-bar-striped progress-bar-animated"
             role="progressbar"
@@ -135,8 +119,8 @@
         </a>
         <button
           class="btn btn-sm btn-outline-danger"
-          @click="resetConversion"
           :title="t('rec_dismiss')"
+          @click="resetConversion"
         >
           <i class="fas fa-times"></i>
         </button>
@@ -149,7 +133,7 @@
       </div>
 
       <!-- Progress Bar -->
-      <div v-if="store.isRecording" class="progress mt-2" style="height: 20px;">
+      <div v-if="store.isRecording" class="progress mt-2" style="height: 20px">
         <div
           class="progress-bar"
           role="progressbar"
@@ -166,263 +150,273 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useAlarmStore } from '@/stores/alarmStore'
-import { useRecorder } from '@/composables/useRecorder'
-import { useFormatConverter } from '@/composables/useFormatConverter'
-import { useToast } from '@/composables/useToast'
-import { translations } from '@/i18n/translations'
+  import { ref, computed } from 'vue'
+  import { useAlarmStore } from '@/stores/alarmStore'
+  import { useRecorder } from '@/composables/useRecorder'
+  import { useFormatConverter } from '@/composables/useFormatConverter'
+  import { useToast } from '@/composables/useToast'
+  import { translations } from '@/i18n/translations'
 
-const store = useAlarmStore()
-const {
-  startRecording,
-  formatTime,
-  downloadUrl,
-  downloadFilename,
-  showDownload,
-  resetDownload,
-  recordedBlob
-} = useRecorder()
-const {
-  isConverting,
-  conversionProgress,
-  convertedUrl,
-  convertedFilename,
-  convertBlob,
-  resetConversion
-} = useFormatConverter()
-const toast = useToast()
+  const store = useAlarmStore()
+  const {
+    startRecording,
+    formatTime,
+    downloadUrl,
+    downloadFilename,
+    showDownload,
+    resetDownload,
+    recordedBlob,
+  } = useRecorder()
+  const {
+    isConverting,
+    conversionProgress,
+    convertedUrl,
+    convertedFilename,
+    convertBlob,
+    resetConversion,
+  } = useFormatConverter()
+  const toast = useToast()
 
-const selectedDuration = ref(60000) // Default 1 minute
-store.recordingDuration = selectedDuration.value
+  const selectedDuration = ref(60000) // Default 1 minute
+  store.recordingDuration = selectedDuration.value
 
-const t = (key) => translations[store.currentLang]?.[key] || key
+  const t = (key) => translations[store.currentLang]?.[key] || key
 
-// Define all possible formats with their mime types
-const allFormats = [
-  { value: 'webm-opus', labelKey: 'rec_format_webm', mimeType: 'audio/webm;codecs=opus' },
-  { value: 'ogg-opus', labelKey: 'rec_format_ogg', mimeType: 'audio/ogg;codecs=opus' },
-  { value: 'wav', labelKey: 'rec_format_wav', mimeType: 'audio/wav' }
-]
+  // Define all possible formats with their mime types
+  const allFormats = [
+    { value: 'webm-opus', labelKey: 'rec_format_webm', mimeType: 'audio/webm;codecs=opus' },
+    { value: 'ogg-opus', labelKey: 'rec_format_ogg', mimeType: 'audio/ogg;codecs=opus' },
+    { value: 'wav', labelKey: 'rec_format_wav', mimeType: 'audio/wav' },
+  ]
 
-// Filter to only show formats supported by the browser
-const availableFormats = computed(() => {
-  const supported = allFormats.filter(fmt =>
-    typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(fmt.mimeType)
-  )
-  // If multiple formats available, add "auto" option at the beginning
-  if (supported.length > 1) {
-    return [{ value: 'auto', labelKey: 'rec_format_auto' }, ...supported]
+  // Filter to only show formats supported by the browser
+  const availableFormats = computed(() => {
+    const supported = allFormats.filter(
+      (fmt) => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(fmt.mimeType)
+    )
+    // If multiple formats available, add "auto" option at the beginning
+    if (supported.length > 1) {
+      return [{ value: 'auto', labelKey: 'rec_format_auto' }, ...supported]
+    }
+    // If only one or no formats, just return what's available
+    return supported.length > 0 ? supported : [{ value: 'auto', labelKey: 'rec_format_auto' }]
+  })
+
+  // Default to first available format
+  const selectedFormat = ref(availableFormats.value[0]?.value || 'auto')
+
+  // Channel mode: stereo or mono
+  const selectedChannelMode = ref('mono')
+
+  const canStartRecording = computed(() => {
+    return selectedDuration.value && store.isAlarmRunning && !store.isRecording
+  })
+
+  const progressPercentage = computed(() => {
+    if (!selectedDuration.value || !store.isRecording) return 0
+    return ((selectedDuration.value - store.remainingTime) / selectedDuration.value) * 100
+  })
+
+  function handleStartRecording() {
+    if (!canStartRecording.value) return
+    startRecording(
+      selectedDuration.value,
+      selectedFormat.value,
+      selectedChannelMode.value === 'mono'
+    )
   }
-  // If only one or no formats, just return what's available
-  return supported.length > 0 ? supported : [{ value: 'auto', labelKey: 'rec_format_auto' }]
-})
 
-// Default to first available format
-const selectedFormat = ref(availableFormats.value[0]?.value || 'auto')
-
-// Channel mode: stereo or mono
-const selectedChannelMode = ref('mono')
-
-const canStartRecording = computed(() => {
-  return selectedDuration.value && store.isAlarmRunning && !store.isRecording
-})
-
-const progressPercentage = computed(() => {
-  if (!selectedDuration.value || !store.isRecording) return 0
-  return ((selectedDuration.value - store.remainingTime) / selectedDuration.value) * 100
-})
-
-function handleStartRecording() {
-  if (!canStartRecording.value) return
-  startRecording(selectedDuration.value, selectedFormat.value, selectedChannelMode.value === 'mono')
-}
-
-function handleDownload() {
-  // Reset download link after short delay to allow download to start
-  setTimeout(() => {
-    resetDownload()
-  }, 100)
-}
-
-function handleDismiss() {
-  resetConversion()
-  resetDownload()
-  toast.info('toast_rec_dismissed')
-}
-
-async function handleConvert(targetFormat) {
-  if (!recordedBlob.value) return
-  resetConversion()
-  try {
-    await convertBlob(recordedBlob.value, targetFormat, downloadFilename.value, selectedChannelMode.value === 'mono')
-  } catch (error) {
-    // Error already handled in composable
+  function handleDownload() {
+    // Reset download link after short delay to allow download to start
+    setTimeout(() => {
+      resetDownload()
+    }, 100)
   }
-}
 
-function handleConvertedDownload() {
-  setTimeout(() => {
+  function handleDismiss() {
     resetConversion()
-  }, 100)
-}
+    resetDownload()
+    toast.info('toast_rec_dismissed')
+  }
+
+  async function handleConvert(targetFormat) {
+    if (!recordedBlob.value) return
+    resetConversion()
+    try {
+      await convertBlob(
+        recordedBlob.value,
+        targetFormat,
+        downloadFilename.value,
+        selectedChannelMode.value === 'mono'
+      )
+    } catch (error) {
+      // Error already handled in composable
+    }
+  }
+
+  function handleConvertedDownload() {
+    setTimeout(() => {
+      resetConversion()
+    }, 100)
+  }
 </script>
 
 <style scoped>
-.recorder-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
-}
-
-.recorder-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.recorder-field .form-select {
-  width: auto;
-  min-width: 140px;
-}
-
-.recorder-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-direction: row;
-  align-items: center;
-}
-
-/* Success feedback */
-.recording-success {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  margin-top: 0.75rem;
-  background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.05));
-  border: 1px solid rgba(40, 167, 69, 0.3);
-  border-radius: 8px;
-  color: #28a745;
-  font-weight: 500;
-  animation: successFadeIn 0.4s ease-out;
-}
-
-.recording-success i {
-  font-size: 1.2rem;
-  animation: successPulse 1s ease-in-out;
-}
-
-/* Download button animation */
-.download-ready {
-  animation: downloadPulse 0.6s ease-out;
-  border-color: #28a745 !important;
-  color: #28a745 !important;
-}
-
-.download-ready:hover {
-  background-color: #28a745 !important;
-  color: white !important;
-}
-
-@keyframes successFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes successPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
-
-@keyframes downloadPulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-  }
-}
-
-/* Format conversion */
-.convert-section {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  margin-top: 0.75rem;
-  background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(100, 149, 237, 0.03));
-  border: 1px solid rgba(100, 149, 237, 0.25);
-  border-radius: 8px;
-}
-
-.convert-label {
-  font-size: 0.9rem;
-  opacity: 0.85;
-  white-space: nowrap;
-}
-
-.convert-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.convert-progress {
-  padding: 0.75rem 1rem;
-  margin-top: 0.75rem;
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.03));
-  border: 1px solid rgba(255, 193, 7, 0.25);
-  border-radius: 8px;
-  font-size: 0.9rem;
-}
-
-.convert-download {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-  animation: successFadeIn 0.4s ease-out;
-}
-
-@media (max-width: 768px) {
   .recorder-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+  }
+
+  .recorder-field {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    gap: 0.4rem;
   }
 
   .recorder-field .form-select {
-    width: 100%;
+    width: auto;
+    min-width: 140px;
   }
 
   .recorder-actions {
-    flex-direction: column;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: row;
+    align-items: center;
   }
 
+  /* Success feedback */
+  .recording-success {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.05));
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    border-radius: 8px;
+    color: #28a745;
+    font-weight: 500;
+    animation: successFadeIn 0.4s ease-out;
+  }
+
+  .recording-success i {
+    font-size: 1.2rem;
+    animation: successPulse 1s ease-in-out;
+  }
+
+  /* Download button animation */
+  .download-ready {
+    animation: downloadPulse 0.6s ease-out;
+    border-color: #28a745 !important;
+    color: #28a745 !important;
+  }
+
+  .download-ready:hover {
+    background-color: #28a745 !important;
+    color: white !important;
+  }
+
+  @keyframes successFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes successPulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  @keyframes downloadPulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.5);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 8px rgba(40, 167, 69, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+  }
+
+  /* Format conversion */
   .convert-section {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(100, 149, 237, 0.03));
+    border: 1px solid rgba(100, 149, 237, 0.25);
+    border-radius: 8px;
+  }
+
+  .convert-label {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    white-space: nowrap;
+  }
+
+  .convert-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .convert-progress {
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.03));
+    border: 1px solid rgba(255, 193, 7, 0.25);
+    border-radius: 8px;
+    font-size: 0.9rem;
   }
 
   .convert-download {
-    flex-direction: column;
-    align-items: stretch;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    animation: successFadeIn 0.4s ease-out;
   }
-}
+
+  @media (max-width: 768px) {
+    .recorder-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .recorder-field .form-select {
+      width: 100%;
+    }
+
+    .recorder-actions {
+      flex-direction: column;
+    }
+
+    .convert-section {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .convert-download {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
 </style>
