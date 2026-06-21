@@ -1,54 +1,84 @@
 <template>
-  <div>
-    <div class="osc-header-row">
-      <h2>{{ t('osc_title') }}</h2>
-      <div class="undo-redo-controls">
-        <button
-          class="btn btn-secondary undo-redo-btn"
-          :disabled="!canUndo"
-          :title="`${t('osc_undo')} (Ctrl+Z)${canUndo ? ' (' + undoCount + ')' : ''}`"
-          @click="handleUndo"
-        >
-          <i class="fas fa-undo"></i>
-          <span class="undo-redo-label">{{ t('osc_undo') }}</span>
-          <span v-if="canUndo" class="undo-redo-count">{{ undoCount }}</span>
-        </button>
-        <button
-          class="btn btn-secondary undo-redo-btn"
-          :disabled="!canRedo"
-          :title="`${t('osc_redo')} (Ctrl+Y)${canRedo ? ' (' + redoCount + ')' : ''}`"
-          @click="handleRedo"
-        >
-          <i class="fas fa-redo"></i>
-          <span class="undo-redo-label">{{ t('osc_redo') }}</span>
-          <span v-if="canRedo" class="undo-redo-count">{{ redoCount }}</span>
-        </button>
+  <div class="osc-master-detail">
+    <!-- Left: List panel -->
+    <aside class="osc-list-panel">
+      <div class="osc-list-header">
+        <h2 class="osc-list-title">{{ t('osc_title') }}</h2>
+        <div class="undo-redo-controls">
+          <button
+            class="btn btn-secondary undo-redo-btn"
+            :disabled="!canUndo"
+            :title="`${t('osc_undo')} (Ctrl+Z)${canUndo ? ' (' + undoCount + ')' : ''}`"
+            @click="handleUndo"
+          >
+            <i class="fas fa-undo"></i>
+            <span v-if="canUndo" class="undo-redo-count">{{ undoCount }}</span>
+          </button>
+          <button
+            class="btn btn-secondary undo-redo-btn"
+            :disabled="!canRedo"
+            :title="`${t('osc_redo')} (Ctrl+Y)${canRedo ? ' (' + redoCount + ')' : ''}`"
+            @click="handleRedo"
+          >
+            <i class="fas fa-redo"></i>
+            <span v-if="canRedo" class="undo-redo-count">{{ redoCount }}</span>
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="oscillators-grid">
+
+      <nav class="osc-list">
+        <OscillatorListRow
+          v-for="(osc, index) in store.oscillators"
+          :key="index"
+          :oscillator-id="index"
+          :oscillator="osc"
+          :selected="selectedId === index"
+          @select="selectedId = index"
+          @toggle-enabled="handleToggleEnabled(index, $event)"
+        />
+      </nav>
+    </aside>
+
+    <!-- Right: Editor panel -->
+    <div class="osc-editor-panel">
       <OscillatorItem
-        v-for="(osc, index) in store.oscillators"
-        :key="index"
-        :oscillator-id="index"
-        :oscillator="osc"
+        v-if="selectedOscillator"
+        :key="selectedId"
+        :oscillator-id="selectedId"
+        :oscillator="selectedOscillator"
       />
+      <div v-else class="osc-editor-placeholder">
+        <i class="fas fa-wave-square"></i>
+        <p>{{ t('osc_editor_placeholder') }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-  import { onMounted, onUnmounted } from 'vue'
+  import { ref, computed, onMounted, onUnmounted } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useUndoRedo } from '@/composables/useUndoRedo'
+  import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
   import { translations } from '@/i18n/translations'
   import OscillatorItem from './OscillatorItem.vue'
+  import OscillatorListRow from './oscillator/OscillatorListRow.vue'
 
   const store = useAlarmStore()
   const { canUndo, canRedo, undoCount, redoCount, undo, redo } = useUndoRedo()
+  const { updateOscillatorParameter } = useOscillators()
   const toast = useToast()
 
-  const t = (key) => translations[store.currentLang]?.[key] || key
+  const t = (key) => translations[store.currentLang]?.[key] ?? key
+
+  const selectedId = ref(0)
+  const selectedOscillator = computed(() => store.oscillators[selectedId.value] ?? null)
+
+  function handleToggleEnabled(index, value) {
+    updateOscillatorParameter(index, 'enabled', value)
+    if (!store.oscillators[index].enabled && selectedId.value !== index) return
+  }
 
   function handleUndo() {
     undo()
@@ -61,7 +91,6 @@
   }
 
   function handleKeyboard(event) {
-    // Ignore if typing in an input/textarea/select
     const tag = event.target.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
 
@@ -78,11 +107,6 @@
     }
   }
 
-  onMounted(() => {
-    document.addEventListener('keydown', handleKeyboard)
-  })
-
-  onUnmounted(() => {
-    document.removeEventListener('keydown', handleKeyboard)
-  })
+  onMounted(() => document.addEventListener('keydown', handleKeyboard))
+  onUnmounted(() => document.removeEventListener('keydown', handleKeyboard))
 </script>

@@ -94,6 +94,9 @@ export const translations = {
     osc_advanced_hide: 'Erweiterte Optionen ausblenden',
     osc_pattern: 'Pattern',
     osc_pattern_help: 'Kommagetrennt: Zeit in ms für (an, aus, an, aus, ...)',
+    osc_disabled_label: 'Deaktiviert',
+    osc_editor_placeholder: 'Wähle einen Oszillator aus der Liste',
+    osc_adsr_section: 'Hüllkurve & Muster',
 
     // Recording
     rec_title: 'Live aufnehmen (MediaRecorder)',
@@ -341,6 +344,9 @@ export const translations = {
     osc_advanced_hide: 'Hide advanced options',
     osc_pattern: 'Pattern',
     osc_pattern_help: 'Comma-separated: time in ms for (on, off, on, off, ...)',
+    osc_disabled_label: 'Disabled',
+    osc_editor_placeholder: 'Select an oscillator from the list',
+    osc_adsr_section: 'Envelope & Pattern',
 
     // Recording
     rec_title: 'Live Recording (MediaRecorder)',

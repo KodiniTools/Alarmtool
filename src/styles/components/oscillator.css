@@ -1,179 +1,466 @@
-/* Oscillators Grid */
-.oscillators-grid {
+/* ─── Master-Detail Layout ─────────────────────────────────────── */
+
+.osc-master-detail {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-6);
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-4);
+  min-height: 520px;
+  align-items: start;
 }
 
-/* Oscillator Card */
-.oscillator-item {
-  padding: var(--space-5);
-  border-radius: 10px;
-  background: rgba(14, 28, 50, 0.5);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(122, 141, 160, 0.15);
+/* ─── List Panel (left) ────────────────────────────────────────── */
+
+.osc-list-panel {
+  background: rgba(9, 20, 40, 0.4);
+  border-radius: var(--at-radius);
+  border: 1px solid rgba(122, 141, 160, 0.12);
+  overflow: hidden;
+  position: sticky;
+  top: var(--space-4);
+}
+
+[data-theme='light'] .osc-list-panel {
+  background: rgba(249, 242, 213, 0.5);
+  border-color: rgba(0, 57, 113, 0.1);
+}
+
+.osc-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid rgba(122, 141, 160, 0.12);
+}
+
+.osc-list-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--at-muted);
+  margin-bottom: 0;
+}
+
+.osc-list {
+  padding: var(--space-1) 0;
+}
+
+/* ─── List Row ─────────────────────────────────────────────────── */
+
+.osc-list-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--at-speed) ease;
+  color: var(--at-text);
   position: relative;
 }
 
-.oscillator-item:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  border-color: rgba(201, 152, 77, 0.25);
+.osc-list-row:hover {
+  background: rgba(201, 152, 77, 0.06);
 }
 
-[data-theme='light'] .oscillator-item {
-  background: rgba(249, 242, 213, 0.45);
-  border: 1px solid rgba(0, 57, 113, 0.1);
+.osc-list-row--selected {
+  background: rgba(201, 152, 77, 0.1);
 }
 
-[data-theme='light'] .oscillator-item:hover {
-  border-color: rgba(1, 79, 153, 0.3);
+.osc-list-row--selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: var(--at-primary);
+  border-radius: 0 2px 2px 0;
 }
 
-/* Oscillator Header */
-.oscillator-header {
+[data-theme='light'] .osc-list-row:hover {
+  background: rgba(1, 79, 153, 0.06);
+}
+
+[data-theme='light'] .osc-list-row--selected {
+  background: rgba(1, 79, 153, 0.08);
+}
+
+.osc-list-row--disabled {
+  opacity: 0.55;
+}
+
+/* Row toggle dot */
+.osc-row-toggle {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-4);
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--at-muted);
+  transition: border-color var(--at-speed) ease;
 }
 
-.oscillator-title-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+.osc-row-toggle:hover {
+  border-color: var(--at-primary);
 }
 
-.oscillator-title {
-  font-size: 0.95rem;
+.osc-row-toggle-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--at-muted);
+  transition: background var(--at-speed) ease;
+}
+
+.osc-row-toggle-dot--on {
+  background: var(--at-primary);
+}
+
+.osc-row-toggle:has(.osc-row-toggle-dot--on) {
+  border-color: var(--at-primary);
+}
+
+/* Row name */
+.osc-row-name {
+  font-size: 0.82rem;
   font-weight: 500;
-  color: var(--at-primary);
-  letter-spacing: 0.01em;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.osc-actions {
+/* Row meta (frequency / disabled label) */
+.osc-row-meta {
+  font-size: 0.7rem;
+  color: var(--at-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.osc-row-meta--dim {
+  font-style: italic;
+  opacity: 0.6;
+}
+
+/* ─── Waveform Chip ────────────────────────────────────────────── */
+
+.osc-wave-chip {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+.osc-wave-chip--sine {
+  background: rgba(126, 200, 155, 0.15);
+  color: var(--at-success);
+}
+
+.osc-wave-chip--square {
+  background: rgba(201, 152, 77, 0.15);
+  color: var(--at-primary);
+}
+
+.osc-wave-chip--sawtooth {
+  background: rgba(224, 112, 112, 0.15);
+  color: var(--at-danger);
+}
+
+.osc-wave-chip--triangle {
+  background: rgba(1, 79, 153, 0.15);
+  color: var(--at-info);
+}
+
+/* ─── Editor Panel (right) ─────────────────────────────────────── */
+
+.osc-editor-panel {
+  min-width: 0;
+}
+
+.osc-editor {
+  background: rgba(14, 28, 50, 0.5);
+  border-radius: var(--at-radius);
+  border: 1px solid rgba(122, 141, 160, 0.15);
+  overflow: hidden;
+}
+
+[data-theme='light'] .osc-editor {
+  background: rgba(249, 242, 213, 0.4);
+  border-color: rgba(0, 57, 113, 0.1);
+}
+
+.osc-editor--disabled {
+  opacity: 0.65;
+}
+
+/* Editor Header */
+.osc-editor-header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: rgba(9, 20, 40, 0.3);
+  border-bottom: 1px solid rgba(122, 141, 160, 0.1);
+}
+
+[data-theme='light'] .osc-editor-header {
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom-color: rgba(0, 57, 113, 0.08);
+}
+
+.osc-editor-title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.osc-editor-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--at-text);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.osc-editor-wave-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.osc-editor-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.osc-action-label {
+  font-size: 0.75rem;
+}
+
+/* Editor Section */
+.osc-editor-section {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid rgba(122, 141, 160, 0.08);
+}
+
+.osc-editor-section:last-child {
+  border-bottom: none;
+}
+
+/* ─── Waveform Selector ────────────────────────────────────────── */
+
+.osc-wave-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+}
+
+.osc-wave-btn {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: var(--space-1);
-}
-
-.more-options-btn {
-  background: none;
-  border: none;
-  color: var(--at-info);
-  font-size: 1.2em;
+  padding: var(--space-3) var(--space-2);
+  background: rgba(9, 20, 40, 0.3);
+  border: 1px solid rgba(122, 141, 160, 0.15);
+  border-radius: var(--at-radius-sm);
   cursor: pointer;
-  padding: var(--space-1);
-  transition: color var(--at-speed) ease;
+  color: var(--at-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition:
+    background var(--at-speed) ease,
+    border-color var(--at-speed) ease,
+    color var(--at-speed) ease;
 }
 
-.more-options-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
+[data-theme='light'] .osc-wave-btn {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 57, 113, 0.1);
 }
 
-.more-options-btn:hover {
+.osc-wave-btn:hover:not(:disabled) {
+  background: rgba(201, 152, 77, 0.08);
+  border-color: rgba(201, 152, 77, 0.3);
   color: var(--at-text);
 }
 
-/* Toggle Switch */
-.toggle-switch {
-  position: relative;
-  display: inline-block;
-  width: 36px;
+.osc-wave-btn--active {
+  background: rgba(201, 152, 77, 0.12) !important;
+  border-color: var(--at-primary) !important;
+  color: var(--at-primary) !important;
+}
+
+[data-theme='light'] .osc-wave-btn--active {
+  background: rgba(201, 152, 77, 0.1) !important;
+}
+
+.osc-wave-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.osc-wave-icon {
+  width: 40px;
   height: 20px;
-  cursor: pointer;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+/* ─── Parameter Grid ───────────────────────────────────────────── */
+
+.osc-params-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 var(--space-6);
 }
 
-.toggle-slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--at-muted);
-  border-radius: 20px;
-}
+/* ─── ADSR Toggle ──────────────────────────────────────────────── */
 
-.toggle-slider::before {
-  content: '';
-  position: absolute;
-  height: 14px;
-  width: 14px;
-  left: 3px;
-  bottom: 3px;
-  background-color: var(--at-text);
-  border-radius: 50%;
-  transition: all 0.25s ease;
-}
-
-.toggle-switch input:checked + .toggle-slider {
-  background-color: var(--at-primary);
-}
-
-.toggle-switch input:checked + .toggle-slider::before {
-  transform: translateX(16px);
-  background-color: var(--at-primary-fg);
-}
-
-.toggle-switch:hover .toggle-slider {
-  opacity: 0.9;
-}
-
-/* Disabled State */
-.oscillator-disabled {
-  opacity: 0.5;
-}
-
-.oscillator-disabled .oscillator-title {
+.osc-adsr-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: none;
   color: var(--at-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: var(--space-3);
+  transition: color var(--at-speed) ease;
 }
 
+.osc-adsr-toggle:hover:not(:disabled) {
+  color: var(--at-text);
+}
+
+.osc-adsr-toggle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.osc-adsr-toggle .fas {
+  font-size: 0.65rem;
+  color: var(--at-primary);
+}
+
+.osc-adsr-body {
+  padding-top: var(--space-2);
+}
+
+/* ─── Editor Placeholder ───────────────────────────────────────── */
+
+.osc-editor-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 300px;
+  color: var(--at-muted);
+  font-size: 0.9rem;
+  border-radius: var(--at-radius);
+  border: 1px dashed rgba(122, 141, 160, 0.2);
+}
+
+.osc-editor-placeholder i {
+  font-size: 2rem;
+  opacity: 0.35;
+}
+
+/* Shared disabled overlay */
 .controls-disabled {
   pointer-events: none;
   opacity: 0.4;
 }
 
-/* Advanced Options */
-.advanced-options {
-  margin-top: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid rgba(201, 152, 77, 0.2);
-}
+/* ─── Responsive ───────────────────────────────────────────────── */
 
-/* Responsive */
-@media (max-width: 768px) {
-  .oscillators-grid {
+@media (max-width: 900px) {
+  .osc-master-detail {
+    grid-template-columns: 180px 1fr;
+  }
+
+  .osc-wave-selector {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-3);
   }
 
-  .oscillator-item {
-    padding: var(--space-4);
-  }
-
-  .oscillator-header {
-    margin-bottom: var(--space-3);
+  .osc-action-label {
+    display: none;
   }
 }
 
-@media (max-width: 480px) {
-  .oscillators-grid {
+@media (max-width: 640px) {
+  .osc-master-detail {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .osc-list-panel {
+    position: static;
+  }
+
+  .osc-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: var(--space-1);
+    gap: 2px;
+  }
+
+  .osc-list-row--selected::before {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: 0;
+    border-radius: var(--at-radius-xs) var(--at-radius-xs) 0 0;
+  }
+
+  .osc-params-grid {
     grid-template-columns: 1fr;
   }
 
-  .oscillator-item {
-    padding: 0.85rem;
+  .osc-wave-selector {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .osc-list {
+    grid-template-columns: 1fr;
   }
 
-  .oscillator-title {
-    font-size: 0.85rem;
+  .osc-wave-selector {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
