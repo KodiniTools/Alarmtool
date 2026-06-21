@@ -15,7 +15,7 @@ let _delayNode = null
 let _feedbackGain = null
 let _convolverNode = null
 let _reverbGain = null
-let _oscNodes = []        // { osc, gain, pan }
+let _oscNodes = [] // { osc, gain, pan }
 let _patternTimeouts = [] // setTimeout IDs
 let _activePresetId = ref(null)
 let _isPlaying = ref(false)
@@ -23,7 +23,6 @@ let _isPaused = ref(false)
 let _volume = ref(0.6)
 
 export function usePresetPreview() {
-
   // ── helpers ───────────────────────────────────────────────────────────
 
   function _initCtx() {
@@ -76,7 +75,10 @@ export function usePresetPreview() {
 
   function _parsePattern(patternStr) {
     try {
-      const nums = patternStr.split(',').map(x => parseFloat(x.trim())).filter(n => !isNaN(n) && n > 0)
+      const nums = patternStr
+        .split(',')
+        .map((x) => parseFloat(x.trim()))
+        .filter((n) => !isNaN(n) && n > 0)
       return nums.length >= 2 && nums.length % 2 === 0 ? nums : [1500, 300]
     } catch {
       return [1500, 300]
@@ -171,11 +173,11 @@ export function usePresetPreview() {
           steps: _parsePattern(oscCfg.pattern),
           stepIdx: 0,
           toneIsOn: false,
-          timeoutId: null
+          timeoutId: null,
         }
 
         _oscNodes.push(entry)
-      } catch (e) {
+      } catch (_e) {
         // Oscillator creation failed — skip this one
       }
     })
@@ -185,7 +187,7 @@ export function usePresetPreview() {
     _isPaused.value = false
 
     // Start patterns
-    _oscNodes.forEach(entry => _runPattern(entry))
+    _oscNodes.forEach((entry) => _runPattern(entry))
   }
 
   function pausePreview() {
@@ -198,7 +200,7 @@ export function usePresetPreview() {
     }
 
     // Clear pattern timeouts
-    _patternTimeouts.forEach(tid => clearTimeout(tid))
+    _patternTimeouts.forEach((tid) => clearTimeout(tid))
     _patternTimeouts = []
   }
 
@@ -211,16 +213,16 @@ export function usePresetPreview() {
     }
 
     // Re-start patterns
-    _oscNodes.forEach(entry => _runPattern(entry))
+    _oscNodes.forEach((entry) => _runPattern(entry))
   }
 
   function stopPreview() {
     // Clear all pattern timeouts
-    _patternTimeouts.forEach(tid => clearTimeout(tid))
+    _patternTimeouts.forEach((tid) => clearTimeout(tid))
     _patternTimeouts = []
 
     // Stop & disconnect oscillators immediately (no delay needed for cleanup-only stop)
-    _oscNodes.forEach(entry => {
+    _oscNodes.forEach((entry) => {
       try {
         if (entry.gain && _audioCtx) {
           const now = _audioCtx.currentTime
@@ -234,15 +236,23 @@ export function usePresetPreview() {
             entry.osc.disconnect()
             entry.gain.disconnect()
             entry.pan.disconnect()
-          } catch {}
+          } catch {
+            /* ignore */
+          }
         }, 80)
-      } catch {}
+      } catch {
+        /* ignore */
+      }
     })
     _oscNodes = []
 
     // Disconnect filter (rebuilt per-preset in _applyFilter), keep effect chain alive
     if (_filterNode) {
-      try { _filterNode.disconnect() } catch {}
+      try {
+        _filterNode.disconnect()
+      } catch {
+        /* ignore */
+      }
       _filterNode = null
     }
 
@@ -256,7 +266,13 @@ export function usePresetPreview() {
 
     // Disconnect effect chain nodes
     for (const node of [_masterGain, _delayNode, _feedbackGain, _convolverNode, _reverbGain]) {
-      if (node) { try { node.disconnect() } catch {} }
+      if (node) {
+        try {
+          node.disconnect()
+        } catch {
+          /* ignore */
+        }
+      }
     }
     _delayNode = null
     _feedbackGain = null
@@ -268,7 +284,11 @@ export function usePresetPreview() {
       const ctx = _audioCtx
       _audioCtx = null
       _masterGain = null
-      try { ctx.close() } catch {}
+      try {
+        ctx.close()
+      } catch {
+        /* ignore */
+      }
     }
   }
 
@@ -293,6 +313,6 @@ export function usePresetPreview() {
     pausePreview,
     resumePreview,
     stopPreview,
-    setPreviewVolume
+    setPreviewVolume,
   }
 }

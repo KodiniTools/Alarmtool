@@ -66,73 +66,73 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useAlarmStore } from '@/stores/alarmStore'
-import { translations } from '@/i18n/translations'
-import { usePlayer } from '@/composables/usePlayer'
+  import { ref, onMounted, onUnmounted } from 'vue'
+  import { useAlarmStore } from '@/stores/alarmStore'
+  import { translations } from '@/i18n/translations'
+  import { usePlayer } from '@/composables/usePlayer'
 
-import FilterControl from '@/components/FilterControl.vue'
-import OscillatorGrid from '@/components/OscillatorGrid.vue'
-import RecorderControl from '@/components/RecorderControl.vue'
-import PresetsSection from '@/components/PresetsSection.vue'
-import FAQSection from '@/components/FAQSection.vue'
-import SettingsPanel from '@/components/SettingsPanel.vue'
-import PlayerControl from '@/components/PlayerControl.vue'
-import DonateButton from '@/components/DonateButton.vue'
-import ToastContainer from '@/components/ToastContainer.vue'
+  import FilterControl from '@/components/FilterControl.vue'
+  import OscillatorGrid from '@/components/OscillatorGrid.vue'
+  import RecorderControl from '@/components/RecorderControl.vue'
+  import PresetsSection from '@/components/PresetsSection.vue'
+  import FAQSection from '@/components/FAQSection.vue'
+  import SettingsPanel from '@/components/SettingsPanel.vue'
+  import PlayerControl from '@/components/PlayerControl.vue'
+  import DonateButton from '@/components/DonateButton.vue'
+  import ToastContainer from '@/components/ToastContainer.vue'
 
-const store = useAlarmStore()
-const { handleKeyboard } = usePlayer()
+  const store = useAlarmStore()
+  const { handleKeyboard } = usePlayer()
 
-const activeTab = ref('filter')
-const tabs = [
-  { id: 'filter', label: 'tab_filter', icon: 'fas fa-filter' },
-  { id: 'oscillators', label: 'tab_oscillators', icon: 'fas fa-wave-square' },
-  { id: 'recording', label: 'tab_recording', icon: 'fas fa-microphone' },
-  { id: 'presets', label: 'tab_presets', icon: 'fas fa-music' },
-  { id: 'faq', label: 'tab_faq', icon: 'fas fa-question-circle' }
-]
+  const activeTab = ref('filter')
+  const tabs = [
+    { id: 'filter', label: 'tab_filter', icon: 'fas fa-filter' },
+    { id: 'oscillators', label: 'tab_oscillators', icon: 'fas fa-wave-square' },
+    { id: 'recording', label: 'tab_recording', icon: 'fas fa-microphone' },
+    { id: 'presets', label: 'tab_presets', icon: 'fas fa-music' },
+    { id: 'faq', label: 'tab_faq', icon: 'fas fa-question-circle' },
+  ]
 
-// Translation helper
-const t = (key) => {
-  return translations[store.currentLang]?.[key] || key
-}
-
-// SSI nav event handlers
-const onLocaleChanged = (e) => {
-  if (e.detail?.locale) {
-    store.setLanguage(e.detail.locale)
-  }
-}
-
-const onThemeChanged = (e) => {
-  if (e.detail?.theme) {
-    store.setTheme(e.detail.theme)
-  }
-}
-
-onMounted(() => {
-  // Sync with SSI nav's current state (it may have initialized before Vue)
-  const ssiTheme = document.documentElement.getAttribute('data-theme')
-  if (ssiTheme) {
-    store.currentTheme = ssiTheme
-  }
-  const ssiLang = document.documentElement.getAttribute('lang')
-  if (ssiLang && (ssiLang === 'de' || ssiLang === 'en')) {
-    store.currentLang = ssiLang
+  // Translation helper
+  const t = (key) => {
+    return translations[store.currentLang]?.[key] || key
   }
 
-  // Listen for SSI nav language/theme changes
-  window.addEventListener('locale-changed', onLocaleChanged)
-  window.addEventListener('theme-changed', onThemeChanged)
+  // SSI nav event handlers
+  const onLocaleChanged = (e) => {
+    if (e.detail?.locale) {
+      store.setLanguage(e.detail.locale)
+    }
+  }
 
-  // Add keyboard event listener
-  document.addEventListener('keydown', handleKeyboard)
-})
+  const onThemeChanged = (e) => {
+    if (e.detail?.theme) {
+      store.setTheme(e.detail.theme)
+    }
+  }
 
-onUnmounted(() => {
-  window.removeEventListener('locale-changed', onLocaleChanged)
-  window.removeEventListener('theme-changed', onThemeChanged)
-  document.removeEventListener('keydown', handleKeyboard)
-})
+  onMounted(() => {
+    // Sync with SSI nav's current state (it may have initialized before Vue)
+    const ssiTheme = document.documentElement.getAttribute('data-theme')
+    if (ssiTheme) {
+      store.currentTheme = ssiTheme
+    }
+    const ssiLang = document.documentElement.getAttribute('lang')
+    if (ssiLang && (ssiLang === 'de' || ssiLang === 'en')) {
+      store.currentLang = ssiLang
+    }
+
+    // Listen for SSI nav language/theme changes
+    window.addEventListener('locale-changed', onLocaleChanged)
+    window.addEventListener('theme-changed', onThemeChanged)
+
+    // Add keyboard event listener
+    document.addEventListener('keydown', handleKeyboard)
+  })
+
+  onUnmounted(() => {
+    window.removeEventListener('locale-changed', onLocaleChanged)
+    window.removeEventListener('theme-changed', onThemeChanged)
+    document.removeEventListener('keydown', handleKeyboard)
+  })
 </script>

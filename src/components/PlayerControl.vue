@@ -8,9 +8,9 @@
           id="playerPlay"
           class="btn btn-primary player-btn"
           :disabled="store.isPlaying && !store.isPaused"
-          @click="handlePlay"
           :title="store.isPaused ? t('player_resume') : t('player_play')"
           :aria-label="store.isPaused ? t('player_resume') : t('player_play')"
+          @click="handlePlay"
         >
           <i class="fas fa-play" aria-hidden="true"></i>
         </button>
@@ -20,9 +20,9 @@
           id="playerPause"
           class="btn btn-secondary player-btn"
           :disabled="!store.isPlaying || store.isPaused"
-          @click="pauseAlarm"
           :title="t('player_pause')"
           :aria-label="t('player_pause')"
+          @click="pauseAlarm"
         >
           <i class="fas fa-pause" aria-hidden="true"></i>
         </button>
@@ -32,9 +32,9 @@
           id="playerStop"
           class="btn btn-danger player-btn"
           :disabled="!store.isPlaying"
-          @click="stopAlarm"
           :title="t('player_stop')"
           :aria-label="t('player_stop')"
+          @click="stopAlarm"
         >
           <i class="fas fa-stop" aria-hidden="true"></i>
         </button>
@@ -65,7 +65,10 @@
             :aria-pressed="store.isMuted"
             @click="toggleMute"
           >
-            <i :class="store.isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up'" aria-hidden="true"></i>
+            <i
+              :class="store.isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up'"
+              aria-hidden="true"
+            ></i>
           </button>
           <input
             id="playerVolume"
@@ -104,49 +107,48 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useAlarmStore } from '@/stores/alarmStore'
-import { usePlayer } from '@/composables/usePlayer'
-import { translations } from '@/i18n/translations'
+  import { computed } from 'vue'
+  import { useAlarmStore } from '@/stores/alarmStore'
+  import { usePlayer } from '@/composables/usePlayer'
+  import { translations } from '@/i18n/translations'
 
-const store = useAlarmStore()
-const {
-  startAlarm,
-  pauseAlarm,
-  resumeAlarm,
-  stopAlarm,
-  updateVolume,
-  toggleMute,
-  toggleLoop,
-  formatTime
-} = usePlayer()
+  const store = useAlarmStore()
+  const {
+    startAlarm,
+    pauseAlarm,
+    resumeAlarm,
+    stopAlarm,
+    updateVolume,
+    toggleMute,
+    toggleLoop,
+    formatTime,
+  } = usePlayer()
 
-const t = (key) => translations[store.currentLang]?.[key] || key
+  const t = (key) => translations[store.currentLang]?.[key] || key
 
-const PROGRESS_CYCLE_MS = 30000
+  const PROGRESS_CYCLE_MS = 30000
 
-const progressValue = computed(() => {
-  return (store.currentTime % PROGRESS_CYCLE_MS) / PROGRESS_CYCLE_MS * 100
-})
+  const progressValue = computed(() => {
+    return ((store.currentTime % PROGRESS_CYCLE_MS) / PROGRESS_CYCLE_MS) * 100
+  })
 
-function handlePlay() {
-  if (store.isPaused) {
-    resumeAlarm()
-  } else {
-    startAlarm()
+  function handlePlay() {
+    if (store.isPaused) {
+      resumeAlarm()
+    } else {
+      startAlarm()
+    }
   }
-}
 </script>
 
 <style scoped>
-.player-btn.active {
-  background-color: var(--titaniumgraphite-1) !important;
-  color: var(--titaniumgraphite-4) !important;
-  box-shadow: 0 2px 8px rgba(201, 152, 77, 0.3);
-}
+  .player-btn.active {
+    background-color: var(--titaniumgraphite-1) !important;
+    color: var(--titaniumgraphite-4) !important;
+    box-shadow: 0 2px 8px rgba(201, 152, 77, 0.3);
+  }
 
-[data-theme="light"] .player-btn.active {
-  box-shadow: 0 2px 8px rgba(201, 152, 77, 0.25);
-}
-
+  [data-theme='light'] .player-btn.active {
+    box-shadow: 0 2px 8px rgba(201, 152, 77, 0.25);
+  }
 </style>

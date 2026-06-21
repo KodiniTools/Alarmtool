@@ -31,15 +31,12 @@ export function usePlayer() {
       // Set volume
       if (store.masterGainNode && store.audioCtx) {
         const targetVolume = store.isMuted ? 0 : store.volume
-        store.masterGainNode.gain.setValueAtTime(
-          targetVolume,
-          store.audioCtx.currentTime
-        )
+        store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
       }
 
       // Create and start oscillators
       createOscillators()
-      
+
       // Start patterns
       store.oscillators.forEach((_, index) => {
         runOscPattern(index)
@@ -49,7 +46,7 @@ export function usePlayer() {
       startPlaybackTimer()
 
       toast.success('toast_alarm_started')
-    } catch (error) {
+    } catch (_error) {
       toast.error('toast_alarm_start_error')
       store.isPlaying = false
       store.isAlarmRunning = false
@@ -83,10 +80,7 @@ export function usePlayer() {
     // Resume audio by restoring gain
     if (store.masterGainNode && store.audioCtx) {
       const targetVolume = store.isMuted ? 0 : store.volume
-      store.masterGainNode.gain.setValueAtTime(
-        targetVolume,
-        store.audioCtx.currentTime
-      )
+      store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
     }
 
     // Resume timer
@@ -139,7 +133,13 @@ export function usePlayer() {
   function updateVolume(value) {
     store.volume = value
 
-    if (store.masterGainNode && store.audioCtx && store.isPlaying && !store.isPaused && !store.isMuted) {
+    if (
+      store.masterGainNode &&
+      store.audioCtx &&
+      store.isPlaying &&
+      !store.isPaused &&
+      !store.isMuted
+    ) {
       store.masterGainNode.gain.setValueAtTime(value, store.audioCtx.currentTime)
     }
   }
@@ -206,6 +206,6 @@ export function usePlayer() {
     toggleMute,
     toggleLoop,
     formatTime,
-    handleKeyboard
+    handleKeyboard,
   }
 }

@@ -4,14 +4,14 @@ import { translations } from '@/i18n/translations'
 
 const state = reactive({
   toasts: [],
-  nextId: 0
+  nextId: 0,
 })
 
 const TOAST_DEFAULTS = {
   success: { icon: 'fas fa-check-circle', duration: 3500 },
   error: { icon: 'fas fa-exclamation-circle', duration: 6000 },
   warning: { icon: 'fas fa-exclamation-triangle', duration: 5000 },
-  info: { icon: 'fas fa-info-circle', duration: 4000 }
+  info: { icon: 'fas fa-info-circle', duration: 4000 },
 }
 
 function t(key) {
@@ -23,9 +23,7 @@ function addToast(type, messageKey, options = {}) {
   const defaults = TOAST_DEFAULTS[type] || TOAST_DEFAULTS.info
   const id = state.nextId++
 
-  const message = options.raw
-    ? messageKey
-    : t(messageKey)
+  const message = options.raw ? messageKey : t(messageKey)
 
   const toast = {
     id,
@@ -34,14 +32,14 @@ function addToast(type, messageKey, options = {}) {
     icon: options.icon || defaults.icon,
     duration: options.duration || defaults.duration,
     visible: false,
-    leaving: false
+    leaving: false,
   }
 
   state.toasts.push(toast)
 
   // Trigger enter animation on next tick
   requestAnimationFrame(() => {
-    const idx = state.toasts.findIndex(t => t.id === id)
+    const idx = state.toasts.findIndex((t) => t.id === id)
     if (idx !== -1) state.toasts[idx].visible = true
   })
 
@@ -59,13 +57,13 @@ function addToast(type, messageKey, options = {}) {
 }
 
 function removeToast(id) {
-  const idx = state.toasts.findIndex(t => t.id === id)
+  const idx = state.toasts.findIndex((t) => t.id === id)
   if (idx === -1) return
 
   state.toasts[idx].leaving = true
 
   setTimeout(() => {
-    const removeIdx = state.toasts.findIndex(t => t.id === id)
+    const removeIdx = state.toasts.findIndex((t) => t.id === id)
     if (removeIdx !== -1) state.toasts.splice(removeIdx, 1)
   }, 350)
 }
@@ -96,6 +94,6 @@ export function useToast() {
 
     clear() {
       state.toasts.splice(0, state.toasts.length)
-    }
+    },
   }
 }

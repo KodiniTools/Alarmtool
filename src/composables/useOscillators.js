@@ -34,9 +34,9 @@ export function useOscillators() {
         store.updateOscillator(index, {
           oscillator: osc,
           gainNode: gainNode,
-          panNode: panNode
+          panNode: panNode,
         })
-      } catch (error) {
+      } catch (_error) {
         // Oscillator creation failed — skip this one
       }
     })
@@ -48,27 +48,27 @@ export function useOscillators() {
 
     try {
       const patternStr = oscData.pattern
-      const values = patternStr.split(',').map(x => x.trim())
-      const numbers = values.map(x => parseFloat(x)).filter(num => !isNaN(num) && num > 0)
-      
+      const values = patternStr.split(',').map((x) => x.trim())
+      const numbers = values.map((x) => parseFloat(x)).filter((num) => !isNaN(num) && num > 0)
+
       if (numbers.length >= 2 && numbers.length % 2 === 0) {
         store.updateOscillator(oscId, {
           patternSteps: numbers,
           patternIndex: 0,
-          toneIsOn: false
+          toneIsOn: false,
         })
       } else {
         store.updateOscillator(oscId, {
           patternSteps: [1500, 300],
           patternIndex: 0,
-          toneIsOn: false
+          toneIsOn: false,
         })
       }
-    } catch (error) {
+    } catch (_error) {
       store.updateOscillator(oscId, {
         patternSteps: [1500, 300],
         patternIndex: 0,
-        toneIsOn: false
+        toneIsOn: false,
       })
     }
   }
@@ -80,24 +80,24 @@ export function useOscillators() {
     if (!oscData.enabled || !store.isAlarmRunning || !oscData.patternSteps.length) {
       return
     }
-    
+
     const newToneState = !oscData.toneIsOn
     setOscTone(oscId, newToneState)
-    
+
     const stepDuration = oscData.patternSteps[oscData.patternIndex]
     const nextIndex = (oscData.patternIndex + 1) % oscData.patternSteps.length
-    
+
     store.updateOscillator(oscId, {
       toneIsOn: newToneState,
-      patternIndex: nextIndex
+      patternIndex: nextIndex,
     })
-    
+
     const timeoutId = setTimeout(() => {
       runOscPattern(oscId)
     }, stepDuration)
-    
+
     store.updateOscillator(oscId, {
-      patternTimeoutId: timeoutId
+      patternTimeoutId: timeoutId,
     })
   }
 
@@ -129,7 +129,7 @@ export function useOscillators() {
         gain.setValueAtTime(gain.value, now)
         gain.linearRampToValueAtTime(0, now + releaseSec)
       }
-    } catch (error) {
+    } catch (_error) {
       // Audio parameter update failed — non-critical
     }
   }
@@ -214,14 +214,14 @@ export function useOscillators() {
       store.updateOscillator(oscId, {
         oscillator: osc,
         gainNode: gainNode,
-        panNode: panNode
+        panNode: panNode,
       })
 
       // Start the pattern if alarm is running
       if (store.isAlarmRunning) {
         runOscPattern(oscId)
       }
-    } catch (error) {
+    } catch (_error) {
       // Oscillator start failed — skip
     }
   }
@@ -257,7 +257,9 @@ export function useOscillators() {
             oscRef.disconnect()
             gainRef.disconnect()
             panRef.disconnect()
-          } catch (e) {}
+          } catch (_e) {
+            // ignore — node already disconnected
+          }
         }, releaseSec * 1000)
 
         store.updateOscillator(oscId, {
@@ -265,9 +267,9 @@ export function useOscillators() {
           gainNode: null,
           panNode: null,
           patternTimeoutId: null,
-          toneIsOn: false
+          toneIsOn: false,
         })
-      } catch (e) {
+      } catch (_e) {
         // Stop failed — node may already be disconnected
       }
     }
@@ -278,7 +280,7 @@ export function useOscillators() {
       if (oscData.patternTimeoutId) {
         clearTimeout(oscData.patternTimeoutId)
       }
-      
+
       if (oscData.oscillator && oscData.gainNode) {
         try {
           const now = store.audioCtx.currentTime
@@ -295,16 +297,18 @@ export function useOscillators() {
               oscData.oscillator.disconnect()
               oscData.gainNode.disconnect()
               oscData.panNode.disconnect()
-            } catch (e) {}
-            
+            } catch (_e) {
+              // ignore — node already disconnected
+            }
+
             store.updateOscillator(index, {
               oscillator: null,
               gainNode: null,
               panNode: null,
-              patternTimeoutId: null
+              patternTimeoutId: null,
             })
           }, releaseSec * 1000)
-        } catch (e) {
+        } catch (_e) {
           // Stop failed — node may already be disconnected
         }
       }
@@ -319,6 +323,6 @@ export function useOscillators() {
     stopOscillators,
     parsePattern,
     startSingleOscillator,
-    stopSingleOscillator
+    stopSingleOscillator,
   }
 }

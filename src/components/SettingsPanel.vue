@@ -3,41 +3,29 @@
     <h2>{{ t('settings_title') }}</h2>
     <div class="settings-panel">
       <!-- Save Button -->
-      <button
-        id="saveSettings"
-        class="btn btn-secondary"
-        @click="saveSettings"
-      >
+      <button id="saveSettings" class="btn btn-secondary" @click="saveSettings">
         <i class="fas fa-save"></i> {{ t('settings_save') }}
       </button>
 
       <!-- Load Button -->
-      <button
-        id="loadSettings"
-        class="btn btn-secondary"
-        @click="loadSettings"
-      >
+      <button id="loadSettings" class="btn btn-secondary" @click="loadSettings">
         <i class="fas fa-folder-open"></i> {{ t('settings_load') }}
       </button>
 
       <!-- Export Button -->
-      <button
-        id="exportSettings"
-        class="btn btn-secondary"
-        @click="exportSettings"
-      >
+      <button id="exportSettings" class="btn btn-secondary" @click="exportSettings">
         <i class="fas fa-file-export"></i> {{ t('settings_export') }}
       </button>
 
       <!-- Import Button -->
-      <label for="importSettings" class="btn btn-secondary" style="margin-bottom: 0;">
+      <label for="importSettings" class="btn btn-secondary" style="margin-bottom: 0">
         <i class="fas fa-file-import"></i> {{ t('settings_import') }}
       </label>
       <input
         id="importSettings"
         type="file"
         accept=".json"
-        style="display: none;"
+        style="display: none"
         @change="importSettings"
       />
     </div>
@@ -45,147 +33,147 @@
 </template>
 
 <script setup>
-import { useAlarmStore } from '@/stores/alarmStore'
-import { useAudioContext } from '@/composables/useAudioContext'
-import { useOscillators } from '@/composables/useOscillators'
-import { useToast } from '@/composables/useToast'
-import { translations } from '@/i18n/translations'
+  import { useAlarmStore } from '@/stores/alarmStore'
+  import { useAudioContext } from '@/composables/useAudioContext'
+  import { useOscillators } from '@/composables/useOscillators'
+  import { useToast } from '@/composables/useToast'
+  import { translations } from '@/i18n/translations'
 
-const store = useAlarmStore()
-const { updateFilter } = useAudioContext()
-const { parsePattern } = useOscillators()
-const toast = useToast()
+  const store = useAlarmStore()
+  const { updateFilter } = useAudioContext()
+  const { parsePattern } = useOscillators()
+  const toast = useToast()
 
-const t = (key) => translations[store.currentLang]?.[key] || key
+  const t = (key) => translations[store.currentLang]?.[key] || key
 
-function saveSettings() {
-  try {
-    const settings = {
-      globalFilter: {
-        type: store.filterSettings.type,
-        frequency: store.filterSettings.frequency,
-        Q: store.filterSettings.Q
-      },
-      oscillators: store.oscillators.map((osc) => ({
-        waveType: osc.waveType,
-        frequency: osc.frequency,
-        volume: osc.volume,
-        pan: osc.pan,
-        attack: osc.attack,
-        decay: osc.decay,
-        sustain: osc.sustain,
-        release: osc.release,
-        pattern: osc.pattern
-      }))
-    }
-    localStorage.setItem('alarmToolSettings', JSON.stringify(settings))
-    toast.success('toast_settings_saved')
-  } catch (error) {
-    console.error('Fehler beim Speichern:', error)
-    toast.error('toast_settings_save_error')
-  }
-}
-
-function loadSettings() {
-  try {
-    const settingsStr = localStorage.getItem('alarmToolSettings')
-    if (!settingsStr) {
-      toast.info('toast_settings_none')
-      return
-    }
-    const settings = JSON.parse(settingsStr)
-    applySettings(settings)
-    toast.success('toast_settings_loaded')
-  } catch (error) {
-    console.error('Fehler beim Laden:', error)
-    toast.error('toast_settings_load_error')
-  }
-}
-
-function exportSettings() {
-  try {
-    const settings = {
-      globalFilter: {
-        type: store.filterSettings.type,
-        frequency: store.filterSettings.frequency,
-        Q: store.filterSettings.Q
-      },
-      oscillators: store.oscillators.map((osc) => ({
-        waveType: osc.waveType,
-        frequency: osc.frequency,
-        volume: osc.volume,
-        pan: osc.pan,
-        attack: osc.attack,
-        decay: osc.decay,
-        sustain: osc.sustain,
-        release: osc.release,
-        pattern: osc.pattern
-      }))
-    }
-    const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'alarmToolSettings.json'
-    a.click()
-    URL.revokeObjectURL(url)
-    toast.success('toast_settings_exported')
-  } catch (error) {
-    console.error('Fehler beim Exportieren:', error)
-    toast.error('toast_settings_export_error')
-  }
-}
-
-function importSettings(event) {
-  const file = event.target.files[0]
-  if (!file) return
-
-  const reader = new FileReader()
-  reader.onload = (e) => {
+  function saveSettings() {
     try {
-      const settings = JSON.parse(e.target.result)
+      const settings = {
+        globalFilter: {
+          type: store.filterSettings.type,
+          frequency: store.filterSettings.frequency,
+          Q: store.filterSettings.Q,
+        },
+        oscillators: store.oscillators.map((osc) => ({
+          waveType: osc.waveType,
+          frequency: osc.frequency,
+          volume: osc.volume,
+          pan: osc.pan,
+          attack: osc.attack,
+          decay: osc.decay,
+          sustain: osc.sustain,
+          release: osc.release,
+          pattern: osc.pattern,
+        })),
+      }
+      localStorage.setItem('alarmToolSettings', JSON.stringify(settings))
+      toast.success('toast_settings_saved')
+    } catch (error) {
+      console.error('Fehler beim Speichern:', error)
+      toast.error('toast_settings_save_error')
+    }
+  }
+
+  function loadSettings() {
+    try {
+      const settingsStr = localStorage.getItem('alarmToolSettings')
+      if (!settingsStr) {
+        toast.info('toast_settings_none')
+        return
+      }
+      const settings = JSON.parse(settingsStr)
       applySettings(settings)
-      toast.success('toast_settings_imported')
-    } catch (err) {
-      console.error('Fehler beim Importieren:', err)
-      toast.error('toast_settings_import_error')
+      toast.success('toast_settings_loaded')
+    } catch (error) {
+      console.error('Fehler beim Laden:', error)
+      toast.error('toast_settings_load_error')
     }
   }
-  reader.readAsText(file)
-  
-  // Reset input
-  event.target.value = ''
-}
 
-function applySettings(settings) {
-  try {
-    // Apply filter settings
-    if (settings.globalFilter) {
-      updateFilter(settings.globalFilter)
+  function exportSettings() {
+    try {
+      const settings = {
+        globalFilter: {
+          type: store.filterSettings.type,
+          frequency: store.filterSettings.frequency,
+          Q: store.filterSettings.Q,
+        },
+        oscillators: store.oscillators.map((osc) => ({
+          waveType: osc.waveType,
+          frequency: osc.frequency,
+          volume: osc.volume,
+          pan: osc.pan,
+          attack: osc.attack,
+          decay: osc.decay,
+          sustain: osc.sustain,
+          release: osc.release,
+          pattern: osc.pattern,
+        })),
+      }
+      const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'alarmToolSettings.json'
+      a.click()
+      URL.revokeObjectURL(url)
+      toast.success('toast_settings_exported')
+    } catch (error) {
+      console.error('Fehler beim Exportieren:', error)
+      toast.error('toast_settings_export_error')
     }
+  }
 
-    // Apply oscillator settings
-    if (settings.oscillators && settings.oscillators.length === store.oscillators.length) {
-      settings.oscillators.forEach((oscSettings, index) => {
-        store.updateOscillator(index, {
-          waveType: oscSettings.waveType,
-          frequency: oscSettings.frequency,
-          volume: oscSettings.volume,
-          pan: oscSettings.pan,
-          attack: oscSettings.attack,
-          decay: oscSettings.decay ?? 50,
-          sustain: oscSettings.sustain ?? 0.8,
-          release: oscSettings.release,
-          pattern: oscSettings.pattern
+  function importSettings(event) {
+    const file = event.target.files[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      try {
+        const settings = JSON.parse(e.target.result)
+        applySettings(settings)
+        toast.success('toast_settings_imported')
+      } catch (err) {
+        console.error('Fehler beim Importieren:', err)
+        toast.error('toast_settings_import_error')
+      }
+    }
+    reader.readAsText(file)
+
+    // Reset input
+    event.target.value = ''
+  }
+
+  function applySettings(settings) {
+    try {
+      // Apply filter settings
+      if (settings.globalFilter) {
+        updateFilter(settings.globalFilter)
+      }
+
+      // Apply oscillator settings
+      if (settings.oscillators && settings.oscillators.length === store.oscillators.length) {
+        settings.oscillators.forEach((oscSettings, index) => {
+          store.updateOscillator(index, {
+            waveType: oscSettings.waveType,
+            frequency: oscSettings.frequency,
+            volume: oscSettings.volume,
+            pan: oscSettings.pan,
+            attack: oscSettings.attack,
+            decay: oscSettings.decay ?? 50,
+            sustain: oscSettings.sustain ?? 0.8,
+            release: oscSettings.release,
+            pattern: oscSettings.pattern,
+          })
+
+          // Parse pattern for this oscillator
+          parsePattern(index)
         })
-
-        // Parse pattern for this oscillator
-        parsePattern(index)
-      })
+      }
+    } catch (error) {
+      console.error('Fehler beim Anwenden der Einstellungen:', error)
+      toast.error('toast_settings_apply_error')
     }
-  } catch (error) {
-    console.error('Fehler beim Anwenden der Einstellungen:', error)
-    toast.error('toast_settings_apply_error')
   }
-}
 </script>
