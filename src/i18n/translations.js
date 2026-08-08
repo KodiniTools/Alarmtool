@@ -29,6 +29,21 @@ export const translations = {
     preset_scifi_name: 'Sci-Fi Stereo-Sweep',
     preset_scifi_desc:
       'Futuristischer Alarm mit 9 Oszillatoren, Schwebungseffekt und vollem Stereopanorama.',
+    preset_airraid_name: 'Luftschutzsirene',
+    preset_airraid_desc:
+      'Auf- und abschwellende Sägezahn-Heulsirene mit resonanter Tiefpass-Spitze — maximale Alarmwirkung.',
+    preset_klaxon_name: 'Alarm-Klaxon',
+    preset_klaxon_desc:
+      'Harter Rechteck-Hupton wie ein U-Boot-Tauchalarm. Kurze, stechende AOOGA-Stöße.',
+    preset_panic_name: 'Panik-Alarm',
+    preset_panic_desc:
+      'Durchdringendes, hochfrequentes Kreischen mit Hochpassfilter. Schnelle, dissonante Stakkato-Impulse.',
+    preset_redalert_name: 'Roter Alarm',
+    preset_redalert_desc:
+      'Aggressiver Gefechtsalarm mit dissonantem Tritonus und fokussiertem Bandpass — höchste Dringlichkeit.',
+    preset_malfunction_name: 'Systemfehler',
+    preset_malfunction_desc:
+      'Chaotisches Glitch-Stottern aus Rechteck- und Sägezahnwellen mit resonantem Filter — Maschine im Ausnahmezustand.',
     preset_tag_sine: 'Sinus',
     preset_tag_triangle: 'Dreieck',
     preset_tag_square: 'Rechteck',
@@ -39,6 +54,9 @@ export const translations = {
     preset_tag_stereo: 'Stereo',
     preset_tag_soft: 'Sanft',
     preset_tag_medical: 'Medizinisch',
+    preset_tag_aggressive: 'Aggressiv',
+    preset_tag_siren: 'Sirene',
+    preset_tag_harsh: 'Hart',
 
     // Filter
     filter_title: 'Globale Filtersteuerung',
@@ -288,6 +306,21 @@ export const translations = {
     preset_scifi_name: 'Sci-Fi Stereo Sweep',
     preset_scifi_desc:
       'Futuristic alarm with 9 oscillators, beat frequency effect, and full stereo panorama.',
+    preset_airraid_name: 'Air-Raid Siren',
+    preset_airraid_desc:
+      'Rising and falling sawtooth wail with a resonant lowpass peak — maximum alarm impact.',
+    preset_klaxon_name: 'Alarm Klaxon',
+    preset_klaxon_desc:
+      'Harsh square-wave horn like a submarine dive alarm. Short, stabbing AOOGA blasts.',
+    preset_panic_name: 'Panic Alarm',
+    preset_panic_desc:
+      'Piercing high-frequency screech with a highpass filter. Fast, dissonant staccato pulses.',
+    preset_redalert_name: 'Red Alert',
+    preset_redalert_desc:
+      'Aggressive battle-stations alarm with a dissonant tritone and focused bandpass — top urgency.',
+    preset_malfunction_name: 'System Malfunction',
+    preset_malfunction_desc:
+      'Chaotic glitch stutter of square and sawtooth waves through a resonant filter — a machine in meltdown.',
     preset_tag_sine: 'Sine',
     preset_tag_triangle: 'Triangle',
     preset_tag_square: 'Square',
@@ -298,6 +331,9 @@ export const translations = {
     preset_tag_stereo: 'Stereo',
     preset_tag_soft: 'Soft',
     preset_tag_medical: 'Medical',
+    preset_tag_aggressive: 'Aggressive',
+    preset_tag_siren: 'Siren',
+    preset_tag_harsh: 'Harsh',
 
     // Filter
     filter_title: 'Global Filter Control',
