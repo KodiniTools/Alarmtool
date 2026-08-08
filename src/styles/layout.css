@@ -2,7 +2,8 @@
 .main-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 var(--space-5);
+  /* Reserve space for the fixed sticky player bar (fallback until JS measures). */
+  padding: 0 var(--space-5) calc(var(--player-bar-height, 120px) + var(--space-5));
 }
 
 /* App Header */
@@ -141,25 +142,11 @@
   width: 12px;
 }
 
-/* ─── Bottom Control Bar ────────────────────────────────────────── */
+/* ─── Settings block ────────────────────────────────────────────── */
 
-.app-control-bar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-  max-width: 960px;
+.app-settings {
+  max-width: 640px;
   margin: 0 auto var(--space-5);
-}
-
-.app-control-bar__player,
-.app-control-bar__settings {
-  min-width: 0;
-}
-
-@media (max-width: 640px) {
-  .app-control-bar {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Responsive */
