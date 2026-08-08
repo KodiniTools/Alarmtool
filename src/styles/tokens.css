@@ -60,6 +60,9 @@
   --at-danger: #e07070;
   --at-warning: #c9984d;
   --at-info: #014f99;
+  /* Readable info tone for text on dark surfaces (the raw --at-info is too
+     dark and nearly disappears on the navy background). */
+  --at-info-text: #6cb2ff;
 
   --at-border: 1px solid rgba(122, 141, 160, 0.25);
 }
@@ -88,6 +91,8 @@
 
   --at-warning: #c9984d;
   --at-info: #014f99;
+  /* On the light background the dark blue already reads well. */
+  --at-info-text: #014f99;
   --at-border: 1px solid rgba(0, 57, 113, 0.15);
   --at-shadow-1: 0 4px 16px rgba(0, 57, 113, 0.08);
   --at-shadow-2: 0 8px 32px rgba(0, 57, 113, 0.12);

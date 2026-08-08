@@ -46,7 +46,9 @@ h4,
 h5,
 h6 {
   color: var(--at-text);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  /* Tight, crisp shadow — a wider blur made the light headings look fuzzy on
+     the dark background. */
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
   font-weight: 500;
   letter-spacing: 0.02em;
 }
