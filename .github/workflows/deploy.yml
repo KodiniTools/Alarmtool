@@ -1,0 +1,67 @@
+name: Deploy Alarmtool
+
+# Baut die SPA und deployt sie nach /var/www/kodinitools.com/alarmtool/.
+# Läuft bei jedem Push/Merge auf main sowie manuell über die Actions-UI.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Nie zwei Deploys gleichzeitig; ein neuer Push bricht einen laufenden ab.
+concurrency:
+  group: deploy-alarmtool
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Setup SSH
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || '22' }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$DEPLOY_PORT" -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy via rsync
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT || '22' }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: /var/www/kodinitools.com/alarmtool
+        run: |
+          SSH="ssh -p $DEPLOY_PORT -i ~/.ssh/deploy_key"
+
+          # 1) Gehashte Build-Assets: mit --delete, damit alte Chunks
+          #    entfernt werden (dieser Ordner enthält ausschließlich Build-Output).
+          rsync -avz --delete -e "$SSH" \
+            dist/assets/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/assets/"
+
+          # 2) Restlicher Build-Output (index.html, sitemap.xml, ...): OHNE --delete,
+          #    damit manuell abgelegte Dateien wie og-image.png erhalten bleiben.
+          rsync -avz --exclude 'assets/' -e "$SSH" \
+            dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
