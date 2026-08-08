@@ -115,6 +115,8 @@ export const translations = {
     osc_disabled_label: 'Deaktiviert',
     osc_editor_placeholder: 'Wähle einen Oszillator aus der Liste',
     osc_adsr_section: 'Hüllkurve & Muster',
+    osc_section_basics: 'Grundparameter',
+    osc_active_suffix: 'aktiv',
 
     // Recording
     rec_title: 'Live aufnehmen (MediaRecorder)',
@@ -392,6 +394,8 @@ export const translations = {
     osc_disabled_label: 'Disabled',
     osc_editor_placeholder: 'Select an oscillator from the list',
     osc_adsr_section: 'Envelope & Pattern',
+    osc_section_basics: 'Base parameters',
+    osc_active_suffix: 'active',
 
     // Recording
     rec_title: 'Live Recording (MediaRecorder)',

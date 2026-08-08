@@ -41,6 +41,10 @@
 
     <!-- Waveform selector -->
     <div class="osc-editor-section">
+      <div class="osc-section-label">
+        <i class="fas fa-wave-square"></i>
+        <span>{{ t('osc_waveform') }}</span>
+      </div>
       <div class="osc-wave-selector" :class="{ 'controls-disabled': !settings.enabled }">
         <button
           v-for="wave in WAVE_TYPES"
@@ -67,6 +71,10 @@
 
     <!-- Main parameters: 2-column grid -->
     <div class="osc-editor-section" :class="{ 'controls-disabled': !settings.enabled }">
+      <div class="osc-section-label">
+        <i class="fas fa-sliders"></i>
+        <span>{{ t('osc_section_basics') }}</span>
+      </div>
       <div class="osc-params-grid">
         <SliderInput
           :model-value="settings.frequency"
