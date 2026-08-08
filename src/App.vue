@@ -48,20 +48,22 @@
       </div>
     </div>
 
-    <!-- Bottom control bar: Player + Settings side-by-side -->
-    <div class="app-control-bar">
-      <div class="app-control-bar__player">
-        <PlayerControl />
-      </div>
-      <div class="app-control-bar__settings">
-        <SettingsPanel />
-      </div>
+    <!-- Settings -->
+    <div class="app-settings">
+      <SettingsPanel />
     </div>
 
     <!-- Donate Button -->
     <DonateButton />
 
     <ToastContainer />
+
+    <!-- Sticky player bar — always visible, independent of the active tab -->
+    <div ref="playerBar" class="player-bar">
+      <div class="player-bar__inner">
+        <PlayerControl />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -83,6 +85,16 @@
 
   const store = useAlarmStore()
   const { handleKeyboard } = usePlayer()
+
+  // Sticky player bar: reserve exactly its height at the bottom so it never
+  // covers page content, regardless of locale/wrapping.
+  const playerBar = ref(null)
+  let barResizeObserver = null
+
+  const updatePlayerBarHeight = () => {
+    const h = playerBar.value?.offsetHeight ?? 0
+    document.documentElement.style.setProperty('--player-bar-height', `${h}px`)
+  }
 
   const activeTab = ref('filter')
   const tabs = [
@@ -128,11 +140,23 @@
 
     // Add keyboard event listener
     document.addEventListener('keydown', handleKeyboard)
+
+    // Keep the reserved space in sync with the sticky player bar's height
+    updatePlayerBarHeight()
+    if (window.ResizeObserver && playerBar.value) {
+      barResizeObserver = new ResizeObserver(updatePlayerBarHeight)
+      barResizeObserver.observe(playerBar.value)
+    }
+    window.addEventListener('resize', updatePlayerBarHeight)
   })
 
   onUnmounted(() => {
     window.removeEventListener('locale-changed', onLocaleChanged)
     window.removeEventListener('theme-changed', onThemeChanged)
     document.removeEventListener('keydown', handleKeyboard)
+
+    if (barResizeObserver) barResizeObserver.disconnect()
+    window.removeEventListener('resize', updatePlayerBarHeight)
+    document.documentElement.style.removeProperty('--player-bar-height')
   })
 </script>
