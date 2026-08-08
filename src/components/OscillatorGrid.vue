@@ -3,7 +3,10 @@
     <!-- Left: List panel -->
     <aside class="osc-list-panel">
       <div class="osc-list-header">
-        <h2 class="osc-list-title">{{ t('osc_title') }}</h2>
+        <div class="osc-list-heading">
+          <h2 class="osc-list-title">{{ t('osc_title') }}</h2>
+          <span class="osc-active-badge">{{ activeCount }} {{ t('osc_active_suffix') }}</span>
+        </div>
         <div class="undo-redo-controls">
           <button
             class="btn btn-secondary undo-redo-btn"
@@ -74,6 +77,7 @@
 
   const selectedId = ref(0)
   const selectedOscillator = computed(() => store.oscillators[selectedId.value] ?? null)
+  const activeCount = computed(() => store.oscillators.filter((o) => o.enabled).length)
 
   function handleToggleEnabled(index, value) {
     updateOscillatorParameter(index, 'enabled', value)

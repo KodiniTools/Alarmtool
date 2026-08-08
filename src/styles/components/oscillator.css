@@ -33,6 +33,13 @@
   border-bottom: 1px solid rgba(122, 141, 160, 0.12);
 }
 
+.osc-list-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
 .osc-list-title {
   font-size: 0.75rem;
   font-weight: 600;
@@ -40,6 +47,18 @@
   text-transform: uppercase;
   color: var(--at-muted);
   margin-bottom: 0;
+}
+
+.osc-active-badge {
+  align-self: flex-start;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--at-primary);
+  background: rgba(201, 152, 77, 0.14);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+  line-height: 1.6;
 }
 
 .osc-list {
@@ -190,14 +209,15 @@
 }
 
 .osc-editor {
-  background: rgba(14, 28, 50, 0.5);
+  background: linear-gradient(160deg, rgba(20, 38, 64, 0.55), rgba(14, 28, 50, 0.45));
   border-radius: var(--at-radius);
   border: 1px solid rgba(122, 141, 160, 0.15);
+  box-shadow: var(--at-shadow-1);
   overflow: hidden;
 }
 
 [data-theme='light'] .osc-editor {
-  background: rgba(249, 242, 213, 0.4);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.7), rgba(249, 242, 213, 0.4));
   border-color: rgba(0, 57, 113, 0.1);
 }
 
@@ -296,7 +316,9 @@
   transition:
     background var(--at-speed) ease,
     border-color var(--at-speed) ease,
-    color var(--at-speed) ease;
+    color var(--at-speed) ease,
+    transform var(--at-speed) ease,
+    box-shadow var(--at-speed) ease;
 }
 
 [data-theme='light'] .osc-wave-btn {
@@ -308,12 +330,14 @@
   background: rgba(201, 152, 77, 0.08);
   border-color: rgba(201, 152, 77, 0.3);
   color: var(--at-text);
+  transform: translateY(-1px);
 }
 
 .osc-wave-btn--active {
   background: rgba(201, 152, 77, 0.12) !important;
   border-color: var(--at-primary) !important;
   color: var(--at-primary) !important;
+  box-shadow: 0 0 0 1px var(--at-primary) inset;
 }
 
 [data-theme='light'] .osc-wave-btn--active {
@@ -332,12 +356,43 @@
   stroke-linejoin: round;
 }
 
+/* ─── Section Label (eyebrow) ──────────────────────────────────── */
+
+.osc-section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--at-muted);
+  margin-bottom: var(--space-4);
+}
+
+.osc-section-label i {
+  font-size: 0.72rem;
+  color: var(--at-primary);
+}
+
 /* ─── Parameter Grid ───────────────────────────────────────────── */
 
 .osc-params-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 var(--space-6);
+  gap: var(--space-2) var(--space-6);
+}
+
+/* Modern value pill for the slider number inputs inside the editor. */
+.osc-editor .slider-input-group .form-control {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  background-color: rgba(9, 20, 40, 0.45);
+}
+
+[data-theme='light'] .osc-editor .slider-input-group .form-control {
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 /* ─── ADSR Toggle ──────────────────────────────────────────────── */
@@ -346,12 +401,13 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  width: 100%;
   background: none;
   border: none;
   color: var(--at-muted);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 0;
