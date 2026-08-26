@@ -39,52 +39,18 @@
             </span>
           </div>
 
-          <!-- Preview Player -->
-          <div class="preset-preview-player">
-            <div class="preview-controls">
-              <button
-                class="preview-btn preview-btn-play"
-                :class="{ active: activePresetId === preset.id && isPlaying && !isPaused }"
-                :title="t('preview_play')"
-                @click="handlePlay(preset)"
-              >
-                <i
-                  :class="
-                    activePresetId === preset.id && isPlaying && !isPaused
-                      ? 'fas fa-pause'
-                      : 'fas fa-play'
-                  "
-                ></i>
-              </button>
-              <button
-                class="preview-btn preview-btn-stop"
-                :disabled="activePresetId !== preset.id || !isPlaying"
-                :title="t('preview_stop')"
-                @click="handleStop(preset)"
-              >
-                <i class="fas fa-stop"></i>
-              </button>
-              <div class="preview-volume">
-                <i class="fas fa-volume-down preview-volume-icon"></i>
-                <input
-                  type="range"
-                  class="form-range preview-volume-slider"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  :value="previewVolume"
-                  :title="t('preview_volume')"
-                  @input="setPreviewVolume(parseFloat($event.target.value))"
-                />
-                <i class="fas fa-volume-up preview-volume-icon"></i>
-              </div>
-            </div>
-            <div v-if="activePresetId === preset.id && isPlaying" class="preview-indicator">
-              <span class="preview-indicator-dot"></span>
-              <span class="preview-indicator-text">
-                {{ isPaused ? t('preview_paused') : t('preview_playing') }}
-              </span>
-            </div>
+          <!-- Play via the sticky player -->
+          <div class="preset-play">
+            <button
+              class="preset-play-btn"
+              :class="{ active: activePreset === preset.id && store.isPlaying }"
+              :title="t('preset_play')"
+              :aria-label="t('preset_play')"
+              @click="playPreset(preset)"
+            >
+              <i class="fas fa-play" aria-hidden="true"></i>
+              <span>{{ t('preset_play') }}</span>
+            </button>
           </div>
         </div>
         <button class="btn btn-primary preset-load-btn" @click="loadPreset(preset)">
@@ -101,23 +67,14 @@
   import { useAudioContext } from '@/composables/useAudioContext'
   import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
-  import { usePresetPreview } from '@/composables/usePresetPreview'
+  import { usePlayer } from '@/composables/usePlayer'
   import { translations } from '@/i18n/translations'
 
   const store = useAlarmStore()
   const { updateFilter } = useAudioContext()
   const { parsePattern } = useOscillators()
+  const { restartAlarm, stopAlarm } = usePlayer()
   const toast = useToast()
-  const {
-    activePresetId,
-    isPlaying,
-    isPaused,
-    previewVolume,
-    playPreset,
-    pausePreview,
-    stopPreview,
-    setPreviewVolume,
-  } = usePresetPreview()
 
   const t = (key) => translations[store.currentLang]?.[key] || key
 
@@ -802,17 +759,16 @@
     },
   ]
 
-  function handlePlay(preset) {
-    if (activePresetId.value === preset.id && isPlaying.value && !isPaused.value) {
-      pausePreview()
-    } else {
-      playPreset(preset)
-    }
-  }
+  // Load the preset and (re)start the sticky player so it takes over playback.
+  function playPreset(preset) {
+    loadPreset(preset)
+    restartAlarm()
 
-  function handleStop(preset) {
-    if (activePresetId.value === preset.id) {
-      stopPreview()
+    // Apply the preset's filter to the live node explicitly: on a freshly
+    // created audio context the filter node defaults to allpass and ignores
+    // the stored filter type, so re-apply it after the context exists.
+    if (preset.data.globalFilter) {
+      updateFilter(preset.data.globalFilter)
     }
   }
 
@@ -822,9 +778,9 @@
   }
 
   function resetToDefaults() {
-    // Stop any preview
-    if (isPlaying.value) {
-      stopPreview()
+    // Stop the sticky player if it is running
+    if (store.isPlaying) {
+      stopAlarm()
     }
 
     // Reset filter to none
@@ -854,11 +810,6 @@
 
   function loadPreset(preset) {
     try {
-      // Stop any preview that is playing
-      if (isPlaying.value) {
-        stopPreview()
-      }
-
       const settings = preset.data
 
       if (settings.globalFilter) {
