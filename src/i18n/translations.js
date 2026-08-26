@@ -44,6 +44,15 @@ export const translations = {
     preset_malfunction_name: 'Systemfehler',
     preset_malfunction_desc:
       'Chaotisches Glitch-Stottern aus Rechteck- und Sägezahnwellen mit resonantem Filter — Maschine im Ausnahmezustand.',
+    preset_tornado_name: 'Tornado-Sirene',
+    preset_tornado_desc:
+      'Auf- und abheulende Sägezahn-Sirene mit Schwebung und tiefem Grollen — brachiale Unwetterwarnung.',
+    preset_evacuation_name: 'Evakuierungsalarm',
+    preset_evacuation_desc:
+      'Harte Dreifach-Rechteckstöße im T3-Feueralarm-Rhythmus mit stechendem Bandpass — sofort räumen.',
+    preset_intruder_name: 'Einbruchalarm',
+    preset_intruder_desc:
+      'Rasend schnelles, schrilles Rechteck-Zweiton-Kreischen — durchdringender Einbruch-Sirenenalarm.',
     preset_tag_sine: 'Sinus',
     preset_tag_triangle: 'Dreieck',
     preset_tag_square: 'Rechteck',
@@ -323,6 +332,15 @@ export const translations = {
     preset_redalert_name: 'Red Alert',
     preset_redalert_desc:
       'Aggressive battle-stations alarm with a dissonant tritone and focused bandpass — top urgency.',
+    preset_tornado_name: 'Tornado Siren',
+    preset_tornado_desc:
+      'Wailing sawtooth siren sweeping up and down with a beating detune and deep rumble — brutal storm warning.',
+    preset_evacuation_name: 'Evacuation Alarm',
+    preset_evacuation_desc:
+      'Harsh triple square blasts in the T3 fire-alarm cadence with a piercing bandpass — evacuate now.',
+    preset_intruder_name: 'Intruder Alarm',
+    preset_intruder_desc:
+      'Blistering fast, shrill two-tone square screech — a piercing burglar-alarm siren.',
     preset_malfunction_name: 'System Malfunction',
     preset_malfunction_desc:
       'Chaotic glitch stutter of square and sawtooth waves through a resonant filter — a machine in meltdown.',
