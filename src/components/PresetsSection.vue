@@ -53,9 +53,6 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-primary preset-load-btn" @click="loadPreset(preset)">
-          <i class="fas fa-download"></i> {{ t('presets_load') }}
-        </button>
       </div>
     </div>
   </div>
