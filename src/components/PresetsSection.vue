@@ -961,6 +961,10 @@
     loadPreset(preset)
     restartAlarm()
 
+    // Tell the sticky player which preset is sounding (startAlarm resets this
+    // to "custom", so set it afterwards).
+    store.activePresetKey = preset.nameKey
+
     // Apply the preset's filter to the live node explicitly: on a freshly
     // created audio context the filter node defaults to allpass and ignores
     // the stored filter type, so re-apply it after the context exists.
