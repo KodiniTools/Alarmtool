@@ -249,6 +249,9 @@ export const translations = {
       'Fehler bei der Konvertierung. Dein Browser unterstützt dieses Format möglicherweise nicht.',
     toast_rec_dismissed: 'Aufnahme verworfen.',
 
+    // Preset Play (via sticky player)
+    preset_play: 'Abspielen',
+
     // Preview Player
     preview_play: 'Vorschau abspielen / pausieren',
     preview_stop: 'Vorschau stoppen',
@@ -524,6 +527,9 @@ export const translations = {
     toast_convert_complete: 'Conversion complete! Click Download.',
     toast_convert_error: 'Conversion error. Your browser may not support this format.',
     toast_rec_dismissed: 'Recording dismissed.',
+
+    // Preset Play (via sticky player)
+    preset_play: 'Play',
 
     // Preview Player
     preview_play: 'Preview play / pause',

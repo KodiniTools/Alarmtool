@@ -187,152 +187,58 @@
   white-space: nowrap;
 }
 
-/* Preset Preview Player */
-.preset-preview-player {
+/* Preset Play button — hands playback over to the sticky player */
+.preset-play {
   margin-top: 0.6rem;
   padding-top: 0.6rem;
   border-top: 1px solid rgba(122, 141, 160, 0.15);
 }
 
-.preview-controls {
-  display: flex;
+.preset-play-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-}
-
-.preview-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.7rem;
-  flex-shrink: 0;
-}
-
-.preview-btn-play {
-  background: rgba(201, 152, 77, 0.15);
+  gap: var(--space-2);
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid rgba(201, 152, 77, 0.3);
+  background: rgba(201, 152, 77, 0.12);
   color: var(--at-primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.preview-btn-play:hover {
-  background: rgba(201, 152, 77, 0.3);
-  transform: scale(1.08);
+.preset-play-btn:hover {
+  background: rgba(201, 152, 77, 0.25);
+  transform: translateY(-1px);
 }
 
-.preview-btn-play.active {
+.preset-play-btn.active {
   background: var(--at-primary);
   color: var(--at-primary-fg);
-  box-shadow: 0 0 8px rgba(201, 152, 77, 0.3);
+  border-color: var(--at-primary);
+  box-shadow: 0 0 10px rgba(201, 152, 77, 0.35);
 }
 
-.preview-btn-stop {
-  background: rgba(224, 112, 112, 0.12);
-  color: var(--at-danger);
-}
-
-.preview-btn-stop:hover:not(:disabled) {
-  background: rgba(224, 112, 112, 0.25);
-  transform: scale(1.08);
-}
-
-.preview-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-[data-theme='light'] .preview-btn-play {
-  background: rgba(1, 79, 153, 0.12);
+[data-theme='light'] .preset-play-btn {
+  background: rgba(1, 79, 153, 0.1);
   color: var(--at-info);
+  border-color: rgba(1, 79, 153, 0.2);
 }
 
-[data-theme='light'] .preview-btn-play:hover {
-  background: rgba(1, 79, 153, 0.25);
+[data-theme='light'] .preset-play-btn:hover {
+  background: rgba(1, 79, 153, 0.2);
 }
 
-[data-theme='light'] .preview-btn-play.active {
+[data-theme='light'] .preset-play-btn.active {
   background: var(--at-info);
   color: #f5f4d6;
-}
-
-[data-theme='light'] .preview-btn-stop {
-  background: rgba(224, 112, 112, 0.08);
-}
-
-[data-theme='light'] .preview-btn-stop:hover:not(:disabled) {
-  background: rgba(224, 112, 112, 0.18);
-}
-
-/* Preview Volume */
-.preview-volume {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  margin-left: 0.4rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.preview-volume-icon {
-  font-size: 0.65rem;
-  color: var(--at-text-dim);
-  flex-shrink: 0;
-}
-
-.preview-volume-slider {
-  flex: 1;
-  height: 3px !important;
-  min-width: 50px;
-  max-width: 120px;
-}
-
-.preview-volume-slider::-webkit-slider-thumb {
-  height: 10px !important;
-  width: 10px !important;
-}
-
-.preview-volume-slider::-moz-range-thumb {
-  height: 10px !important;
-  width: 10px !important;
-}
-
-/* Playing Indicator */
-.preview-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.35rem;
-}
-
-.preview-indicator-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--at-success);
-  animation: previewPulse 1.2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-
-.preview-indicator-text {
-  font-size: 0.68rem;
-  color: var(--at-text-dim);
-  letter-spacing: 0.02em;
-}
-
-@keyframes previewPulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(0.8);
-  }
+  border-color: var(--at-info);
 }
 
 /* Responsive */
@@ -356,12 +262,14 @@
     justify-content: center;
   }
 
-  .preview-controls {
+  .preset-play {
+    display: flex;
     justify-content: center;
   }
 
-  .preview-volume {
-    margin-left: 0;
+  .preset-play-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 

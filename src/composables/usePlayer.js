@@ -3,10 +3,17 @@ import { useAlarmStore } from '@/stores/alarmStore'
 import { useAudioContext } from './useAudioContext'
 import { useOscillators } from './useOscillators'
 import { useToast } from './useToast'
+import { getOscRuntime, clearAllOscRuntime } from './useOscillatorRuntime'
 
 const TIMER_INTERVAL_MS = 100
 const LOOP_DURATION_MS = 300000 // 5 minutes
 const AUDIO_CONTEXT_CLOSE_DELAY_MS = 2000
+
+// Shared across every usePlayer() instance (sticky player, keyboard shortcuts,
+// presets) so playback bookkeeping stays consistent no matter which component
+// drives the transport.
+const playbackTimer = ref(null)
+const closeTimer = ref(null)
 
 export function usePlayer() {
   const store = useAlarmStore()
@@ -14,10 +21,15 @@ export function usePlayer() {
   const { createOscillators, runOscPattern, stopOscillators } = useOscillators()
   const toast = useToast()
 
-  const playbackTimer = ref(null)
-
   function startAlarm() {
     if (store.isPlaying) return
+
+    // Cancel a pending context close scheduled by a recent stop, so a quick
+    // restart isn't torn down mid-playback.
+    if (closeTimer.value) {
+      clearTimeout(closeTimer.value)
+      closeTimer.value = null
+    }
 
     try {
       store.isPlaying = true
@@ -106,12 +118,56 @@ export function usePlayer() {
     // Stop oscillators
     stopOscillators()
 
-    // Close audio context after delay (allow release envelopes to finish)
-    setTimeout(() => {
+    // Close audio context after delay (allow release envelopes to finish).
+    // Tracked so a quick restart (e.g. playing a preset) can cancel it.
+    if (closeTimer.value) clearTimeout(closeTimer.value)
+    closeTimer.value = setTimeout(() => {
       closeAudioContext()
+      closeTimer.value = null
     }, AUDIO_CONTEXT_CLOSE_DELAY_MS)
 
     toast.info('toast_alarm_stopped')
+  }
+
+  // (Re)start playback with the current oscillator/filter config. When the
+  // player is already running (e.g. switching presets) the oscillators are
+  // swapped in place without tearing down the audio context, avoiding the
+  // delayed cleanups that a full stop/start would leave running.
+  function restartAlarm() {
+    if (!store.isPlaying) {
+      startAlarm()
+      return
+    }
+
+    // Hard-stop the current oscillators immediately: no release tail and no
+    // delayed runtime cleanup that would later wipe the nodes we recreate.
+    store.oscillators.forEach((_osc, index) => {
+      const rt = getOscRuntime(index)
+      if (!rt) return
+      if (rt.patternTimeoutId) clearTimeout(rt.patternTimeoutId)
+      try {
+        rt.osc?.stop()
+        rt.osc?.disconnect()
+        rt.gainNode?.disconnect()
+        rt.panNode?.disconnect()
+      } catch (_e) {
+        // ignore — node already stopped/disconnected
+      }
+    })
+    clearAllOscRuntime()
+
+    store.currentTime = 0
+    store.isPaused = false
+
+    // Restore master gain in case we were paused (gain ramped to 0).
+    if (store.masterGainNode && store.audioCtx) {
+      const targetVolume = store.isMuted ? 0 : store.volume
+      store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
+    }
+
+    createOscillators()
+    store.oscillators.forEach((_osc, index) => runOscPattern(index))
+    startPlaybackTimer()
   }
 
   function startPlaybackTimer() {
@@ -199,6 +255,7 @@ export function usePlayer() {
 
   return {
     startAlarm,
+    restartAlarm,
     pauseAlarm,
     resumeAlarm,
     stopAlarm,
