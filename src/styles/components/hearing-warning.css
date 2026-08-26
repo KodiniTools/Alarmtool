@@ -1,0 +1,109 @@
+/* ─── Hearing-safety warning ────────────────────────────────────────
+   Anchored directly above the sticky player bar (bottom offset tracks the
+   --player-bar-height set by App.vue), so it sits next to the volume/transport
+   controls, stays visible on every tab, and never covers the header or lists. */
+
+.hearing-warning {
+  position: fixed;
+  left: 0;
+  right: 0;
+  /* `bottom` is set inline to var(--player-bar-height) so it hugs the player. */
+  z-index: 899;
+  padding: 0 var(--space-5);
+  pointer-events: none;
+}
+
+.hearing-warning__inner {
+  max-width: 960px;
+  margin: 0 auto var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: 12px;
+  border: 1px solid rgba(224, 112, 112, 0.4);
+  background: rgba(40, 16, 20, 0.92);
+  box-shadow: 0 6px 20px rgba(9, 20, 40, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
+}
+
+[data-theme='light'] .hearing-warning__inner {
+  background: rgba(255, 244, 240, 0.95);
+  border-color: rgba(200, 60, 60, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 57, 113, 0.12);
+}
+
+.hearing-warning__icon {
+  font-size: 1.1rem;
+  color: var(--at-danger);
+  flex-shrink: 0;
+}
+
+.hearing-warning__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.hearing-warning__title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--at-danger);
+  letter-spacing: 0.01em;
+}
+
+.hearing-warning__text {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--at-text);
+}
+
+.hearing-warning__dismiss {
+  flex-shrink: 0;
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--at-danger);
+  background: var(--at-danger);
+  color: #2a0e0e;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    filter 0.15s ease,
+    transform 0.15s ease;
+}
+
+.hearing-warning__dismiss:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* Slide/fade in from just below its resting spot */
+.hearing-warning-enter-active,
+.hearing-warning-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.hearing-warning-enter-from,
+.hearing-warning-leave-to {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+@media (max-width: 560px) {
+  .hearing-warning__inner {
+    flex-wrap: wrap;
+  }
+
+  .hearing-warning__dismiss {
+    width: 100%;
+    margin-top: var(--space-1);
+  }
+}

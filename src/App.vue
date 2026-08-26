@@ -58,6 +58,9 @@
 
     <ToastContainer />
 
+    <!-- Hearing-safety warning — sits just above the sticky player bar -->
+    <HearingWarning />
+
     <!-- Sticky player bar — always visible, independent of the active tab -->
     <div ref="playerBar" class="player-bar">
       <div class="player-bar__inner">
@@ -82,6 +85,7 @@
   import PlayerControl from '@/components/PlayerControl.vue'
   import DonateButton from '@/components/DonateButton.vue'
   import ToastContainer from '@/components/ToastContainer.vue'
+  import HearingWarning from '@/components/HearingWarning.vue'
 
   const store = useAlarmStore()
   const { handleKeyboard } = usePlayer()

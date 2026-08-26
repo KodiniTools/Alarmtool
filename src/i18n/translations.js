@@ -261,6 +261,12 @@ export const translations = {
     // Preset Play (via sticky player)
     preset_play: 'Abspielen',
 
+    // Hearing-safety warning
+    hearing_warning_title: 'Gehörschutz-Hinweis',
+    hearing_warning_text:
+      'Diese Alarmtöne können sehr laut sein und bei hoher Lautstärke das Gehör schädigen. Reduziere die Lautstärke, bevor du abspielst — besonders mit Kopfhörern.',
+    hearing_warning_dismiss: 'Verstanden',
+
     // Preview Player
     preview_play: 'Vorschau abspielen / pausieren',
     preview_stop: 'Vorschau stoppen',
@@ -548,6 +554,12 @@ export const translations = {
 
     // Preset Play (via sticky player)
     preset_play: 'Play',
+
+    // Hearing-safety warning
+    hearing_warning_title: 'Hearing safety notice',
+    hearing_warning_text:
+      'These alarm tones can be very loud and may damage your hearing at high volume. Lower the volume before playing — especially with headphones.',
+    hearing_warning_dismiss: 'Got it',
 
     // Preview Player
     preview_play: 'Preview play / pause',
