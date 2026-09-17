@@ -75,6 +75,17 @@
   box-shadow: 0 2px 8px rgba(0, 57, 113, 0.2);
 }
 
+/* Tab-styled external link (e.g. blog article) */
+.tab-btn--link {
+  text-decoration: none;
+  margin-left: auto;
+}
+
+.tab-btn--link:focus-visible {
+  outline: 2px solid var(--at-primary);
+  outline-offset: 2px;
+}
+
 /* Section */
 .section {
   border: none;

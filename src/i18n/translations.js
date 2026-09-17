@@ -8,6 +8,8 @@ export const translations = {
     tab_recording: 'Aufnahme',
     tab_presets: 'Presets',
     tab_faq: 'FAQ',
+    tab_blog: 'Blog',
+    tab_blog_title: 'Blog-Artikel: Eigener Alarmton mit dem Alarm-Tool (öffnet in neuem Tab)',
 
     // Presets
     presets_title: 'Alarm-Presets',
@@ -308,6 +310,9 @@ export const translations = {
     tab_recording: 'Recording',
     tab_presets: 'Presets',
     tab_faq: 'FAQ',
+    tab_blog: 'Blog',
+    tab_blog_title:
+      'Blog article: Build your own alarm sound with the Alarm Tool (opens in a new tab)',
 
     // Presets
     presets_title: 'Alarm Presets',
