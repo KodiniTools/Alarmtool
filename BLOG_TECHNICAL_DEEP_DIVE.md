@@ -89,7 +89,6 @@ Alarmtool/
 │   │   ├── SettingsPanel.vue     # Einstellungen
 │   │   ├── FAQSection.vue        # FAQ
 │   │   ├── CookieBanner.vue      # Cookie-Consent
-│   │   ├── DonateButton.vue      # Spendenlink
 │   │   └── AppFooter.vue         # Footer
 │   │
 │   ├── composables/              # 4 wiederverwendbare Logik-Module

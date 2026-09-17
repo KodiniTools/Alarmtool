@@ -53,10 +53,15 @@ export const translations = {
     preset_intruder_name: 'Einbruchalarm',
     preset_intruder_desc:
       'Rasend schnelles, schrilles Rechteck-Zweiton-Kreischen — durchdringender Einbruch-Sirenenalarm.',
+    preset_foghorn_name: 'Nebelhorn',
+    preset_foghorn_desc:
+      'Tiefes Orgel-Nebelhorn mit Quinte und pulsierendem Signalton — dumpfe Hafenwarnung im Nebel.',
     preset_tag_sine: 'Sinus',
     preset_tag_triangle: 'Dreieck',
     preset_tag_square: 'Rechteck',
     preset_tag_sawtooth: 'Sägezahn',
+    preset_tag_pulse: 'Puls',
+    preset_tag_organ: 'Orgel',
     preset_tag_lowpass: 'Tiefpass',
     preset_tag_highpass: 'Hochpass',
     preset_tag_bandpass: 'Bandpass',
@@ -293,11 +298,6 @@ export const translations = {
     // Toast Messages - Copy/Paste
     toast_osc_copied: 'Oszillator-Einstellungen kopiert.',
     toast_osc_pasted: 'Oszillator-Einstellungen eingefügt.',
-
-    // Donate
-    donate_message:
-      'Wenn Ihnen dieses Projekt gefällt und Sie die Entwicklung unterstützen möchten, können Sie gerne spenden:',
-    donate_button_text: 'Spenden via PayPal',
   },
   en: {
     page_title: 'Modern Alarm Tool with 12 Oscillators & Live Recorder',
@@ -352,10 +352,15 @@ export const translations = {
     preset_malfunction_name: 'System Malfunction',
     preset_malfunction_desc:
       'Chaotic glitch stutter of square and sawtooth waves through a resonant filter — a machine in meltdown.',
+    preset_foghorn_name: 'Foghorn',
+    preset_foghorn_desc:
+      'Deep organ foghorn with a fifth and a pulsing beacon tone — muffled harbour warning in the fog.',
     preset_tag_sine: 'Sine',
     preset_tag_triangle: 'Triangle',
     preset_tag_square: 'Square',
     preset_tag_sawtooth: 'Sawtooth',
+    preset_tag_pulse: 'Pulse',
+    preset_tag_organ: 'Organ',
     preset_tag_lowpass: 'Lowpass',
     preset_tag_highpass: 'Highpass',
     preset_tag_bandpass: 'Bandpass',
@@ -589,10 +594,5 @@ export const translations = {
     // Toast Messages - Copy/Paste
     toast_osc_copied: 'Oscillator settings copied.',
     toast_osc_pasted: 'Oscillator settings pasted.',
-
-    // Donate
-    donate_message:
-      'If you like this project and would like to support its development, feel free to donate:',
-    donate_button_text: 'Donate via PayPal',
   },
 }

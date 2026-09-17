@@ -65,7 +65,6 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
     │   ├── SettingsPanel.vue      # Settings Save/Load/Export/Import
     │   ├── FAQSection.vue         # FAQ Dokumentation
     │   ├── CookieBanner.vue       # Cookie Consent Banner
-    │   ├── DonateButton.vue       # Spenden-Button
     │   └── AppFooter.vue          # Footer mit Links
     │
     ├── composables/               # Wiederverwendbare Logik (Composition API)
@@ -212,7 +211,7 @@ npm run preview  # Vorschau des Production Builds
 │  │FilterControl│  │SettingsPanel │  │   FAQSection      │   │
 │  └─────────────┘  └──────────────┘  └───────────────────┘   │
 │  ┌─────────────┐  ┌──────────────┐  ┌───────────────────┐   │
-│  │CookieBanner │  │ DonateButton │  │    AppFooter      │   │
+│  │CookieBanner │  │              │  │    AppFooter      │   │
 │  └─────────────┘  └──────────────┘  └───────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
                               │
