@@ -6,6 +6,10 @@
         <span class="player-status-dot"></span>
         <span class="player-status-label">{{ statusLabel }}</span>
       </div>
+      <span v-if="trackLabel" class="player-track-name" :title="trackLabel">
+        <i class="fas fa-music" aria-hidden="true"></i>
+        <span class="player-track-name-text">{{ trackLabel }}</span>
+      </span>
       <span class="player-time-display" aria-live="off">{{ formatTime(store.currentTime) }}</span>
     </div>
 
@@ -141,6 +145,13 @@
     if (store.isPlaying && !store.isPaused) return t('player_status_playing')
     if (store.isPaused) return t('player_status_paused')
     return t('player_status_stopped')
+  })
+
+  // Name of the sound currently loaded in the player: the active preset, or
+  // "Benutzerdefiniert" for a hand-tuned sound. Shown only while playing/paused.
+  const trackLabel = computed(() => {
+    if (!store.isPlaying) return ''
+    return store.activePresetKey ? t(store.activePresetKey) : t('player_custom')
   })
 
   function handlePlay() {

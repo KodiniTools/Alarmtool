@@ -114,6 +114,31 @@
 .player-status--playing .player-status-label { color: var(--at-success); }
 .player-status--paused  .player-status-label { color: var(--at-warning); }
 
+.player-track-name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--at-primary);
+  letter-spacing: 0.01em;
+}
+
+.player-track-name i {
+  font-size: 0.68rem;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.player-track-name-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .player-time-display {
   font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
   font-size: 0.78rem;
@@ -121,6 +146,7 @@
   color: var(--at-text);
   opacity: 0.8;
   letter-spacing: 0.04em;
+  flex-shrink: 0;
 }
 
 /* ─── Progress Track ────────────────────────────────────────────── */

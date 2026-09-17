@@ -36,6 +36,8 @@ export function usePlayer() {
       store.isPaused = false
       store.isAlarmRunning = true
       store.currentTime = 0
+      // Default to a custom sound; playing a preset overrides this right after.
+      store.activePresetKey = null
 
       // Initialize audio context
       initAudioContext()

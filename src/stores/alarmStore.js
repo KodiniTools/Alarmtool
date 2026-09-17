@@ -87,6 +87,12 @@ export const useAlarmStore = defineStore('alarm', () => {
       player.isLooping = v
     }
   )
+  const activePresetKey = rw(
+    () => player.activePresetKey,
+    (v) => {
+      player.activePresetKey = v
+    }
+  )
 
   // ── Recorder store ──
   const isRecording = rw(
@@ -137,6 +143,7 @@ export const useAlarmStore = defineStore('alarm', () => {
     volume,
     isMuted,
     isLooping,
+    activePresetKey,
     // Recorder
     isRecording,
     recordingDuration,
