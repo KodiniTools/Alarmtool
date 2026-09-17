@@ -34,8 +34,7 @@
 <script setup>
   import { useAlarmStore } from '@/stores/alarmStore'
   import { translations } from '@/i18n/translations'
-
-  const WAVE_ABBR = { sine: 'SIN', square: 'SQR', sawtooth: 'SAW', triangle: 'TRI' }
+  import { WAVE_ABBR } from '@/lib/waveforms'
 
   const store = useAlarmStore()
   const t = (key) => translations[store.currentLang]?.[key] ?? key

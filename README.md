@@ -5,7 +5,7 @@ Eine moderne Vue 3 Anwendung zur Erzeugung komplexer Audiosignale mit 12 individ
 ## Features
 
 - 🎵 **12 Oszillatoren** mit individuellen Einstellungen
-  - Verschiedene Wellenformen (Sinus, Rechteck, Sägezahn, Dreieck)
+  - Verschiedene Wellenformen (Sinus, Rechteck, Sägezahn, Dreieck, Puls, Orgel)
   - Frequenz, Lautstärke, Pan-Steuerung
   - Attack/Release-Hüllkurven
   - Pattern-basierte Rhythmen

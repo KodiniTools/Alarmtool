@@ -106,7 +106,7 @@ zeigen die Leistungsfähigkeit des Tools bei komplexen Klanglandschaften.
 
 | Parameter   | Bereich      | Beschreibung                                    |
 |-------------|-------------|-------------------------------------------------|
-| `waveType`  | sine, square, sawtooth, triangle | Wellenform des Oszillators  |
+| `waveType`  | sine, square, sawtooth, triangle, pulse, organ | Wellenform des Oszillators  |
 | `frequency` | 50–2000 Hz  | Tonhöhe                                         |
 | `volume`    | 0–1         | Lautstärke (0 = stumm, 1 = maximum)             |
 | `pan`       | -1 bis 1    | Stereoposition (-1 = links, 1 = rechts)         |

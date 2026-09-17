@@ -189,31 +189,7 @@
   import { useToast } from '@/composables/useToast'
   import { translations } from '@/i18n/translations'
   import SliderInput from './oscillator/SliderInput.vue'
-
-  const WAVE_ABBR = { sine: 'SIN', square: 'SQR', sawtooth: 'SAW', triangle: 'TRI' }
-
-  const WAVE_TYPES = [
-    {
-      value: 'sine',
-      labelKey: 'osc_wave_sine',
-      svgPath: 'M2,10 C8,10 8,2 14,2 C20,2 20,18 26,18 C32,18 32,10 38,10',
-    },
-    {
-      value: 'square',
-      labelKey: 'osc_wave_square',
-      svgPath: 'M2,10 L2,3 L14,3 L14,17 L26,17 L26,3 L38,3 L38,10',
-    },
-    {
-      value: 'sawtooth',
-      labelKey: 'osc_wave_sawtooth',
-      svgPath: 'M2,17 L14,3 L14,17 L26,3 L26,17 L38,3',
-    },
-    {
-      value: 'triangle',
-      labelKey: 'osc_wave_triangle',
-      svgPath: 'M2,10 L8,3 L20,17 L32,3 L38,10',
-    },
-  ]
+  import { WAVE_TYPES, WAVE_ABBR } from '@/lib/waveforms'
 
   const CLIPBOARD_PARAMS = [
     'waveType',
