@@ -53,9 +53,6 @@
       <SettingsPanel />
     </div>
 
-    <!-- Donate Button -->
-    <DonateButton />
-
     <ToastContainer />
 
     <!-- Hearing-safety warning — sits just above the sticky player bar -->
@@ -83,7 +80,6 @@
   import FAQSection from '@/components/FAQSection.vue'
   import SettingsPanel from '@/components/SettingsPanel.vue'
   import PlayerControl from '@/components/PlayerControl.vue'
-  import DonateButton from '@/components/DonateButton.vue'
   import ToastContainer from '@/components/ToastContainer.vue'
   import HearingWarning from '@/components/HearingWarning.vue'
 
