@@ -18,6 +18,17 @@
         <i :class="tab.icon"></i>
         <span>{{ t(tab.label) }}</span>
       </button>
+      <!-- External blog article — styled like a tab, opens in a new window -->
+      <a
+        class="tab-btn tab-btn--link"
+        :href="BLOG_URL"
+        target="_blank"
+        rel="noopener noreferrer"
+        :title="t('tab_blog_title')"
+      >
+        <i class="fas fa-blog"></i>
+        <span>{{ t('tab_blog') }}</span>
+      </a>
     </div>
 
     <!-- Tab Content -->
@@ -104,6 +115,8 @@
     { id: 'presets', label: 'tab_presets', icon: 'fas fa-music' },
     { id: 'faq', label: 'tab_faq', icon: 'fas fa-question-circle' },
   ]
+
+  const BLOG_URL = 'https://kodinitools.com/blog/alarmtool-eigener-alarmton/'
 
   // Translation helper
   const t = (key) => {
