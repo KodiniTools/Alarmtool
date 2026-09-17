@@ -6,6 +6,7 @@ import {
   clearOscRuntime,
   clearAllOscRuntime,
 } from './useOscillatorRuntime'
+import { applyWaveType } from '@/lib/waveforms'
 
 export function useOscillatorLifecycle() {
   const store = useAlarmStore()
@@ -16,7 +17,7 @@ export function useOscillatorLifecycle() {
     const gainNode = store.audioCtx.createGain()
     const panNode = store.audioCtx.createStereoPanner()
 
-    osc.type = oscData.waveType
+    applyWaveType(osc, store.audioCtx, oscData.waveType)
     osc.frequency.setValueAtTime(oscData.frequency, store.audioCtx.currentTime)
     panNode.pan.setValueAtTime(oscData.pan, store.audioCtx.currentTime)
     gainNode.gain.setValueAtTime(0, store.audioCtx.currentTime)

@@ -3,6 +3,7 @@ import { useUndoRedo } from './useUndoRedo'
 import { useOscillatorPattern } from './useOscillatorPattern'
 import { useOscillatorLifecycle } from './useOscillatorLifecycle'
 import { getOscRuntime } from './useOscillatorRuntime'
+import { applyWaveType } from '@/lib/waveforms'
 
 export function useOscillators() {
   const store = useAlarmStore()
@@ -41,7 +42,7 @@ export function useOscillators() {
           rt.osc.frequency.setValueAtTime(value, now)
           break
         case 'waveType':
-          rt.osc.type = value
+          applyWaveType(rt.osc, store.audioCtx, value)
           break
         case 'pan':
           if (rt.panNode) rt.panNode.pan.setValueAtTime(value, now)

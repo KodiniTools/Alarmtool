@@ -216,6 +216,16 @@
   color: var(--at-info-text);
 }
 
+.osc-wave-chip--pulse {
+  background: rgba(160, 110, 220, 0.15);
+  color: #a06edc;
+}
+
+.osc-wave-chip--organ {
+  background: rgba(60, 170, 190, 0.15);
+  color: #3caabe;
+}
+
 /* ─── Editor Panel (right) ─────────────────────────────────────── */
 
 .osc-editor-panel {
@@ -309,7 +319,7 @@
 
 .osc-wave-selector {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-2);
 }
 
@@ -521,7 +531,7 @@
   }
 
   .osc-wave-selector {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

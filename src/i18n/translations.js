@@ -108,6 +108,8 @@ export const translations = {
     osc_wave_square: 'Rechteck',
     osc_wave_sawtooth: 'Sägezahn',
     osc_wave_triangle: 'Dreieck',
+    osc_wave_pulse: 'Puls',
+    osc_wave_organ: 'Orgel',
     osc_frequency: 'Frequenz (Hz)',
     osc_volume: 'Lautstärke',
     osc_pan: 'Pan',
@@ -201,7 +203,7 @@ export const translations = {
       'Alle modernen Browser mit Web Audio API Support: Chrome, Firefox, Safari, Edge (aktuelle Versionen).',
     faq_q5: 'Was sind Oszillatoren?',
     faq_a5:
-      'Oszillatoren erzeugen periodische Wellenformen (Sinus, Rechteck, Sägezahn, Dreieck) und sind die Grundlage der Klangerzeugung.',
+      'Oszillatoren erzeugen periodische Wellenformen (Sinus, Rechteck, Sägezahn, Dreieck, Puls, Orgel) und sind die Grundlage der Klangerzeugung.',
     faq_q6: 'Wie funktioniert der globale Filter?',
     faq_a6:
       'Der globale Filter verändert das Frequenzspektrum aller Oszillatoren gleichzeitig. Tiefpass dämpft hohe Frequenzen, Hochpass dämpft tiefe.',
@@ -405,6 +407,8 @@ export const translations = {
     osc_wave_square: 'Square',
     osc_wave_sawtooth: 'Sawtooth',
     osc_wave_triangle: 'Triangle',
+    osc_wave_pulse: 'Pulse',
+    osc_wave_organ: 'Organ',
     osc_frequency: 'Frequency (Hz)',
     osc_volume: 'Volume',
     osc_pan: 'Pan',
@@ -497,7 +501,7 @@ export const translations = {
       'All modern browsers with Web Audio API support: Chrome, Firefox, Safari, Edge (current versions).',
     faq_q5: 'What are oscillators?',
     faq_a5:
-      'Oscillators generate periodic waveforms (sine, square, sawtooth, triangle) and are the foundation of sound generation.',
+      'Oscillators generate periodic waveforms (sine, square, sawtooth, triangle, pulse, organ) and are the foundation of sound generation.',
     faq_q6: 'How does the global filter work?',
     faq_a6:
       'The global filter modifies the frequency spectrum of all oscillators simultaneously. Lowpass attenuates high frequencies, highpass attenuates low frequencies.',
