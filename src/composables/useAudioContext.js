@@ -117,8 +117,6 @@ export function useAudioContext() {
 
   return {
     initAudioContext,
-    setupGlobalFilter,
-    setupEffects,
     updateFilter,
     closeAudioContext,
   }

@@ -81,7 +81,7 @@
 <script setup>
   import { ref, onMounted, onUnmounted } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
   import { usePlayer } from '@/composables/usePlayer'
 
   import FilterControl from '@/components/FilterControl.vue'
@@ -118,10 +118,7 @@
 
   const BLOG_URL = 'https://kodinitools.com/blog/alarmtool-eigener-alarmton/'
 
-  // Translation helper
-  const t = (key) => {
-    return translations[store.currentLang]?.[key] || key
-  }
+  const { t } = useI18n()
 
   // SSI nav event handlers
   const onLocaleChanged = (e) => {

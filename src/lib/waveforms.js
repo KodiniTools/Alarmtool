@@ -64,13 +64,6 @@ export const WAVE_TYPES = [
 /** Map waveType -> short badge label, e.g. { sine: 'SIN', ... } */
 export const WAVE_ABBR = Object.fromEntries(WAVE_TYPES.map((w) => [w.value, w.abbr]))
 
-/** All valid waveType values. */
-export const WAVE_TYPE_VALUES = WAVE_TYPES.map((w) => w.value)
-
-export function isValidWaveType(type) {
-  return WAVE_TYPE_VALUES.includes(type)
-}
-
 // Fourier series of a pulse wave with duty cycle d (DC component removed):
 //   a_n = 2 / (n·π) · sin(n·π·d)   (cosine terms)
 function _pulseCoefficients() {

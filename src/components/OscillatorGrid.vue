@@ -64,7 +64,7 @@
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
   import OscillatorItem from './OscillatorItem.vue'
   import OscillatorListRow from './oscillator/OscillatorListRow.vue'
 
@@ -73,7 +73,7 @@
   const { updateOscillatorParameter } = useOscillators()
   const toast = useToast()
 
-  const t = (key) => translations[store.currentLang]?.[key] ?? key
+  const { t } = useI18n()
 
   const selectedId = ref(0)
   const selectedOscillator = computed(() => store.oscillators[selectedId.value] ?? null)
@@ -81,7 +81,6 @@
 
   function handleToggleEnabled(index, value) {
     updateOscillatorParameter(index, 'enabled', value)
-    if (!store.oscillators[index].enabled && selectedId.value !== index) return
   }
 
   function handleUndo() {
@@ -98,14 +97,12 @@
     const tag = event.target.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
 
-    if ((event.ctrlKey || event.metaKey) && !event.shiftKey && event.key === 'z') {
+    if (!event.ctrlKey && !event.metaKey) return
+
+    if (!event.shiftKey && event.key === 'z') {
       event.preventDefault()
       if (canUndo.value) handleUndo()
-    } else if (
-      ((event.ctrlKey || event.metaKey) && event.key === 'y') ||
-      ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'z') ||
-      ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'Z')
-    ) {
+    } else if (event.key === 'y' || (event.shiftKey && (event.key === 'z' || event.key === 'Z'))) {
       event.preventDefault()
       if (canRedo.value) handleRedo()
     }

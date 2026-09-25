@@ -10,17 +10,14 @@
 /* Theme transition — applied to elements that visually change between light/dark */
 body,
 .section,
-.oscillator-item,
 .preset-card,
 .faq-item,
-.player-container,
 .tab-btn,
 .form-control,
 .form-select,
 .btn,
 .toast-item,
-.toggle-slider,
-.preview-btn {
+.toggle-slider {
   transition:
     background-color var(--at-speed-slow) ease,
     color var(--at-speed-slow) ease,

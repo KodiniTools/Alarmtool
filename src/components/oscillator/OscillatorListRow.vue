@@ -32,12 +32,10 @@
 </template>
 
 <script setup>
-  import { useAlarmStore } from '@/stores/alarmStore'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
   import { WAVE_ABBR } from '@/lib/waveforms'
 
-  const store = useAlarmStore()
-  const t = (key) => translations[store.currentLang]?.[key] ?? key
+  const { t } = useI18n()
 
   defineProps({
     oscillatorId: { type: Number, required: true },

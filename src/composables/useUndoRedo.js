@@ -2,6 +2,7 @@ import { reactive, computed } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { useOscillators } from './useOscillators'
 import { useAudioContext } from './useAudioContext'
+import { pickOscParams } from '@/lib/oscillatorDefaults'
 
 const MAX_HISTORY = 50
 
@@ -23,15 +24,7 @@ function captureSnapshot() {
     },
     oscillators: store.oscillators.map((osc) => ({
       enabled: osc.enabled,
-      waveType: osc.waveType,
-      frequency: osc.frequency,
-      volume: osc.volume,
-      pan: osc.pan,
-      attack: osc.attack,
-      decay: osc.decay,
-      sustain: osc.sustain,
-      release: osc.release,
-      pattern: osc.pattern,
+      ...pickOscParams(osc),
     })),
   }
 }
@@ -155,16 +148,6 @@ export function useUndoRedo() {
     applySnapshot(nextState)
   }
 
-  function clear() {
-    state.undoStack.splice(0, state.undoStack.length)
-    state.redoStack.splice(0, state.redoStack.length)
-    state.hasPendingSnapshot = false
-    if (state.debounceTimer) {
-      clearTimeout(state.debounceTimer)
-      state.debounceTimer = null
-    }
-  }
-
   return {
     canUndo,
     canRedo,
@@ -173,6 +156,5 @@ export function useUndoRedo() {
     recordChange,
     undo,
     redo,
-    clear,
   }
 }

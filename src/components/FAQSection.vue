@@ -16,12 +16,9 @@
 </template>
 
 <script setup>
-  import { useAlarmStore } from '@/stores/alarmStore'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
 
-  const store = useAlarmStore()
-
-  const t = (key) => translations[store.currentLang]?.[key] || key
+  const { t } = useI18n()
 
   const faqData = [
     { q: 'faq_q1', a: 'faq_a1' },

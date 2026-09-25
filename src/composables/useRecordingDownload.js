@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { useToast } from './useToast'
+import { formatTime } from '@/lib/formatTime'
 
 const EXTENSION_MAP = [
   { test: (m) => m.includes('wav'), ext: 'wav' },
@@ -37,7 +38,7 @@ export function useRecordingDownload() {
       downloadFilename.value = `alarm_recording_${timestamp}_HQ.${ext}`
       downloadUrl.value = URL.createObjectURL(blob)
       showDownload.value = true
-    } catch (_error) {
+    } catch {
       toast.error('toast_rec_file_error')
     }
   }
@@ -48,12 +49,6 @@ export function useRecordingDownload() {
     downloadFilename.value = ''
     showDownload.value = false
     recordedBlob.value = null
-  }
-
-  function formatTime(ms) {
-    const minutes = Math.floor(ms / 60000)
-    const seconds = Math.floor((ms % 60000) / 1000)
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
   }
 
   return { downloadUrl, downloadFilename, showDownload, recordedBlob, create, reset, formatTime }
