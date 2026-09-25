@@ -81,7 +81,7 @@
 <script setup>
   import { ref, onMounted, onUnmounted } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
-  import { useI18n } from '@/i18n'
+  import { useI18n, normalizeLang } from '@/i18n'
   import { usePlayer } from '@/composables/usePlayer'
 
   import FilterControl from '@/components/FilterControl.vue'
@@ -121,28 +121,26 @@
   const { t } = useI18n()
 
   // SSI nav event handlers
-  const onLocaleChanged = (e) => {
-    if (e.detail?.locale) {
-      store.setLanguage(e.detail.locale)
-    }
+  // Unsupported locales are ignored so the UI never falls back to raw keys.
+  const applyLocale = (locale) => {
+    const lang = normalizeLang(locale)
+    if (lang && lang !== store.currentLang) store.setLanguage(lang)
   }
 
-  const onThemeChanged = (e) => {
-    if (e.detail?.theme) {
-      store.setTheme(e.detail.theme)
-    }
+  const applyTheme = (theme) => {
+    if (theme && theme !== store.currentTheme) store.setTheme(theme)
   }
+
+  const onLocaleChanged = (e) => applyLocale(e.detail?.locale)
+  const onThemeChanged = (e) => applyTheme(e.detail?.theme)
 
   onMounted(() => {
-    // Sync with SSI nav's current state (it may have initialized before Vue)
-    const ssiTheme = document.documentElement.getAttribute('data-theme')
-    if (ssiTheme) {
-      store.currentTheme = ssiTheme
-    }
-    const ssiLang = document.documentElement.getAttribute('lang')
-    if (ssiLang && (ssiLang === 'de' || ssiLang === 'en')) {
-      store.currentLang = ssiLang
-    }
+    // Sync with the SSI nav's current state. The nav is included before the
+    // (deferred) app module, so its lang/data-theme attributes are already set.
+    // store.currentLang/currentTheme are read-only getters — go through the
+    // store actions instead of assigning them.
+    applyTheme(document.documentElement.getAttribute('data-theme'))
+    applyLocale(document.documentElement.getAttribute('lang'))
 
     // Listen for SSI nav language/theme changes
     window.addEventListener('locale-changed', onLocaleChanged)
