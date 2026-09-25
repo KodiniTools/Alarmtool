@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import { useAlarmStore } from '@/stores/alarmStore'
-import { translations } from '@/i18n/translations'
+import { translate } from '@/i18n'
 
 const state = reactive({
   toasts: [],
@@ -15,8 +15,7 @@ const TOAST_DEFAULTS = {
 }
 
 function t(key) {
-  const store = useAlarmStore()
-  return translations[store.currentLang]?.[key] || key
+  return translate(useAlarmStore().currentLang, key)
 }
 
 function addToast(type, messageKey, options = {}) {
@@ -90,10 +89,6 @@ export function useToast() {
 
     dismiss(id) {
       removeToast(id)
-    },
-
-    clear() {
-      state.toasts.splice(0, state.toasts.length)
     },
   }
 }

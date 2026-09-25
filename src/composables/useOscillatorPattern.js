@@ -18,7 +18,7 @@ export function useOscillatorPattern() {
 
       const steps = numbers.length >= 2 && numbers.length % 2 === 0 ? numbers : FALLBACK_PATTERN
       setOscRuntime(oscId, { patternSteps: steps, patternIndex: 0, toneIsOn: false })
-    } catch (_error) {
+    } catch {
       setOscRuntime(oscId, { patternSteps: FALLBACK_PATTERN, patternIndex: 0, toneIsOn: false })
     }
   }
@@ -50,7 +50,7 @@ export function useOscillatorPattern() {
         gain.setValueAtTime(gain.value, now)
         gain.linearRampToValueAtTime(0, now + releaseSec)
       }
-    } catch (_error) {
+    } catch {
       // Audio parameter update failed — non-critical
     }
   }

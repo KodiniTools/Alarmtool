@@ -23,13 +23,11 @@
 
 <script setup>
   import { ref } from 'vue'
-  import { useAlarmStore } from '@/stores/alarmStore'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
 
   const STORAGE_KEY = 'alarmToolHearingAck'
 
-  const store = useAlarmStore()
-  const t = (key) => translations[store.currentLang]?.[key] || key
+  const { t } = useI18n()
 
   // Show once until the user acknowledges it. Reading storage can throw in
   // private-mode browsers, so guard it and fail open (show the warning).

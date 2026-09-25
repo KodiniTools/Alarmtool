@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { DEFAULT_FILTER } from '@/lib/oscillatorDefaults'
 
 export const useSettingsStore = defineStore('settings', () => {
   const currentLang = ref(localStorage.getItem('locale') || 'de')
   const currentTheme = ref(localStorage.getItem('theme') || 'dark')
-  const filterSettings = ref({ type: 'none', frequency: 1000, Q: 1 })
+  const filterSettings = ref({ ...DEFAULT_FILTER })
 
   function setLanguage(lang) {
     currentLang.value = lang

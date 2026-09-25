@@ -1,6 +1,5 @@
 export const translations = {
   de: {
-    page_title: 'Modernes Alarm-Tool mit 12 Oszillatoren & Live-Recorder',
     app_title: 'Modernes Alarm-Tool',
     app_subtitle: 'Mit 12 Oszillatoren & Live-Recorder (Modular)',
     tab_filter: 'Filter',
@@ -15,7 +14,6 @@ export const translations = {
     presets_title: 'Alarm-Presets',
     presets_intro:
       'Fertige Alarmton-Konfigurationen zum sofortigen Laden. Klicke auf "Laden" um ein Preset zu aktivieren.',
-    presets_load: 'Laden',
     preset_emergency_name: 'Klassische Notfallsirene',
     preset_emergency_desc:
       'Zwei-Ton Hi-Lo Sirene (660/880 Hz) mit Oberwelle — klassischer Rettungsdienst-Alarm.',
@@ -126,8 +124,6 @@ export const translations = {
     osc_release: 'Release (ms)',
     osc_copy: 'Einstellungen kopieren',
     osc_paste: 'Einstellungen einfügen',
-    osc_advanced_show: 'Erweiterte Optionen anzeigen',
-    osc_advanced_hide: 'Erweiterte Optionen ausblenden',
     osc_pattern: 'Pattern',
     osc_pattern_help: 'Kommagetrennt: Zeit in ms für (an, aus, an, aus, ...)',
     osc_disabled_label: 'Deaktiviert',
@@ -165,7 +161,6 @@ export const translations = {
       'Erst den Alarm starten, dann Aufnahme; nach der gewählten Dauer wird ein Download-Link angezeigt.',
 
     // Settings
-    settings_title: 'Einstellungen verwalten',
     settings_save: 'Speichern',
     settings_save_desc: 'Im Browser speichern',
     settings_load: 'Laden',
@@ -239,7 +234,6 @@ export const translations = {
     toast_settings_imported: 'Einstellungen erfolgreich importiert.',
     toast_settings_import_error:
       'Import fehlgeschlagen. Bitte stelle sicher, dass die JSON-Datei korrekt ist.',
-    toast_settings_apply_error: 'Fehler beim Anwenden der Einstellungen.',
 
     // Toast Messages - Player
     toast_alarm_started: 'Alarm gestartet. Leertaste = Pause, Esc = Stop.',
@@ -255,7 +249,6 @@ export const translations = {
     // Toast Messages - Recording
     toast_rec_no_alarm: 'Bitte starte zuerst den Alarm, bevor du eine Aufnahme beginnst.',
     toast_rec_no_duration: 'Bitte wähle eine gültige Aufnahmedauer.',
-    toast_rec_started: 'Aufnahme gestartet. Der Alarm wird aufgezeichnet.',
     toast_rec_start_error: 'Fehler beim Starten der Aufnahme.',
     toast_rec_file_error: 'Fehler beim Erstellen der Aufnahme-Datei.',
     toast_rec_error_not_supported: 'Dein Browser unterstützt diese Aufnahmefunktion nicht.',
@@ -277,13 +270,6 @@ export const translations = {
       'Diese Alarmtöne können sehr laut sein und bei hoher Lautstärke das Gehör schädigen. Reduziere die Lautstärke, bevor du abspielst — besonders mit Kopfhörern.',
     hearing_warning_dismiss: 'Verstanden',
 
-    // Preview Player
-    preview_play: 'Vorschau abspielen / pausieren',
-    preview_stop: 'Vorschau stoppen',
-    preview_volume: 'Vorschau-Lautstärke',
-    preview_playing: 'Vorschau läuft...',
-    preview_paused: 'Vorschau pausiert',
-
     // Preset Reset
     preset_active_label: 'Aktives Preset',
     preset_reset: 'Zurücksetzen',
@@ -303,7 +289,6 @@ export const translations = {
     toast_osc_pasted: 'Oszillator-Einstellungen eingefügt.',
   },
   en: {
-    page_title: 'Modern Alarm Tool with 12 Oscillators & Live Recorder',
     app_title: 'Modern Alarm Tool',
     app_subtitle: 'With 12 Oscillators & Live Recorder (Modular)',
     tab_filter: 'Filter',
@@ -318,7 +303,6 @@ export const translations = {
     // Presets
     presets_title: 'Alarm Presets',
     presets_intro: 'Ready-to-use alarm tone configurations. Click "Load" to activate a preset.',
-    presets_load: 'Load',
     preset_emergency_name: 'Classic Emergency Siren',
     preset_emergency_desc:
       'Two-tone Hi-Lo siren (660/880 Hz) with overtone — classic emergency services alarm.',
@@ -429,8 +413,6 @@ export const translations = {
     osc_release: 'Release (ms)',
     osc_copy: 'Copy settings',
     osc_paste: 'Paste settings',
-    osc_advanced_show: 'Show advanced options',
-    osc_advanced_hide: 'Hide advanced options',
     osc_pattern: 'Pattern',
     osc_pattern_help: 'Comma-separated: time in ms for (on, off, on, off, ...)',
     osc_disabled_label: 'Disabled',
@@ -468,7 +450,6 @@ export const translations = {
       'Start the alarm first, then start recording; after the selected duration, a download link will appear.',
 
     // Settings
-    settings_title: 'Manage Settings',
     settings_save: 'Save',
     settings_save_desc: 'Save to browser',
     settings_load: 'Load',
@@ -540,7 +521,6 @@ export const translations = {
     toast_settings_export_error: 'Error exporting settings.',
     toast_settings_imported: 'Settings imported successfully.',
     toast_settings_import_error: 'Import failed. Please make sure the JSON file is valid.',
-    toast_settings_apply_error: 'Error applying settings.',
 
     // Toast Messages - Player
     toast_alarm_started: 'Alarm started. Space = Pause, Esc = Stop.',
@@ -556,7 +536,6 @@ export const translations = {
     // Toast Messages - Recording
     toast_rec_no_alarm: 'Please start the alarm first before recording.',
     toast_rec_no_duration: 'Please select a valid recording duration.',
-    toast_rec_started: 'Recording started. The alarm is being captured.',
     toast_rec_start_error: 'Error starting the recording.',
     toast_rec_file_error: 'Error creating the recording file.',
     toast_rec_error_not_supported: 'Your browser does not support this recording feature.',
@@ -576,13 +555,6 @@ export const translations = {
     hearing_warning_text:
       'These alarm tones can be very loud and may damage your hearing at high volume. Lower the volume before playing — especially with headphones.',
     hearing_warning_dismiss: 'Got it',
-
-    // Preview Player
-    preview_play: 'Preview play / pause',
-    preview_stop: 'Stop preview',
-    preview_volume: 'Preview volume',
-    preview_playing: 'Preview playing...',
-    preview_paused: 'Preview paused',
 
     // Preset Reset
     preset_active_label: 'Active Preset',

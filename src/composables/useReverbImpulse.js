@@ -1,6 +1,6 @@
 /**
  * Creates a synthetic reverb impulse response buffer.
- * Shared between the main audio context and the preset preview.
+ * Used by the main audio context (useAudioContext).
  *
  * @param {AudioContext} audioCtx - The audio context to create the buffer for
  * @param {number} [duration=3] - Impulse duration in seconds

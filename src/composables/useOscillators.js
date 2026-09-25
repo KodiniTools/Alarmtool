@@ -8,7 +8,7 @@ import { applyWaveType } from '@/lib/waveforms'
 export function useOscillators() {
   const store = useAlarmStore()
   const { recordChange } = useUndoRedo()
-  const { parsePattern, setOscTone, runOscPattern } = useOscillatorPattern()
+  const { parsePattern, runOscPattern } = useOscillatorPattern()
   const { createOscillators, startSingleOscillator, stopSingleOscillator, stopOscillators } =
     useOscillatorLifecycle()
 
@@ -56,12 +56,9 @@ export function useOscillators() {
   return {
     // Pattern
     parsePattern,
-    setOscTone,
     runOscPattern,
     // Lifecycle
     createOscillators,
-    startSingleOscillator,
-    stopSingleOscillator,
     stopOscillators,
     // Coordinator
     updateOscillatorParameter,

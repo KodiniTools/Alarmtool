@@ -88,7 +88,7 @@
   import { ref, computed, watch } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useAudioContext } from '@/composables/useAudioContext'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
 
   const store = useAlarmStore()
   const { updateFilter: updateAudioFilter } = useAudioContext()
@@ -98,8 +98,7 @@
   const filterFrequency = ref(store.filterSettings.frequency)
   const filterQ = ref(store.filterSettings.Q)
 
-  // Translation helper
-  const t = (key) => translations[store.currentLang]?.[key] || key
+  const { t } = useI18n()
 
   // Filter-specific default values
   const filterDefaults = {

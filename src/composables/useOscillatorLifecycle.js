@@ -52,11 +52,11 @@ export function useOscillatorLifecycle() {
           oscRef.disconnect()
           gainRef.disconnect()
           panRef.disconnect()
-        } catch (_e) {
+        } catch {
           // ignore — node already disconnected
         }
       }, releaseSec * 1000)
-    } catch (_e) {
+    } catch {
       // Stop failed — node may already be disconnected
     }
   }
@@ -73,7 +73,7 @@ export function useOscillatorLifecycle() {
         // Store nodes in non-reactive runtime map — keeps Web Audio objects out of Vue proxy
         setOscRuntime(index, { osc, gainNode, panNode })
         osc.start()
-      } catch (_error) {
+      } catch {
         // Oscillator creation failed — skip this one
       }
     })
@@ -95,7 +95,7 @@ export function useOscillatorLifecycle() {
       if (store.isAlarmRunning) {
         runOscPattern(oscId)
       }
-    } catch (_error) {
+    } catch {
       // Oscillator start failed — skip
     }
   }

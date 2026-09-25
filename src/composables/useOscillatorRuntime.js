@@ -21,11 +21,3 @@ export function clearOscRuntime(id) {
 export function clearAllOscRuntime() {
   _runtime.clear()
 }
-
-export function hasOscRuntime(id) {
-  return _runtime.has(id) && _runtime.get(id).osc !== null
-}
-
-export function getAllOscRuntimeIds() {
-  return [..._runtime.keys()]
-}

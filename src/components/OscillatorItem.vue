@@ -187,21 +187,10 @@
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
   import SliderInput from './oscillator/SliderInput.vue'
   import { WAVE_TYPES, WAVE_ABBR } from '@/lib/waveforms'
-
-  const CLIPBOARD_PARAMS = [
-    'waveType',
-    'frequency',
-    'volume',
-    'pan',
-    'attack',
-    'decay',
-    'sustain',
-    'release',
-    'pattern',
-  ]
+  import { OSC_PARAMS, pickOscParams } from '@/lib/oscillatorDefaults'
 
   const props = defineProps({
     oscillatorId: { type: Number, required: true },
@@ -211,7 +200,7 @@
   const store = useAlarmStore()
   const { updateOscillatorParameter, parsePattern } = useOscillators()
   const toast = useToast()
-  const t = (key) => translations[store.currentLang]?.[key] ?? key
+  const { t } = useI18n()
 
   const showAdsr = ref(false)
   const settings = ref({ ...props.oscillator })
@@ -230,13 +219,13 @@
   }
 
   function copySettings() {
-    store.oscClipboard = Object.fromEntries(CLIPBOARD_PARAMS.map((p) => [p, settings.value[p]]))
+    store.oscClipboard = pickOscParams(settings.value)
     toast.success('toast_osc_copied')
   }
 
   function pasteSettings() {
     if (!store.oscClipboard) return
-    CLIPBOARD_PARAMS.forEach((param) => {
+    OSC_PARAMS.forEach((param) => {
       updateOscillatorParameter(props.oscillatorId, param, store.oscClipboard[param])
     })
     parsePattern(props.oscillatorId)

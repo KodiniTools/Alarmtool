@@ -60,7 +60,8 @@
   import { useAudioContext } from '@/composables/useAudioContext'
   import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
+  import { normalizeOscSettings, pickOscParams } from '@/lib/oscillatorDefaults'
 
   const store = useAlarmStore()
   const { updateFilter } = useAudioContext()
@@ -68,7 +69,7 @@
   const toast = useToast()
   const importInput = ref(null)
 
-  const t = (key) => translations[store.currentLang]?.[key] ?? key
+  const { t } = useI18n()
 
   function triggerImport() {
     importInput.value?.click()
@@ -81,17 +82,7 @@
         frequency: store.filterSettings.frequency,
         Q: store.filterSettings.Q,
       },
-      oscillators: store.oscillators.map((osc) => ({
-        waveType: osc.waveType,
-        frequency: osc.frequency,
-        volume: osc.volume,
-        pan: osc.pan,
-        attack: osc.attack,
-        decay: osc.decay,
-        sustain: osc.sustain,
-        release: osc.release,
-        pattern: osc.pattern,
-      })),
+      oscillators: store.oscillators.map(pickOscParams),
     }
   }
 
@@ -99,7 +90,7 @@
     try {
       localStorage.setItem('alarmToolSettings', JSON.stringify(buildSnapshot()))
       toast.success('toast_settings_saved')
-    } catch (_e) {
+    } catch {
       toast.error('toast_settings_save_error')
     }
   }
@@ -113,7 +104,7 @@
       }
       applySettings(JSON.parse(raw))
       toast.success('toast_settings_loaded')
-    } catch (_e) {
+    } catch {
       toast.error('toast_settings_load_error')
     }
   }
@@ -130,7 +121,7 @@
       a.click()
       URL.revokeObjectURL(url)
       toast.success('toast_settings_exported')
-    } catch (_e) {
+    } catch {
       toast.error('toast_settings_export_error')
     }
   }
@@ -143,7 +134,7 @@
       try {
         applySettings(JSON.parse(e.target.result))
         toast.success('toast_settings_imported')
-      } catch (_err) {
+      } catch {
         toast.error('toast_settings_import_error')
       }
     }
@@ -155,17 +146,7 @@
     if (settings.globalFilter) updateFilter(settings.globalFilter)
     if (settings.oscillators?.length === store.oscillators.length) {
       settings.oscillators.forEach((s, i) => {
-        store.updateOscillator(i, {
-          waveType: s.waveType,
-          frequency: s.frequency,
-          volume: s.volume,
-          pan: s.pan,
-          attack: s.attack,
-          decay: s.decay ?? 50,
-          sustain: s.sustain ?? 0.8,
-          release: s.release,
-          pattern: s.pattern,
-        })
+        store.updateOscillator(i, normalizeOscSettings(s))
         parsePattern(i)
       })
     }

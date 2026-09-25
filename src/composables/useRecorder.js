@@ -72,7 +72,7 @@ export function useRecorder() {
       })
 
       return true
-    } catch (_error) {
+    } catch {
       toast.error('toast_rec_start_error')
       store.isRecording = false
       return false

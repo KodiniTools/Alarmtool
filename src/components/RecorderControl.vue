@@ -155,7 +155,7 @@
   import { useRecorder } from '@/composables/useRecorder'
   import { useFormatConverter } from '@/composables/useFormatConverter'
   import { useToast } from '@/composables/useToast'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
 
   const store = useAlarmStore()
   const {
@@ -178,9 +178,8 @@
   const toast = useToast()
 
   const selectedDuration = ref(60000) // Default 1 minute
-  store.recordingDuration = selectedDuration.value
 
-  const t = (key) => translations[store.currentLang]?.[key] || key
+  const { t } = useI18n()
 
   // Define all possible formats with their mime types
   const allFormats = [
@@ -249,7 +248,7 @@
         downloadFilename.value,
         selectedChannelMode.value === 'mono'
       )
-    } catch (error) {
+    } catch {
       // Error already handled in composable
     }
   }

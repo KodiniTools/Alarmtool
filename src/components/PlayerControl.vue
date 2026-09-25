@@ -113,7 +113,7 @@
   import { computed } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { usePlayer } from '@/composables/usePlayer'
-  import { translations } from '@/i18n/translations'
+  import { useI18n } from '@/i18n'
 
   const store = useAlarmStore()
   const {
@@ -127,7 +127,7 @@
     formatTime,
   } = usePlayer()
 
-  const t = (key) => translations[store.currentLang]?.[key] ?? key
+  const { t } = useI18n()
 
   const PROGRESS_CYCLE_MS = 30000
 

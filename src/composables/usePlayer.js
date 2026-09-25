@@ -4,6 +4,7 @@ import { useAudioContext } from './useAudioContext'
 import { useOscillators } from './useOscillators'
 import { useToast } from './useToast'
 import { getOscRuntime, clearAllOscRuntime } from './useOscillatorRuntime'
+import { formatTime } from '@/lib/formatTime'
 
 const TIMER_INTERVAL_MS = 100
 const LOOP_DURATION_MS = 300000 // 5 minutes
@@ -20,6 +21,18 @@ export function usePlayer() {
   const { initAudioContext, closeAudioContext } = useAudioContext()
   const { createOscillators, runOscPattern, stopOscillators } = useOscillators()
   const toast = useToast()
+
+  // Sets the master gain immediately (no-op before the audio context exists).
+  function setMasterGain(value) {
+    if (store.masterGainNode && store.audioCtx) {
+      store.masterGainNode.gain.setValueAtTime(value, store.audioCtx.currentTime)
+    }
+  }
+
+  // Gain matching the user's volume/mute setting.
+  function audibleGain() {
+    return store.isMuted ? 0 : store.volume
+  }
 
   function startAlarm() {
     if (store.isPlaying) return
@@ -43,10 +56,7 @@ export function usePlayer() {
       initAudioContext()
 
       // Set volume
-      if (store.masterGainNode && store.audioCtx) {
-        const targetVolume = store.isMuted ? 0 : store.volume
-        store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
-      }
+      setMasterGain(audibleGain())
 
       // Create and start oscillators
       createOscillators()
@@ -60,7 +70,7 @@ export function usePlayer() {
       startPlaybackTimer()
 
       toast.success('toast_alarm_started')
-    } catch (_error) {
+    } catch {
       toast.error('toast_alarm_start_error')
       store.isPlaying = false
       store.isAlarmRunning = false
@@ -73,9 +83,7 @@ export function usePlayer() {
     store.isPaused = true
 
     // Pause audio by reducing gain
-    if (store.masterGainNode && store.audioCtx) {
-      store.masterGainNode.gain.setValueAtTime(0, store.audioCtx.currentTime)
-    }
+    setMasterGain(0)
 
     // Pause timer
     if (playbackTimer.value) {
@@ -92,10 +100,7 @@ export function usePlayer() {
     store.isPaused = false
 
     // Resume audio by restoring gain
-    if (store.masterGainNode && store.audioCtx) {
-      const targetVolume = store.isMuted ? 0 : store.volume
-      store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
-    }
+    setMasterGain(audibleGain())
 
     // Resume timer
     startPlaybackTimer()
@@ -152,7 +157,7 @@ export function usePlayer() {
         rt.osc?.disconnect()
         rt.gainNode?.disconnect()
         rt.panNode?.disconnect()
-      } catch (_e) {
+      } catch {
         // ignore — node already stopped/disconnected
       }
     })
@@ -162,10 +167,7 @@ export function usePlayer() {
     store.isPaused = false
 
     // Restore master gain in case we were paused (gain ramped to 0).
-    if (store.masterGainNode && store.audioCtx) {
-      const targetVolume = store.isMuted ? 0 : store.volume
-      store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
-    }
+    setMasterGain(audibleGain())
 
     createOscillators()
     store.oscillators.forEach((_osc, index) => runOscPattern(index))
@@ -191,23 +193,16 @@ export function usePlayer() {
   function updateVolume(value) {
     store.volume = value
 
-    if (
-      store.masterGainNode &&
-      store.audioCtx &&
-      store.isPlaying &&
-      !store.isPaused &&
-      !store.isMuted
-    ) {
-      store.masterGainNode.gain.setValueAtTime(value, store.audioCtx.currentTime)
+    if (store.isPlaying && !store.isPaused && !store.isMuted) {
+      setMasterGain(value)
     }
   }
 
   function toggleMute() {
     store.isMuted = !store.isMuted
 
-    if (store.masterGainNode && store.audioCtx && store.isPlaying && !store.isPaused) {
-      const targetVolume = store.isMuted ? 0 : store.volume
-      store.masterGainNode.gain.setValueAtTime(targetVolume, store.audioCtx.currentTime)
+    if (store.isPlaying && !store.isPaused) {
+      setMasterGain(audibleGain())
     }
 
     toast.info(store.isMuted ? 'toast_mute_on' : 'toast_mute_off')
@@ -216,12 +211,6 @@ export function usePlayer() {
   function toggleLoop() {
     store.isLooping = !store.isLooping
     toast.info(store.isLooping ? 'toast_loop_on' : 'toast_loop_off')
-  }
-
-  function formatTime(ms) {
-    const minutes = Math.floor(ms / 60000)
-    const seconds = Math.floor((ms % 60000) / 1000)
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
   }
 
   // Keyboard shortcuts
