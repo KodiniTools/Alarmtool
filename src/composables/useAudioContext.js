@@ -1,6 +1,11 @@
 import { useAlarmStore } from '@/stores/alarmStore'
 import { createReverbImpulse } from './useReverbImpulse'
 
+// The UI's 'none' maps to a pass-through allpass node.
+function toNodeFilterType(type) {
+  return !type || type === 'none' ? 'allpass' : type
+}
+
 export function useAudioContext() {
   const store = useAlarmStore()
 
@@ -39,7 +44,7 @@ export function useAudioContext() {
     if (!store.audioCtx) return
 
     store.filterNode = store.audioCtx.createBiquadFilter()
-    store.filterNode.type = 'allpass' // 'none' -> allpass
+    store.filterNode.type = toNodeFilterType(store.filterSettings.type)
     store.filterNode.frequency.setValueAtTime(
       store.filterSettings.frequency,
       store.audioCtx.currentTime
@@ -80,14 +85,17 @@ export function useAudioContext() {
     }
   }
 
+  // Always stores the settings; applies them to the live node when one exists
+  // (a context created later picks them up in setupGlobalFilter).
   function updateFilter(settings) {
+    store.updateFilterSettings(settings)
     if (!store.filterNode || !store.audioCtx) return
 
     const { type, frequency, Q } = settings
     const now = store.audioCtx.currentTime
 
     if (type !== undefined) {
-      store.filterNode.type = type === 'none' ? 'allpass' : type
+      store.filterNode.type = toNodeFilterType(type)
     }
 
     if (frequency !== undefined) {
@@ -97,8 +105,6 @@ export function useAudioContext() {
     if (Q !== undefined) {
       store.filterNode.Q.setValueAtTime(Q, now)
     }
-
-    store.updateFilterSettings(settings)
   }
 
   function closeAudioContext() {

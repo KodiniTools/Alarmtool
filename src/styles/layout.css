@@ -153,13 +153,6 @@
   width: 12px;
 }
 
-/* ─── Settings block ────────────────────────────────────────────── */
-
-.app-settings {
-  max-width: 640px;
-  margin: 0 auto var(--space-5);
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .main-container {

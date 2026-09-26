@@ -2,81 +2,63 @@
 
 .osc-master-detail {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: var(--space-4);
   min-height: 520px;
   align-items: start;
 }
 
-/* ─── List Panel (left) ────────────────────────────────────────── */
+/* ─── Sidebar (left) ───────────────────────────────────────────── */
 
-.osc-list-panel {
-  background: rgba(9, 20, 40, 0.4);
-  border-radius: var(--at-radius);
-  border: 1px solid rgba(122, 141, 160, 0.12);
-  overflow: hidden;
-  position: sticky;
-  top: var(--space-4);
-}
-
-[data-theme='light'] .osc-list-panel {
-  background: rgba(249, 242, 213, 0.5);
-  border-color: rgba(0, 57, 113, 0.1);
-}
-
-.osc-list-header {
+.osc-sidebar {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid rgba(122, 141, 160, 0.12);
+  min-width: 0;
 }
 
-/* Undo/redo sits on its own full-width row beneath the title. */
-.osc-list-header .undo-redo-controls {
-  width: 100%;
-}
-
-.osc-list-header .undo-redo-btn {
-  flex: 1;
-  justify-content: center;
-}
-
-.osc-list-heading {
+.osc-sidebar-header {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
-  min-width: 0;
+  padding: 0 var(--space-1);
 }
 
-.osc-list-title {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1.3;
-  text-transform: uppercase;
-  color: var(--at-muted);
-  margin-bottom: 0;
+.osc-sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--at-text);
+}
+
+.osc-sidebar-title i {
+  color: var(--at-primary);
+  font-size: 0.9rem;
 }
 
 .osc-active-badge {
   flex-shrink: 0;
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   color: var(--at-primary);
   background: rgba(201, 152, 77, 0.14);
   border-radius: 999px;
-  padding: 0.05rem 0.45rem;
-  line-height: 1.6;
+  padding: 0.15rem 0.55rem;
+  line-height: 1.5;
+  white-space: nowrap;
 }
 
 .osc-list {
   padding: var(--space-1) 0;
+}
+
+.osc-list .osc-list-row {
+  border-radius: var(--at-radius-xs);
 }
 
 /* ─── List Row ─────────────────────────────────────────────────── */
@@ -487,7 +469,7 @@
 
 @media (max-width: 900px) {
   .osc-master-detail {
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 240px 1fr;
   }
 
   .osc-wave-selector {
@@ -503,10 +485,6 @@
   .osc-master-detail {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
-  }
-
-  .osc-list-panel {
-    position: static;
   }
 
   .osc-list {

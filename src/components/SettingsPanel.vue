@@ -1,56 +1,36 @@
 <template>
-  <div class="settings">
-    <!-- Local group: Save / Load -->
-    <div class="settings-group">
-      <span class="settings-group-label">{{ t('settings_group_local') }}</span>
-      <div class="settings-actions">
-        <button class="settings-action-btn" @click="saveSettings">
-          <span class="settings-action-icon"><i class="fas fa-save"></i></span>
-          <span class="settings-action-body">
-            <span class="settings-action-name">{{ t('settings_save') }}</span>
-            <span class="settings-action-desc">{{ t('settings_save_desc') }}</span>
-          </span>
-        </button>
-        <button class="settings-action-btn" @click="loadSettings">
-          <span class="settings-action-icon"><i class="fas fa-folder-open"></i></span>
-          <span class="settings-action-body">
-            <span class="settings-action-name">{{ t('settings_load') }}</span>
-            <span class="settings-action-desc">{{ t('settings_load_desc') }}</span>
-          </span>
-        </button>
-      </div>
+  <div class="settings-menu">
+    <div
+      v-for="group in groups"
+      :key="group.labelKey"
+      class="settings-menu-group"
+      role="group"
+      :aria-label="t(group.labelKey)"
+    >
+      <span class="settings-menu-label">{{ t(group.labelKey) }}</span>
+      <button
+        v-for="item in group.items"
+        :key="item.nameKey"
+        type="button"
+        class="settings-menu-item"
+        @click="item.run"
+      >
+        <span class="settings-menu-icon"><i :class="item.icon" aria-hidden="true"></i></span>
+        <span class="settings-menu-text">
+          <span class="settings-menu-name">{{ t(item.nameKey) }}</span>
+          <span class="settings-menu-desc">{{ t(item.descKey) }}</span>
+        </span>
+      </button>
     </div>
-
-    <!-- Divider -->
-    <div class="settings-divider"></div>
-
-    <!-- File group: Export / Import -->
-    <div class="settings-group">
-      <span class="settings-group-label">{{ t('settings_group_file') }}</span>
-      <div class="settings-actions">
-        <button class="settings-action-btn" @click="exportSettings">
-          <span class="settings-action-icon"><i class="fas fa-file-export"></i></span>
-          <span class="settings-action-body">
-            <span class="settings-action-name">{{ t('settings_export') }}</span>
-            <span class="settings-action-desc">{{ t('settings_export_desc') }}</span>
-          </span>
-        </button>
-        <label class="settings-action-btn" tabindex="0" @keydown.enter="triggerImport">
-          <span class="settings-action-icon"><i class="fas fa-file-import"></i></span>
-          <span class="settings-action-body">
-            <span class="settings-action-name">{{ t('settings_import') }}</span>
-            <span class="settings-action-desc">{{ t('settings_import_desc') }}</span>
-          </span>
-          <input
-            ref="importInput"
-            type="file"
-            accept=".json"
-            class="settings-import-input"
-            @change="importSettings"
-          />
-        </label>
-      </div>
-    </div>
+    <input
+      ref="importInput"
+      type="file"
+      accept=".json,application/json"
+      class="settings-import-input"
+      tabindex="-1"
+      aria-hidden="true"
+      @change="importSettings"
+    />
   </div>
 </template>
 
@@ -60,6 +40,7 @@
   import { useAudioContext } from '@/composables/useAudioContext'
   import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
+  import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
   import { normalizeOscSettings, pickOscParams } from '@/lib/oscillatorDefaults'
 
@@ -67,6 +48,7 @@
   const { updateFilter } = useAudioContext()
   const { parsePattern } = useOscillators()
   const toast = useToast()
+  const { withHistory } = useUndoRedo()
   const importInput = ref(null)
 
   const { t } = useI18n()
@@ -74,6 +56,43 @@
   function triggerImport() {
     importInput.value?.click()
   }
+
+  const groups = [
+    {
+      labelKey: 'settings_group_local',
+      items: [
+        {
+          nameKey: 'settings_save',
+          descKey: 'settings_save_desc',
+          icon: 'fas fa-save',
+          run: saveSettings,
+        },
+        {
+          nameKey: 'settings_load',
+          descKey: 'settings_load_desc',
+          icon: 'fas fa-folder-open',
+          run: loadSettings,
+        },
+      ],
+    },
+    {
+      labelKey: 'settings_group_file',
+      items: [
+        {
+          nameKey: 'settings_export',
+          descKey: 'settings_export_desc',
+          icon: 'fas fa-file-export',
+          run: exportSettings,
+        },
+        {
+          nameKey: 'settings_import',
+          descKey: 'settings_import_desc',
+          icon: 'fas fa-file-import',
+          run: triggerImport,
+        },
+      ],
+    },
+  ]
 
   function buildSnapshot() {
     return {
@@ -102,7 +121,8 @@
         toast.info('toast_settings_none')
         return
       }
-      applySettings(JSON.parse(raw))
+      const settings = JSON.parse(raw)
+      withHistory({ labelKey: 'settings_load' }, () => applySettings(settings))
       toast.success('toast_settings_loaded')
     } catch {
       toast.error('toast_settings_load_error')
@@ -132,7 +152,8 @@
     const reader = new FileReader()
     reader.onload = (e) => {
       try {
-        applySettings(JSON.parse(e.target.result))
+        const settings = JSON.parse(e.target.result)
+        withHistory({ labelKey: 'settings_import' }, () => applySettings(settings))
         toast.success('toast_settings_imported')
       } catch {
         toast.error('toast_settings_import_error')
