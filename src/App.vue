@@ -36,6 +36,14 @@
       <!-- Filter Tab -->
       <div v-show="activeTab === 'filter'" class="section section-narrow">
         <FilterControl />
+        <!-- Save options: same menu as in the oscillator sidebar -->
+        <CollapsibleSection
+          class="filter-save-options"
+          :title="t('settings_menu_title')"
+          icon="fas fa-save"
+        >
+          <SettingsPanel />
+        </CollapsibleSection>
       </div>
 
       <!-- Oscillators Tab -->
@@ -87,6 +95,8 @@
   import PlayerControl from '@/components/PlayerControl.vue'
   import ToastContainer from '@/components/ToastContainer.vue'
   import HearingWarning from '@/components/HearingWarning.vue'
+  import SettingsPanel from '@/components/SettingsPanel.vue'
+  import CollapsibleSection from '@/components/ui/CollapsibleSection.vue'
 
   const store = useAlarmStore()
   const { handleKeyboard } = usePlayer()
