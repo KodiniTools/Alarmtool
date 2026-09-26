@@ -88,10 +88,12 @@
   import { ref, computed, watch } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useAudioContext } from '@/composables/useAudioContext'
+  import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
 
   const store = useAlarmStore()
   const { updateFilter: updateAudioFilter } = useAudioContext()
+  const { recordChange } = useUndoRedo()
 
   // Local reactive state
   const filterType = ref(store.filterSettings.type)
@@ -211,6 +213,15 @@
       frequency: filterFrequency.value,
       Q: filterQ.value,
     }
+    const current = store.filterSettings
+    if (
+      settings.type === current.type &&
+      settings.frequency === current.frequency &&
+      settings.Q === current.Q
+    ) {
+      return
+    }
+    recordChange({ labelKey: 'tab_filter' })
     updateAudioFilter(settings)
   }
 </script>

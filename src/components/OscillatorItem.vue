@@ -186,6 +186,7 @@
   import { ref, watch } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useOscillators } from '@/composables/useOscillators'
+  import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useToast } from '@/composables/useToast'
   import { useI18n } from '@/i18n'
   import SliderInput from './oscillator/SliderInput.vue'
@@ -199,6 +200,7 @@
 
   const store = useAlarmStore()
   const { updateOscillatorParameter, parsePattern } = useOscillators()
+  const { withHistory } = useUndoRedo()
   const toast = useToast()
   const { t } = useI18n()
 
@@ -225,10 +227,12 @@
 
   function pasteSettings() {
     if (!store.oscClipboard) return
-    OSC_PARAMS.forEach((param) => {
-      updateOscillatorParameter(props.oscillatorId, param, store.oscClipboard[param])
+    withHistory({ labelKey: 'osc_paste', oscId: props.oscillatorId }, () => {
+      OSC_PARAMS.forEach((param) => {
+        updateOscillatorParameter(props.oscillatorId, param, store.oscClipboard[param])
+      })
+      parsePattern(props.oscillatorId)
     })
-    parsePattern(props.oscillatorId)
     toast.success('toast_osc_pasted')
   }
 </script>

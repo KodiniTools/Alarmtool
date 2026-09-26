@@ -65,6 +65,7 @@
   import { useOscillators } from '@/composables/useOscillators'
   import { useToast } from '@/composables/useToast'
   import { usePlayer } from '@/composables/usePlayer'
+  import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
   import { PRESETS as presets } from '@/data/presets'
   import {
@@ -79,13 +80,14 @@
   const { parsePattern } = useOscillators()
   const { restartAlarm, stopAlarm } = usePlayer()
   const toast = useToast()
+  const { withHistory } = useUndoRedo()
   const { t } = useI18n()
 
   const activePreset = ref(null)
 
   // Load the preset and (re)start the sticky player so it takes over playback.
   function playPreset(preset) {
-    loadPreset(preset)
+    withHistory({ labelKey: 'history_preset', detailKey: preset.nameKey }, () => loadPreset(preset))
     restartAlarm()
 
     // Tell the sticky player which preset is sounding (startAlarm resets this
@@ -111,16 +113,18 @@
       stopAlarm()
     }
 
-    // Reset filter to none
-    updateFilter({ ...DEFAULT_FILTER })
+    withHistory({ labelKey: 'preset_reset' }, () => {
+      // Reset filter to none
+      updateFilter({ ...DEFAULT_FILTER })
 
-    // Reset all oscillators to defaults, first ones enabled
-    store.oscillators.forEach((_, index) => {
-      store.updateOscillator(index, {
-        enabled: index < DEFAULT_ENABLED_COUNT,
-        ...DEFAULT_OSCILLATOR,
+      // Reset all oscillators to defaults, first ones enabled
+      store.oscillators.forEach((_, index) => {
+        store.updateOscillator(index, {
+          enabled: index < DEFAULT_ENABLED_COUNT,
+          ...DEFAULT_OSCILLATOR,
+        })
+        parsePattern(index)
       })
-      parsePattern(index)
     })
 
     activePreset.value = null

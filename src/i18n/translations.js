@@ -102,9 +102,18 @@ export const translations = {
     filter_q_help_notch: 'Höhere Werte = schmalere Sperrkerbe',
 
     // Oscillators
-    osc_title: '12 Oszillator-Einstellungen',
     osc_undo: 'Rückgängig',
-    osc_redo: 'Wiederherstellen',
+    osc_redo: 'Wiederholen',
+    history_title: 'Verlauf',
+    history_last: 'Zuletzt',
+    history_empty: 'Noch keine Änderungen',
+    history_change: 'Änderung',
+    history_toggle: 'Ein/Aus',
+    history_preset: 'Preset laden',
+    key_ctrl: 'Strg',
+    osc_sidebar_title: 'Oszillatoren',
+    osc_select_title: 'Auswahl',
+    settings_menu_title: 'Speicheroptionen',
     osc_title_prefix: 'Oszillator',
     osc_enable: 'Oszillator aktivieren',
     osc_disable: 'Oszillator deaktivieren',
@@ -281,8 +290,8 @@ export const translations = {
     toast_preset_reset: 'Preset entfernt. Oszillatoren auf Grundeinstellungen zurückgesetzt.',
 
     // Toast Messages - Undo/Redo
-    toast_undo: 'Änderung rückgängig gemacht.',
-    toast_redo: 'Änderung wiederhergestellt.',
+    toast_undo: 'Rückgängig:',
+    toast_redo: 'Wiederholt:',
 
     // Toast Messages - Copy/Paste
     toast_osc_copied: 'Oszillator-Einstellungen kopiert.',
@@ -391,9 +400,18 @@ export const translations = {
     filter_q_help_notch: 'Higher values = narrower notch',
 
     // Oscillators
-    osc_title: '12 Oscillator Settings',
     osc_undo: 'Undo',
     osc_redo: 'Redo',
+    history_title: 'History',
+    history_last: 'Last change',
+    history_empty: 'No changes yet',
+    history_change: 'Change',
+    history_toggle: 'On/Off',
+    history_preset: 'Load preset',
+    key_ctrl: 'Ctrl',
+    osc_sidebar_title: 'Oscillators',
+    osc_select_title: 'Selection',
+    settings_menu_title: 'Save options',
     osc_title_prefix: 'Oscillator',
     osc_enable: 'Enable oscillator',
     osc_disable: 'Disable oscillator',
@@ -567,8 +585,8 @@ export const translations = {
     toast_preset_reset: 'Preset removed. Oscillators reset to defaults.',
 
     // Toast Messages - Undo/Redo
-    toast_undo: 'Change undone.',
-    toast_redo: 'Change restored.',
+    toast_undo: 'Undone:',
+    toast_redo: 'Redone:',
 
     // Toast Messages - Copy/Paste
     toast_osc_copied: 'Oscillator settings copied.',

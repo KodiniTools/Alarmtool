@@ -59,11 +59,6 @@
       </div>
     </div>
 
-    <!-- Settings -->
-    <div class="app-settings">
-      <SettingsPanel />
-    </div>
-
     <ToastContainer />
 
     <!-- Hearing-safety warning — sits just above the sticky player bar -->
@@ -89,7 +84,6 @@
   import RecorderControl from '@/components/RecorderControl.vue'
   import PresetsSection from '@/components/PresetsSection.vue'
   import FAQSection from '@/components/FAQSection.vue'
-  import SettingsPanel from '@/components/SettingsPanel.vue'
   import PlayerControl from '@/components/PlayerControl.vue'
   import ToastContainer from '@/components/ToastContainer.vue'
   import HearingWarning from '@/components/HearingWarning.vue'
