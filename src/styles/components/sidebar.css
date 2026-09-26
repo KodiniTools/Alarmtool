@@ -113,6 +113,11 @@
   }
 }
 
+/* Save options below the filter controls */
+.filter-save-options {
+  margin-top: var(--space-5);
+}
+
 /* ─── Undo / Redo history ──────────────────────────────────────── */
 
 .history {

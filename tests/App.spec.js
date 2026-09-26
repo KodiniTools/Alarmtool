@@ -73,3 +73,18 @@ describe('normalizeLang', () => {
     expect(normalizeLang(undefined)).toBeNull()
   })
 })
+
+describe('App.vue — save options', () => {
+  it('offers the save options menu in the filter tab', () => {
+    const pinia = createPinia()
+    setActivePinia(pinia)
+    const wrapper = shallowMount(App, {
+      global: { plugins: [pinia], stubs: { CollapsibleSection: false } },
+    })
+    const filterTab = wrapper.find('.section-narrow')
+    expect(filterTab.findComponent({ name: 'FilterControl' }).exists()).toBe(true)
+    expect(filterTab.find('.filter-save-options').exists()).toBe(true)
+    expect(filterTab.findComponent({ name: 'SettingsPanel' }).exists()).toBe(true)
+    wrapper.unmount()
+  })
+})
