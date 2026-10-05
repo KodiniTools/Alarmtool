@@ -1,0 +1,39 @@
+<!-- @dsCard group="Presets" height=330 subtitle="Statische Vorschau: Aktiv-Banner und zwei Preset-Karten aus presets.css" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.wrap{max-width:640px}.presets-grid{max-height:none;overflow:visible;padding-right:0}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.2 8.3l1.9 1.9 3.8-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="undo" viewBox="0 0 16 16"><path d="M3 7.5a5.5 5.5 0 1 1 1.6 4M3 3.5v4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="play" viewBox="0 0 16 16"><path d="M4 2.5v11l9-5.5z"/></symbol>
+ <symbol id="truck" viewBox="0 0 16 16"><rect x="1.5" y="4" width="8" height="7" rx="1"/><path d="M9.5 6h2.5l2.5 2.5V11h-5z"/><circle cx="4.5" cy="12.5" r="1.5"/><circle cx="12" cy="12.5" r="1.5"/><path d="M5.5 6v3M4 7.5h3" fill="none" stroke="#091428" stroke-width="1.2" stroke-linecap="round"/></symbol>
+ <symbol id="industry" viewBox="0 0 16 16"><path d="M2 14V7l4 2.5V7l4 2.5V7l4 2.5V14z"/><rect x="2" y="2" width="2.5" height="5"/></symbol>
+</svg>
+<div class="wrap">
+  <div class="preset-active-banner">
+    <div class="preset-active-info"><svg class="ic"><use href="#check"/></svg><span>Aktives Preset: <strong>Klassische Notfallsirene</strong></span></div>
+    <button class="btn btn-secondary preset-reset-btn" title="Auf Standardwerte zurücksetzen"><svg class="ic"><use href="#undo"/></svg> Zurücksetzen</button>
+  </div>
+  <div class="presets-grid">
+    <div class="preset-card preset-active">
+      <div class="preset-icon"><svg class="ic"><use href="#truck"/></svg></div>
+      <div class="preset-info">
+        <h3 class="preset-name">Klassische Notfallsirene</h3>
+        <p class="preset-description">Zwei alternierende Sinustöne (660/880 Hz) mit leisem Dreieck-Oberton und sanftem Tiefpass.</p>
+        <div class="preset-tags"><span class="preset-tag">Sinus</span><span class="preset-tag">Dreieck</span><span class="preset-tag">Tiefpass</span></div>
+        <div class="preset-play"><button class="preset-play-btn active" title="Abspielen"><svg class="ic"><use href="#play"/></svg><span>Abspielen</span></button></div>
+      </div>
+    </div>
+    <div class="preset-card">
+      <div class="preset-icon"><svg class="ic"><use href="#industry"/></svg></div>
+      <div class="preset-info">
+        <h3 class="preset-name">Industrielles Warnsignal</h3>
+        <p class="preset-description">Sägezahn und Rechteck bei 180 Hz, Tiefpass 3,5 kHz mit Q 2,5 — rau und durchdringend.</p>
+        <div class="preset-tags"><span class="preset-tag">Sägezahn</span><span class="preset-tag">Rechteck</span><span class="preset-tag">Tiefpass</span></div>
+        <div class="preset-play"><button class="preset-play-btn" title="Abspielen"><svg class="ic"><use href="#play"/></svg><span>Abspielen</span></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

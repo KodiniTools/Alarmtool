@@ -1,0 +1,37 @@
+<!-- @dsCard group="Oscillators" height=420 subtitle="Statische Vorschau: .osc-editor mit Kopf, Basis-Parametern und ADSR-Toggle" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.wrap{max-width:640px}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10.5V3a.5.5 0 0 1 .5-.5H10.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+ <symbol id="paste" viewBox="0 0 16 16"><rect x="3.5" y="3" width="9" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 3V2h4v1" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+ <symbol id="sliders" viewBox="0 0 16 16"><path d="M2 4.5h12M2 8h12M2 11.5h12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="5" cy="4.5" r="1.6"/><circle cx="11" cy="8" r="1.6"/><circle cx="7" cy="11.5" r="1.6"/></symbol>
+ <symbol id="chevr" viewBox="0 0 16 16"><path d="M6 3.5l4.5 4.5L6 12.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="wrap">
+<div class="osc-editor">
+  <div class="osc-editor-header">
+    <div class="osc-editor-title-row">
+      <label class="toggle-switch" title="Deaktivieren"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+      <h3 class="osc-editor-title">Oszillator 1 <span class="osc-editor-wave-badge osc-wave-chip--sine">SIN</span></h3>
+    </div>
+    <div class="osc-editor-actions">
+      <button class="btn btn-outline-secondary btn-sm" title="Kopieren"><svg class="ic"><use href="#copy"/></svg><span class="osc-action-label">Kopieren</span></button>
+      <button class="btn btn-outline-secondary btn-sm" title="Einfügen" disabled><svg class="ic"><use href="#paste"/></svg><span class="osc-action-label">Einfügen</span></button>
+    </div>
+  </div>
+  <div class="osc-editor-section">
+    <div class="osc-section-label"><svg class="ic"><use href="#sliders"/></svg><span>Grundparameter</span></div>
+    <div class="osc-params-grid">
+      <div class="mb-3 param-container"><label class="form-label">Frequenz (Hz)</label><div class="slider-input-group"><input type="range" class="form-range" min="50" max="2000" value="660"><input type="number" class="form-control" value="660"></div></div>
+      <div class="mb-3 param-container"><label class="form-label">Lautstärke</label><div class="slider-input-group"><input type="range" class="form-range" min="0" max="1" step="0.01" value="0.7"><input type="number" class="form-control" value="0.7"></div></div>
+      <div class="mb-3 param-container"><label class="form-label">Pan</label><div class="slider-input-group"><input type="range" class="form-range" min="-1" max="1" step="0.01" value="0"><input type="number" class="form-control" value="0"></div></div>
+    </div>
+  </div>
+  <div class="osc-editor-section">
+    <button class="osc-adsr-toggle"><svg class="ic"><use href="#chevr"/></svg> Hüllkurve &amp; Rhythmus</button>
+  </div>
+</div>
+</div>
+</body></html>

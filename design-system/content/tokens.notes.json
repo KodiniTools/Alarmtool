@@ -1,0 +1,640 @@
+{
+  "color": {
+    "usage": {
+      "at-bg": "Page ground behind the body gradient; ring colour of the history-count badge (box-shadow 0 0 0 2px). The body itself paints --at-gradient, a 145deg sweep bg → surface → panel → surface → bg (light: bg → #ffffff → elev → text-dim → bg), carried in bundle.css because a gradient is not a colour token.",
+      "at-surface": "Second stop of the body gradient; alpha-tinted as the .section card ground (rgba(14,28,50,.85)), the .player shell (.6), preset cards (.5), FAQ items (.4) and inputs (.4).",
+      "at-panel": "Toast ground (.toast-item) and <option> ground inside .form-select; middle stop of the body gradient.",
+      "at-elev": "Highest raised surface; third stop of the light gradient. Rarely painted directly — the editor and sidebar use alpha tints of at-bg/at-surface instead.",
+      "at-text": "Primary text: body copy, headings, labels, inputs, list rows. 16.4:1 on at-bg dark, 10.3:1 light. Also the end colour of the 3px gradient rule atop every .section.",
+      "at-text-dim": "Secondary copy: .small-text/.form-text help lines, .text-muted, preset descriptions, intro paragraphs, outline-button labels. 14.3:1 dark, 6.0:1 light on at-bg.",
+      "at-muted": "Tertiary ink: eyebrow labels, row meta, chevrons, resting transport/aux icons, status dot when stopped; its alpha tints draw every hairline border (rgba(122,141,160,.12–.25)) and the slider track. 5.4:1 on at-bg dark but only 3.9:1 on at-elev and 4.0:1 on light at-bg — keep it to labels ≥0.7rem bold or decorative marks.",
+      "at-primary": "Brand gold. Fills active tabs, active transport play, slider thumbs, progress fills, the section top rule, selected-row bar; tints (rgba(201,152,77,.06–.15)) draw hover grounds, icon tiles, badges and chips. As text it reads 7.1:1 on dark at-bg but only 2.3:1 on light at-bg — the source still uses it for text (preset banner, track name, chips); flagged, kept exact.",
+      "at-primary-600": "Primary hover in the light theme (.btn-primary:hover). Unused in dark, where hover goes to at-primary-hover (#f8e1a9).",
+      "at-primary-700": "Darkest gold step; defined for pressed states, currently unreferenced by component CSS.",
+      "at-primary-fg": "Ink on at-primary fills: active tab, .btn-primary, active play button, history-count badge, active preset play. 7.1:1 dark; 4.4:1 light (just under AA for the 0.85rem button label — source value, kept).",
+      "at-success": "Positive signal: playing status dot and label, .btn-success ground (ink at-on-success), toast-success accent, SIN wave chip. 9.3:1 on dark at-bg; 1.8:1 on light — the light toast swaps to at-success-light-ui, everything else keeps this value.",
+      "at-danger": "Destructive and alert signal: .btn-danger ground (ink at-on-danger), hearing warning title/icon/dismiss, toast-error accent, SAW wave chip. 5.9:1 on dark at-bg; 2.8:1 on light cream (source, flagged).",
+      "at-warning": "Paused status dot/label and toast-warning accent. Same hex as at-primary — by design gold doubles as the caution tone.",
+      "at-info": "Deep blue FILL only: .btn-secondary ground, light-theme focus border, light preset tags/play button, toast-info accent. Never as text on dark surfaces (2.3:1) — use at-info-text.",
+      "at-info-text": "Readable info tone for text: app subtitle, resting tab labels, FAQ answers, TRI wave chip. 8.3:1 on dark at-bg; in light it equals at-info (7.2:1).",
+      "at-border-color": "Colour half of --at-border (1px solid …): input and toast borders. The composite --at-border itself ships in bundle.css."
+    },
+    "extra": [
+      {
+        "name": "at-hairline",
+        "value": {
+          "dark": "rgba(122,141,160,0.15)",
+          "light": "rgba(0,57,113,0.1)"
+        },
+        "usage": "Literal in oscillator.css, player.css, presets.css (not a CSS variable): the 1px border of cards, editor, player shell, transport group, wave buttons, preset cards. Decorative — does not need 3:1."
+      },
+      {
+        "name": "at-scrim",
+        "value": {
+          "dark": "rgba(9,20,40,0.3)",
+          "light": "rgba(255,255,255,0.6)"
+        },
+        "usage": "Literal: inner control ground inside panels — wave buttons, aux buttons, editor header, transport group. Darker (.4–.5) for the tab bar and transport."
+      },
+      {
+        "name": "at-primary-tint",
+        "value": "rgba(201,152,77,0.1)",
+        "usage": "Literal gold wash: hover ground of tabs, transport, menu items, FAQ questions; resting ground of preset banner, preset icon tile, preset tags, history buttons. .06 for list-row hover, .12–.15 for icon tiles, chips, active aux."
+      },
+      {
+        "name": "at-primary-hover",
+        "value": {
+          "dark": "#f8e1a9",
+          "light": "{at-primary-600}"
+        },
+        "usage": "Literal in button.css: .btn-primary:hover ground. Dark lightens toward at-text-dim; light darkens to at-primary-600."
+      },
+      {
+        "name": "at-success-hover",
+        "value": "#6bb889",
+        "usage": "Literal in button.css: .btn-success:hover ground."
+      },
+      {
+        "name": "at-danger-hover",
+        "value": "#c95555",
+        "usage": "Literal in button.css: .btn-danger:hover ground."
+      },
+      {
+        "name": "at-on-success",
+        "value": "#091428",
+        "usage": "Literal ink on .btn-success (9.3:1 on at-success in both themes)."
+      },
+      {
+        "name": "at-on-danger",
+        "value": "#ffffff",
+        "usage": "Literal ink on .btn-danger — 3.1:1 on at-danger, below AA for 0.85rem text (source, flagged). The hearing-warning dismiss button uses at-on-danger-deep instead."
+      },
+      {
+        "name": "at-on-danger-deep",
+        "value": "#2a0e0e",
+        "usage": "Literal ink on the hearing-warning dismiss pill (5.8:1 on at-danger)."
+      },
+      {
+        "name": "at-on-info",
+        "value": {
+          "dark": "{at-text}",
+          "light": "#f5f4d6"
+        },
+        "usage": "Ink on at-info fills: .btn-secondary, light preset play active. 7.2:1 dark, 7.3:1 light."
+      },
+      {
+        "name": "at-navy-deep",
+        "value": "#003971",
+        "usage": "Literal in button.css: light-theme .btn-secondary:hover ground (ink at-on-info, 10.3:1). Same hex as light at-text."
+      },
+      {
+        "name": "at-success-light-ui",
+        "value": {
+          "dark": "{at-success}",
+          "light": "#4caf50"
+        },
+        "usage": "Literal in toast.css: light-theme toast-success border and icon (2.8:1 on white — decorative accent beside an icon glyph; flagged)."
+      },
+      {
+        "name": "at-wave-pulse",
+        "value": "#a06edc",
+        "usage": "Literal in oscillator.css: PLS wave chip ink and its .15 tint ground. 4.7:1 on dark at-surface, 3.7:1 light."
+      },
+      {
+        "name": "at-wave-organ",
+        "value": "#3caabe",
+        "usage": "Literal in oscillator.css: ORG wave chip ink and its .15 tint ground. 6.2:1 on dark at-surface, 2.7:1 light (flagged)."
+      },
+      {
+        "name": "at-hearing-ground",
+        "value": {
+          "dark": "rgba(40,16,20,0.92)",
+          "light": "rgba(255,244,240,0.95)"
+        },
+        "usage": "Literal in hearing-warning.css: the warning banner's red-tinted glass ground (blur 12px), bordered with at-danger at .4 / rgba(200,60,60,.35)."
+      }
+    ]
+  },
+  "spacing": {
+    "note": "Source scale --space-N in rem (4px base). Component paddings outside the scale (0.55rem 1.1rem buttons, 0.4rem 0.9rem pills, 10px gaps) stay literal in bundle.css.",
+    "usage": {
+      "space-1": "4px — tab-bar inner padding, badge/toggle gaps, list padding, icon-caption gap in wave buttons.",
+      "space-2": "8px — default inline gap: tab gap, row gaps, menu item padding, toast stack gap, grid row gap.",
+      "space-3": "12px — collapsible header and toast padding (vertical), player bar padding, sidebar stack gap, wave button padding.",
+      "space-4": "16px — form-group margin, editor section padding, card padding, master-detail grid gap, FAQ question padding.",
+      "space-5": "20px — body padding, container side padding, section narrow spacing, preset-card and editor horizontal padding.",
+      "space-6": "24px — .section padding, h2 margin-bottom, params-grid column gap.",
+      "space-8": "32px — tab bar margin-bottom; the largest step (no space-7)."
+    },
+    "extra": []
+  },
+  "radius": {
+    "note": "Three source variables plus the literal radii the components use.",
+    "usage": {
+      "at-radius": "Sections, tab bar, oscillator editor, collapsible, player shell, hearing-warning banner, editor placeholder. 10px ≤768px, 8px ≤480px on .section.",
+      "at-radius-sm": "Tab buttons, wave buttons, history buttons, aux player buttons.",
+      "at-radius-xs": "Buttons, inputs and selects, list rows, menu items and their icon tiles, collapsible icon tile."
+    },
+    "extra": [
+      {
+        "name": "radius-card",
+        "value": "10px",
+        "usage": "Literal: preset cards, preset banner, preset icon tile, FAQ items, toasts, transport group, progress bar track."
+      },
+      {
+        "name": "radius-transport",
+        "value": "7px",
+        "usage": "Literal: .transport-btn inside the 10px transport group (3px inset)."
+      },
+      {
+        "name": "radius-chip",
+        "value": "4px",
+        "usage": "Literal: wave chips and wave badges; preset scrollbar thumb."
+      },
+      {
+        "name": "radius-pill",
+        "value": "20px",
+        "usage": "Literal: preset tags, preset play button, hearing-warning dismiss. 999px for the active badge and history count; 50% for toggle dots, status dot, slider thumbs."
+      }
+    ]
+  },
+  "shadow": {
+    "note": "Elevation is soft and navy-tinted; light theme shadows are navy at low alpha. Hover lifts add translateY(-1px).",
+    "usage": {
+      "at-shadow-1": "Oscillator editor; light-theme collapsible.",
+      "at-shadow-2": "Toasts (plus a 1px rgba(0,0,0,.05) ring)."
+    },
+    "extra": [
+      {
+        "name": "shadow-section",
+        "value": {
+          "dark": "0 4px 24px rgba(0,0,0,0.12)",
+          "light": "0 4px 24px rgba(0,57,113,0.06)"
+        },
+        "usage": "Literal: .section cards."
+      },
+      {
+        "name": "shadow-hover",
+        "value": "0 3px 10px rgba(0,0,0,0.15)",
+        "usage": "Literal: .btn:hover lift; preset cards hover use 0 4px 16px rgba(0,0,0,.12)."
+      },
+      {
+        "name": "shadow-tab-active",
+        "value": {
+          "dark": "0 2px 8px rgba(201,152,77,0.3)",
+          "light": "0 2px 8px rgba(0,57,113,0.2)"
+        },
+        "usage": "Literal: .tab-btn.active glow under the gold tab."
+      },
+      {
+        "name": "shadow-player-bar",
+        "value": {
+          "dark": "0 -8px 24px rgba(9,20,40,0.35)",
+          "light": "0 -8px 24px rgba(0,57,113,0.12)"
+        },
+        "usage": "Literal: the fixed .player-bar casts upward."
+      },
+      {
+        "name": "shadow-focus",
+        "value": {
+          "dark": "0 0 0 0.2rem rgba(201,152,77,0.15)",
+          "light": "0 0 0 0.2rem rgba(1,79,153,0.15)"
+        },
+        "usage": "Literal: input/select focus halo beside a solid at-primary (dark) or at-info (light) border. Buttons use outline 2px solid at-primary instead."
+      },
+      {
+        "name": "shadow-thumb",
+        "value": "0 1px 4px rgba(0,0,0,0.25)",
+        "usage": "Literal: range slider thumb; 0 2px 6px rgba(0,0,0,.35) on hover with scale(1.15)."
+      }
+    ]
+  },
+  "duration": {
+    "note": "Two source variables; easing is always ease. prefers-reduced-motion disables the collapsible and chevron transitions.",
+    "usage": {
+      "at-speed": "Default transition: hover grounds, chevrons, slider thumbs, status dot colour.",
+      "at-speed-slow": "Theme switch (background, color, border, shadow on themed elements) and the collapsible 0fr→1fr height animation."
+    },
+    "extra": [
+      {
+        "name": "duration-toast",
+        "value": "350ms",
+        "usage": "Literal: toast enter (cubic-bezier(.4,0,.2,1)); leave 300ms cubic-bezier(.4,0,1,1)."
+      },
+      {
+        "name": "duration-pulse",
+        "value": "1200ms",
+        "usage": "Literal: playing status dot opacity pulse 1→.4→1, ease-in-out, infinite."
+      }
+    ]
+  },
+  "type": {
+    "fonts": [],
+    "families": {
+      "mono": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace"
+    },
+    "groups": [
+      {
+        "name": "Headings",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "h1",
+            "fontSize": "2.2rem",
+            "lineHeight": 1.15,
+            "fontWeight": 500,
+            "letterSpacing": "-0.02em",
+            "sample": "Modernes Alarm-Tool",
+            "usage": "Base h1 rule: clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem) — upper bound listed. In the app the only h1 carries .app-title, which wins."
+          },
+          {
+            "name": "app-title",
+            "fontSize": "2rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.01em",
+            "sample": "Modernes Alarm-Tool",
+            "usage": "Page header title (.app-title), centred, margin-bottom 0.4rem. 1.5rem ≤768px, 1.3rem ≤480px."
+          },
+          {
+            "name": "h2",
+            "fontSize": "1.75rem",
+            "fontWeight": 600,
+            "letterSpacing": "0.02em",
+            "sample": "Oszillatoren",
+            "usage": "Section heading inside a wide .section; margin-bottom space-6; a 60×2px at-primary underline via ::after. 1.3rem ≤768px. Dark theme adds text-shadow 0 1px 1px rgba(0,0,0,.25)."
+          },
+          {
+            "name": "h2-narrow",
+            "fontSize": "1.1rem",
+            "fontWeight": 600,
+            "letterSpacing": "0.02em",
+            "sample": "Globaler Filter",
+            "usage": ".section-narrow h2 — Filter, Recording, Presets and FAQ tabs; margin-bottom space-4."
+          },
+          {
+            "name": "editor-title",
+            "fontSize": "1.05rem",
+            "fontWeight": 600,
+            "sample": "Oszillator 1",
+            "usage": ".osc-editor-title (h3) in the oscillator editor header, followed by the wave badge."
+          },
+          {
+            "name": "sidebar-title",
+            "fontSize": "1rem",
+            "fontWeight": 700,
+            "sample": "Oszillatoren",
+            "usage": ".osc-sidebar-title (h2) above the oscillator list; leading icon in at-primary at 0.9rem."
+          },
+          {
+            "name": "preset-name",
+            "fontSize": "0.95rem",
+            "fontWeight": 600,
+            "sample": "Klassische Notfallsirene",
+            "usage": ".preset-name (h3) on preset cards; margin-bottom space-1; no underline."
+          }
+        ]
+      },
+      {
+        "name": "Text",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "body",
+            "fontSize": "1rem",
+            "fontWeight": 400,
+            "sample": "Erstelle und gestalte individuelle Alarmtöne direkt im Browser.",
+            "usage": "Default body copy in at-text on the body gradient; antialiased. Supreme ships one weight (400) — 500/600/700 are browser-synthesised."
+          },
+          {
+            "name": "subtitle",
+            "fontSize": "0.95rem",
+            "fontWeight": 400,
+            "letterSpacing": "0.01em",
+            "sample": "Mit 12 Oszillatoren & Live-Recorder (Modular)",
+            "usage": ".app-subtitle under the title, in at-info-text. 0.85rem ≤768px."
+          },
+          {
+            "name": "intro",
+            "fontSize": "0.9rem",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "Wähle ein Preset, um sofort loszulegen.",
+            "usage": ".presets-intro paragraph in at-text-dim, margin-bottom space-6."
+          },
+          {
+            "name": "tab",
+            "fontSize": "0.9rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.01em",
+            "sample": "Oszillatoren",
+            "usage": ".tab-btn label; at-info-text resting, at-text on hover, at-primary-fg when active. 0.8rem ≤768px; label hidden ≤480px (icon only)."
+          },
+          {
+            "name": "faq-question",
+            "fontSize": "0.9rem",
+            "fontWeight": 500,
+            "sample": "Wie speichere ich meine Einstellungen?",
+            "usage": ".faq-question summary in at-text; 0.85rem ≤480px."
+          },
+          {
+            "name": "faq-answer",
+            "fontSize": "0.85rem",
+            "lineHeight": 1.6,
+            "fontWeight": 400,
+            "sample": "Nutze Speichern im Speicheroptionen-Menü.",
+            "usage": ".faq-answer body in at-info-text; 0.8rem ≤480px."
+          },
+          {
+            "name": "input",
+            "fontSize": "0.9rem",
+            "fontWeight": 400,
+            "sample": "440",
+            "usage": ".form-control and .form-select text in at-text; 16px ≤768px to stop iOS zoom. Editor number pills add tabular-nums and weight 500."
+          },
+          {
+            "name": "label",
+            "fontSize": "0.85rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.01em",
+            "sample": "Frequenz (Hz)",
+            "usage": ".form-label above every control, at-text, margin-bottom 0.4rem; 0.8rem ≤480px."
+          },
+          {
+            "name": "button",
+            "fontSize": "0.85rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.01em",
+            "sample": "Aufnahme starten",
+            "usage": ".btn label; padding 0.55rem 1.1rem, icon gap 0.4rem. 0.8rem ≤480px."
+          },
+          {
+            "name": "button-sm",
+            "fontSize": "0.78rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.01em",
+            "sample": "Kopieren",
+            "usage": ".btn-sm — editor header actions and convert buttons; padding 0.35rem 0.7rem."
+          },
+          {
+            "name": "history-button",
+            "fontSize": "0.76rem",
+            "fontWeight": 600,
+            "sample": "Rückgängig",
+            "usage": ".history-btn label; padding 0.5rem; at-text."
+          },
+          {
+            "name": "small-text",
+            "fontSize": "0.8rem",
+            "fontWeight": 400,
+            "letterSpacing": "0.01em",
+            "sample": "Die Aufnahme beginnt, sobald der Alarm läuft.",
+            "usage": ".small-text / .form-text help lines in at-text-dim, margin-top 0.2rem."
+          },
+          {
+            "name": "row-name",
+            "fontSize": "0.82rem",
+            "fontWeight": 500,
+            "sample": "Oszillator 3",
+            "usage": ".osc-row-name in list rows; ellipsis on overflow."
+          },
+          {
+            "name": "toast-body",
+            "fontSize": "0.82rem",
+            "lineHeight": 1.45,
+            "fontWeight": 400,
+            "sample": "Einstellungen gespeichert.",
+            "usage": ".toast-body message in at-text; word-break break-word."
+          },
+          {
+            "name": "menu-name",
+            "fontSize": "0.8rem",
+            "lineHeight": 1.3,
+            "fontWeight": 600,
+            "sample": "Exportieren",
+            "usage": ".settings-menu-name — primary line of a save-options item."
+          },
+          {
+            "name": "menu-desc",
+            "fontSize": "0.68rem",
+            "lineHeight": 1.3,
+            "fontWeight": 400,
+            "sample": "Als JSON-Datei herunterladen",
+            "usage": ".settings-menu-desc — second line of a menu item, at-muted."
+          },
+          {
+            "name": "collapsible-title",
+            "fontSize": "0.8rem",
+            "fontWeight": 700,
+            "letterSpacing": "0.02em",
+            "sample": "Speicheroptionen",
+            "usage": ".collapsible-title in the sidebar dropdown header, at-text."
+          },
+          {
+            "name": "hearing-title",
+            "fontSize": "0.82rem",
+            "fontWeight": 700,
+            "letterSpacing": "0.01em",
+            "sample": "Gehörschutz-Hinweis",
+            "usage": ".hearing-warning__title in at-danger."
+          },
+          {
+            "name": "hearing-text",
+            "fontSize": "0.78rem",
+            "lineHeight": 1.35,
+            "fontWeight": 400,
+            "sample": "Reduziere die Lautstärke, bevor du abspielst.",
+            "usage": ".hearing-warning__text in at-text; dismiss pill shares 0.78rem at weight 600."
+          },
+          {
+            "name": "preset-description",
+            "fontSize": "0.8rem",
+            "lineHeight": 1.4,
+            "fontWeight": 400,
+            "sample": "Zwei alternierende Sinustöne mit sanftem Tiefpass.",
+            "usage": ".preset-description in at-text-dim, margin-bottom space-2."
+          },
+          {
+            "name": "track-name",
+            "fontSize": "0.76rem",
+            "fontWeight": 600,
+            "letterSpacing": "0.01em",
+            "sample": "Klassische Notfallsirene",
+            "usage": ".player-track-name — the sound now loaded, centred in the status bar, at-primary."
+          }
+        ]
+      },
+      {
+        "name": "Labels",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "eyebrow",
+            "fontSize": "0.7rem",
+            "fontWeight": 600,
+            "letterSpacing": "0.08em",
+            "sample": "WELLENFORM",
+            "usage": ".osc-section-label and .osc-adsr-toggle — UPPERCASE section eyebrows in at-muted with an at-primary icon; margin-bottom space-4."
+          },
+          {
+            "name": "status-label",
+            "fontSize": "0.72rem",
+            "fontWeight": 600,
+            "letterSpacing": "0.06em",
+            "sample": "LÄUFT",
+            "usage": ".player-status-label — UPPERCASE; at-muted stopped, at-success playing, at-warning paused."
+          },
+          {
+            "name": "menu-label",
+            "fontSize": "0.62rem",
+            "fontWeight": 700,
+            "letterSpacing": "0.08em",
+            "sample": "SPEICHERN",
+            "usage": ".settings-menu-label — UPPERCASE group caption in at-muted, padding space-1 space-2."
+          },
+          {
+            "name": "row-meta",
+            "fontSize": "0.7rem",
+            "fontWeight": 400,
+            "sample": "440 Hz",
+            "usage": ".osc-row-meta and .history-caption in at-muted; --dim variant italic at .6 opacity."
+          },
+          {
+            "name": "collapsible-summary",
+            "fontSize": "0.7rem",
+            "fontWeight": 400,
+            "sample": "Oszillator 1",
+            "usage": ".collapsible-summary — current selection beside a dropdown title, at-muted, ellipsis."
+          },
+          {
+            "name": "active-badge",
+            "fontSize": "0.68rem",
+            "lineHeight": 1.5,
+            "fontWeight": 600,
+            "letterSpacing": "0.02em",
+            "sample": "3/12 aktiv",
+            "usage": ".osc-active-badge pill (radius-pill, at-primary on its .14 tint), padding 0.15rem 0.55rem."
+          },
+          {
+            "name": "hint",
+            "fontSize": "0.68rem",
+            "fontWeight": 400,
+            "letterSpacing": "0.02em",
+            "sample": "Steuerung: Leertaste = Play/Pause | Esc = Stop",
+            "usage": ".player-hint — keyboard legend under the standalone player, at-muted at .7 opacity; hidden inside the sticky bar."
+          },
+          {
+            "name": "volume-pct",
+            "fontSize": "0.7rem",
+            "fontWeight": 500,
+            "sample": "50%",
+            "usage": ".player-volume-pct, tabular-nums, right-aligned, at-muted; hidden ≤520px."
+          },
+          {
+            "name": "wave-badge",
+            "fontSize": "0.65rem",
+            "lineHeight": 1.5,
+            "fontWeight": 700,
+            "letterSpacing": "0.05em",
+            "sample": "SQR",
+            "usage": ".osc-editor-wave-badge next to the editor title; radius-chip, padding 0.15rem 0.45rem, coloured per waveform."
+          },
+          {
+            "name": "tag",
+            "fontSize": "0.65rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.02em",
+            "sample": "Sinus",
+            "usage": ".preset-tag pill (radius-pill 20px, padding 0.15rem space-2): at-primary on tint dark, at-info on blue tint light."
+          },
+          {
+            "name": "history-count",
+            "fontSize": "0.62rem",
+            "lineHeight": 1.5,
+            "fontWeight": 700,
+            "sample": "4",
+            "usage": ".history-count corner badge: at-primary-fg on at-primary, radius-pill, min-width 18px."
+          },
+          {
+            "name": "wave-chip",
+            "fontSize": "0.6rem",
+            "lineHeight": 1.5,
+            "fontWeight": 700,
+            "letterSpacing": "0.04em",
+            "sample": "SIN",
+            "usage": ".osc-wave-chip in list rows: radius-chip 4px, padding 0.1rem 0.3rem; ink/tint per waveform (at-success, at-primary, at-danger, at-info-text, at-wave-pulse, at-wave-organ)."
+          },
+          {
+            "name": "wave-button",
+            "fontSize": "0.72rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.02em",
+            "sample": "Sägezahn",
+            "usage": ".osc-wave-btn caption under the 40×20 waveform glyph; at-muted resting, at-primary active."
+          }
+        ]
+      },
+      {
+        "name": "Mono",
+        "family": "mono",
+        "styles": [
+          {
+            "name": "time-display",
+            "fontSize": "0.78rem",
+            "fontWeight": 500,
+            "letterSpacing": "0.04em",
+            "sample": "00:42",
+            "usage": ".player-time-display elapsed time, at-text at .8 opacity, right end of the status bar."
+          }
+        ]
+      }
+    ]
+  },
+  "zIndex": {
+    "tokens": [
+      {
+        "name": "z-hearing-warning",
+        "value": "899",
+        "usage": "Fixed warning banner, just under the player bar."
+      },
+      {
+        "name": "z-player-bar",
+        "value": "900",
+        "usage": "Fixed sticky player bar."
+      },
+      {
+        "name": "z-toast",
+        "value": "10000",
+        "usage": "Toast container, above everything."
+      }
+    ]
+  },
+  "opacity": {
+    "tokens": [
+      {
+        "name": "opacity-disabled-button",
+        "value": "0.45",
+        "usage": ".btn:disabled, cursor not-allowed, no lift."
+      },
+      {
+        "name": "opacity-disabled-control",
+        "value": "0.4",
+        "usage": ".controls-disabled overlay, disabled wave/history/ADSR buttons."
+      },
+      {
+        "name": "opacity-disabled-transport",
+        "value": "0.35",
+        "usage": "Disabled transport buttons; muted volume slider."
+      },
+      {
+        "name": "opacity-row-disabled",
+        "value": "0.55",
+        "usage": ".osc-list-row--disabled."
+      },
+      {
+        "name": "opacity-editor-disabled",
+        "value": "0.65",
+        "usage": ".osc-editor--disabled whole panel."
+      }
+    ]
+  }
+}

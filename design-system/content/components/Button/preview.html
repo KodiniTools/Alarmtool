@@ -1,0 +1,26 @@
+<!-- @dsCard group="Actions" height=150 subtitle="Statische Vorschau: .btn-Varianten aus button.css" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.row{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;margin-bottom:var(--space-3)}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="rec" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="8" r="1.8"/></symbol>
+ <symbol id="dl" viewBox="0 0 16 16"><path d="M8 2v8M4.8 6.8 8 10l3.2-3.2M2.5 11.5v2h11v-2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+ <symbol id="undo" viewBox="0 0 16 16"><path d="M3 7.5a5.5 5.5 0 1 1 1.6 4M3 3.5v4h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10.5V3a.5.5 0 0 1 .5-.5H10.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</svg>
+<div class="row">
+  <button class="btn btn-primary"><svg class="ic"><use href="#rec"/></svg> Speichern</button>
+  <button class="btn btn-success"><svg class="ic"><use href="#rec"/></svg> Aufnahme starten</button>
+  <button class="btn btn-danger"><svg class="ic"><use href="#x"/></svg> Verwerfen</button>
+  <button class="btn btn-secondary"><svg class="ic"><use href="#undo"/></svg> Zurücksetzen</button>
+  <a class="btn btn-outline-secondary download-ready" href="#"><svg class="ic"><use href="#dl"/></svg> Download</a>
+</div>
+<div class="row">
+  <button class="btn btn-outline-secondary btn-sm"><svg class="ic"><use href="#copy"/></svg> Kopieren</button>
+  <button class="btn btn-outline-secondary btn-sm" disabled><svg class="ic"><use href="#copy"/></svg> Einfügen</button>
+  <button class="btn btn-primary" disabled>Deaktiviert</button>
+  <button class="btn btn-success" disabled><svg class="ic"><use href="#rec"/></svg> Aufnahme starten</button>
+</div>
+</body></html>

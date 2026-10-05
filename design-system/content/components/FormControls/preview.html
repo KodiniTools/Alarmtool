@@ -1,0 +1,35 @@
+<!-- @dsCard group="Forms" height=250 subtitle="Statische Vorschau: form.css — Label, Select, Slider+Zahl, Hilfetext" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2) var(--space-6);max-width:720px}</style>
+</head><body>
+<div class="control-group cols">
+  <div class="mb-3 param-container">
+    <label for="filterType" class="form-label">Filtertyp</label>
+    <select id="filterType" class="form-select">
+      <option>Kein Filter</option><option selected>Tiefpass</option><option>Hochpass</option><option>Bandpass</option><option>Notch</option>
+    </select>
+  </div>
+  <div class="mb-3 param-container">
+    <label for="pattern" class="form-label">Rhythmusmuster (ms)</label>
+    <input id="pattern" type="text" class="form-control" value="700, 50, 700, 50" placeholder="500, 200, 300, 100">
+    <div class="form-text">Ton-/Pause-Dauern, kommagetrennt.</div>
+  </div>
+  <div class="mb-3 param-container">
+    <label for="freq" class="form-label">Frequenz (Hz)</label>
+    <div class="slider-input-group">
+      <input id="freq" type="range" class="form-range" min="50" max="2000" step="1" value="660">
+      <input type="number" class="form-control" min="50" max="2000" step="1" value="660">
+    </div>
+    <small class="form-text">50–2000 Hz. Alarmtöne liegen meist zwischen 400 und 1200 Hz.</small>
+  </div>
+  <div class="mb-3 param-container">
+    <label for="q" class="form-label">Q-Faktor</label>
+    <div class="slider-input-group">
+      <input id="q" type="range" class="form-range" min="0.1" max="20" step="0.1" value="0.8" disabled>
+      <input type="number" class="form-control" min="0.1" max="20" step="0.1" value="0.8" disabled>
+    </div>
+    <small class="form-text">Deaktiviert, solange kein Filter gewählt ist.</small>
+  </div>
+</div>
+</body></html>

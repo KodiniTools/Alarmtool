@@ -1,0 +1,50 @@
+{
+  "Icons/wave-sine.svg": {
+    "blob": "1da9e8721f03780da2129fb2f7b6654a",
+    "sha256": "f964a13e19e17e429cdbecead11c47c3aa6c82d828900766618999d7f51152d8",
+    "size": 259,
+    "type": "image/svg+xml"
+  },
+  "Icons/wave-square.svg": {
+    "blob": "659ac2fefdecf52c036d568a5d8d5853",
+    "sha256": "4ee94a6a0ca6455575599e878255f2fc2e56263f52b8c5515da7d5521b04baee",
+    "size": 251,
+    "type": "image/svg+xml"
+  },
+  "Icons/wave-sawtooth.svg": {
+    "blob": "07830d4a0a6397126aa8470d8befb574",
+    "sha256": "0fa44153174f52302aef635e268a85d9c467510dbf96fd41370629cc52a8ef93",
+    "size": 239,
+    "type": "image/svg+xml"
+  },
+  "Icons/wave-triangle.svg": {
+    "blob": "a3da783108bc8d844c1e6fbb2a49d959",
+    "sha256": "df704048df49e497a8e0c56e9dd39d97a3c8b6e3669945b12332b24493ca4a38",
+    "size": 232,
+    "type": "image/svg+xml"
+  },
+  "Icons/wave-pulse.svg": {
+    "blob": "544ff0b8d385e842f19ad18eadfede4e",
+    "sha256": "6d9988985cd5514f6a9848f20083c19bae1ea559d8ee1f732406deade05f37fb",
+    "size": 256,
+    "type": "image/svg+xml"
+  },
+  "Icons/wave-organ.svg": {
+    "blob": "139ce060eb647ed508bc80cfa18cf1dd",
+    "sha256": "572870dad895c69a94f3140a4736e7ec6142b47c7bfd8366d321df6de49c38b7",
+    "size": 294,
+    "type": "image/svg+xml"
+  },
+  "Icons/history-undo.svg": {
+    "blob": "8c216da924b64f7e5bc1c461adbf89cb",
+    "sha256": "70f78b91e0d4b389bd022f02605aab2c92571b990090e7d4788d9ac8b62bb2c8",
+    "size": 262,
+    "type": "image/svg+xml"
+  },
+  "Icons/history-redo.svg": {
+    "blob": "08d43e4bf8c47875a1c9ac0e5b7879be",
+    "sha256": "9507694e3a2f328a758b6b479b6c1088aeb07713d4fe8f65099f75e782553d82",
+    "size": 263,
+    "type": "image/svg+xml"
+  }
+}
