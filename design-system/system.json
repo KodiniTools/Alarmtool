@@ -1,0 +1,56 @@
+{
+  "url": "https://claude.ai/artifact/G9YGKJFzDf2uJ9W7AiChGd",
+  "title": "Alarmtool Design System",
+  "name": "Alarmtool",
+  "namespace": "Alarmtool",
+  "repo": "KodiniTools/Alarmtool",
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-05T16:16:01Z"
+  },
+  "libraries": [],
+  "themes": [
+    {
+      "id": "dark",
+      "name": "Dark (Standard)",
+      "selector": ":root"
+    },
+    {
+      "id": "light",
+      "name": "Light",
+      "selector": "[data-theme='light']"
+    }
+  ],
+  "sources": {
+    "tokens": "src/styles/tokens.css",
+    "stylesEntry": "src/styles/main.css",
+    "waveforms": "src/lib/waveforms.js",
+    "history": "src/components/oscillator/HistoryControls.vue",
+    "docs": ["README.md", "CONTEXT.md", "src/i18n/translations.js"],
+    "upstream": "KodiniTools/Collage-Maker · src/design-system/tokens-v2.css @ 9dc4eca"
+  },
+  "icons": {
+    "group": "Icons",
+    "tile": "s",
+    "ink": "#8593a8",
+    "history": ["history-undo.svg", "history-redo.svg"]
+  },
+  "components": {
+    "Button": "src/styles/components/button.css",
+    "FormControls": "src/styles/components/form.css · src/components/oscillator/SliderInput.vue",
+    "Tabs": "src/styles/layout.css · src/App.vue",
+    "Section": "src/styles/layout.css · src/App.vue",
+    "CollapsibleSection": "src/styles/components/sidebar.css · src/components/ui/CollapsibleSection.vue",
+    "SettingsMenu": "src/styles/components/settings.css · src/components/SettingsPanel.vue",
+    "OscillatorList": "src/styles/components/oscillator.css · src/components/oscillator/OscillatorListRow.vue",
+    "WaveSelector": "src/styles/components/oscillator.css · src/components/OscillatorItem.vue · src/lib/waveforms.js",
+    "OscillatorEditor": "src/styles/components/oscillator.css · src/components/OscillatorItem.vue",
+    "HistoryControls": "src/styles/components/sidebar.css · src/components/oscillator/HistoryControls.vue",
+    "PlayerBar": "src/styles/components/player.css · src/components/PlayerControl.vue",
+    "PresetCard": "src/styles/components/presets.css · src/components/PresetsSection.vue",
+    "FAQItem": "src/styles/components/faq.css · src/components/FAQSection.vue",
+    "Toast": "src/styles/components/toast.css · src/components/ToastContainer.vue",
+    "HearingWarning": "src/styles/components/hearing-warning.css · src/components/HearingWarning.vue",
+    "ProgressBar": "src/styles/base.css · src/components/RecorderControl.vue"
+  }
+}

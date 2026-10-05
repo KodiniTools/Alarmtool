@@ -1,0 +1,20 @@
+<!-- @dsCard group="Oscillators" height=110 subtitle="Statische Vorschau: Undo/Redo aus HistoryControls.vue + sidebar.css" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.wrap{max-width:280px}</style>
+</head><body>
+<div class="wrap history" role="toolbar" aria-label="Verlauf">
+  <div class="history-buttons">
+    <button type="button" class="history-btn" title="Rückgängig: Frequenz Oszillator 1">
+      <svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+      <span class="history-label">Rückgängig</span>
+      <span class="history-count">4</span>
+    </button>
+    <button type="button" class="history-btn" disabled title="Wiederholen">
+      <svg class="history-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>
+      <span class="history-label">Wiederholen</span>
+    </button>
+  </div>
+  <p class="history-caption" aria-live="polite"><span class="history-caption-key">Zuletzt:</span> Frequenz Oszillator 1 → 660 Hz</p>
+</div>
+</body></html>

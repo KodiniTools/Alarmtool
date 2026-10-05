@@ -1,99 +1,163 @@
+/* ==========================================================================
+   Alarmtool · Design Tokens v2 (--ds-*)
+   --------------------------------------------------------------------------
+   Gemeinsame KodiniTools-Tokens: flache Flächen, ein Akzent, 1 px Rahmen,
+   drei Radien, 150 ms Motion. Kopie aus KodiniTools/Collage-Maker
+   (src/design-system/tokens-v2.css, Stand 9dc4eca), dort gepflegt und
+   hierher übernommen. Regeln: design-system/content/README.md.
+
+   Theme-Mechanik: Dark auf :root, Light auf html[data-theme='light'] (von der
+   SSI-Navigation bzw. dem Pre-Paint-Skript in index.html gesetzt).
+   Composite-Tokens mit var() (--ds-focus-ring) sind im Light-Block erneut
+   deklariert, weil var() auf dem deklarierenden Element aufgelöst wird.
+   ========================================================================== */
+
+/* === Schrift: Supreme in den drei genutzten Gewichten, gebündelt aus
+   src/assets/fonts (Vite hasht die URLs beim Build). === */
 @font-face {
   font-family: 'Supreme';
-  src: url('/fonts/Supreme-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  src: url('../assets/fonts/Supreme-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Supreme';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/Supreme-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Supreme';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/Supreme-Bold.woff2') format('woff2');
 }
 
+/* === Dark (Standard) === */
 :root {
-  /* Typography */
-  --at-font-sans:
-    'Supreme', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    'Noto Sans', sans-serif;
+  /* Flächen: Seite, Panel, Eingabe/Chip, Hover */
+  --ds-surface-0: #0a1324;
+  --ds-surface-1: #111d33;
+  --ds-surface-2: #182741;
+  --ds-surface-3: #1f3050;
+  --ds-border: #223553;
+  --ds-border-strong: #2f4668;
 
-  /* Shape */
-  --at-radius: 12px;
-  --at-radius-sm: 8px;
-  --at-radius-xs: 6px;
+  /* Text in drei Stufen */
+  --ds-text: #f2eee2;
+  --ds-text-2: #a7b3c4;
+  --ds-text-3: #8593a8;
 
-  /* Elevation */
-  --at-shadow-1: 0 4px 16px rgba(9, 20, 40, 0.2);
-  --at-shadow-2: 0 8px 32px rgba(9, 20, 40, 0.3);
+  /* Akzent: Primäraktion, Fokus, aktive Zustände */
+  --ds-accent: #d4a257;
+  --ds-accent-hover: #e0b06a;
+  --ds-accent-soft: rgba(212, 162, 87, 0.14);
+  --ds-on-accent: #0a1324;
+  --ds-link: #6aaef5;
 
-  /* Motion */
-  --at-speed: 200ms;
-  --at-speed-slow: 300ms;
+  /* Status */
+  --ds-success: #5fcf8a;
+  --ds-warning: #e3b341;
+  --ds-danger: #ef6b6b;
+  --ds-info: #6aaef5;
 
-  /* Spacing Scale */
-  --space-1: 0.25rem; /* 4px */
-  --space-2: 0.5rem; /* 8px */
-  --space-3: 0.75rem; /* 12px */
-  --space-4: 1rem; /* 16px */
-  --space-5: 1.25rem; /* 20px */
-  --space-6: 1.5rem; /* 24px */
-  --space-8: 2rem; /* 32px */
+  /* Effekte (theme-abhängig) */
+  --ds-focus-ring: 0 0 0 2px var(--ds-surface-0), 0 0 0 4px var(--ds-accent);
+  --ds-shadow-overlay: 0 8px 24px rgba(0, 0, 0, 0.35);
 
-  /* Dark theme (default) — Navy & Gold */
-  --at-bg: #091428;
-  --at-gradient: linear-gradient(
-    145deg,
-    #091428 0%,
-    #0e1c32 25%,
-    #142640 50%,
-    #0e1c32 75%,
-    #091428 100%
-  );
-  --at-surface: #0e1c32;
-  --at-panel: #142640;
-  --at-elev: #1a3050;
-  --at-text: #f9f2d5;
-  --at-text-dim: #f8e1a9;
-  --at-muted: #7a8da0;
+  /* === Typografie === */
+  --ds-font-sans: 'Supreme', sans-serif;
+  --ds-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ds-text-xs: 12px;
+  --ds-text-sm: 13px;
+  --ds-text-md: 14px;
+  --ds-text-lg: 16px;
+  --ds-text-xl: 20px;
+  --ds-text-2xl: 24px;
+  --ds-text-3xl: 32px;
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-semibold: 600;
+  --ds-weight-bold: 700;
+  --ds-leading: 1.5;
+  --ds-leading-tight: 1.25;
+  --ds-tracking-tight: -0.01em;
 
-  --at-primary: #c9984d;
-  --at-primary-600: #b8873e;
-  --at-primary-700: #a87630;
-  --at-primary-fg: #091428; /* text/icon color on primary background */
+  /* === Abstände (4er-Raster) === */
+  --ds-space-1: 4px;
+  --ds-space-2: 8px;
+  --ds-space-3: 12px;
+  --ds-space-4: 16px;
+  --ds-space-5: 20px;
+  --ds-space-6: 24px;
+  --ds-space-8: 32px;
+  --ds-space-10: 40px;
+  --ds-space-12: 48px;
+  --ds-space-16: 64px;
 
-  --at-success: #7ec89b;
-  --at-danger: #e07070;
-  --at-warning: #c9984d;
-  --at-info: #014f99;
-  /* Readable info tone for text on dark surfaces (the raw --at-info is too
-     dark and nearly disappears on the navy background). */
-  --at-info-text: #6cb2ff;
+  /* === Form === */
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 10px;
+  --ds-radius-lg: 16px;
+  --ds-radius-full: 999px;
+  --ds-border-width: 1px;
 
-  --at-border: 1px solid rgba(122, 141, 160, 0.25);
+  /* === Motion === */
+  --ds-duration: 150ms;
+  --ds-duration-slow: 250ms;
+  --ds-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* === Größen === */
+  --ds-control-sm: 28px;
+  --ds-control-md: 36px;
+  --ds-control-lg: 40px;
+  --ds-row-height: 44px;
+  --ds-topbar-height: 56px;
+  --ds-player-height: 60px;
+  --ds-icon-sm: 16px;
+  --ds-icon-md: 20px;
+  --ds-icon-stroke: 1.75;
+
+  /* === Layout === */
+  --ds-container: 1200px;
+  --ds-gutter: 24px;
+  --ds-gap: 20px;
+
+  /* === Ebenen === */
+  --ds-z-topbar: 500;
+  --ds-z-player: 900;
+  --ds-z-backdrop: 1000;
+  --ds-z-dialog: 1001;
+  --ds-z-toast: 9999;
 }
 
+/* === Light === */
 [data-theme='light'] {
-  --at-bg: #f9f2d5;
-  --at-gradient: linear-gradient(
-    145deg,
-    #f9f2d5 0%,
-    #ffffff 25%,
-    #faf5e6 50%,
-    #f8e1a9 75%,
-    #f9f2d5 100%
-  );
-  --at-surface: #ffffff;
-  --at-panel: #ffffff;
-  --at-elev: #faf5e6;
-  --at-text: #003971;
-  --at-text-dim: #2c5f8a;
-  --at-muted: #5a7a94;
+  --ds-surface-0: #f6f5f1;
+  --ds-surface-1: #ffffff;
+  --ds-surface-2: #f0eee8;
+  --ds-surface-3: #e8e5dd;
+  --ds-border: #e2dfd7;
+  --ds-border-strong: #cbc6ba;
 
-  --at-primary: #c9984d;
-  --at-primary-600: #b8873e;
-  --at-primary-700: #a87630;
-  --at-primary-fg: #003971; /* text/icon color on primary background */
+  --ds-text: #14213a;
+  --ds-text-2: #3f4a60;
+  --ds-text-3: #5f6b84;
 
-  --at-warning: #c9984d;
-  --at-info: #014f99;
-  /* On the light background the dark blue already reads well. */
-  --at-info-text: #014f99;
-  --at-border: 1px solid rgba(0, 57, 113, 0.15);
-  --at-shadow-1: 0 4px 16px rgba(0, 57, 113, 0.08);
-  --at-shadow-2: 0 8px 32px rgba(0, 57, 113, 0.12);
+  --ds-accent: #c9984d;
+  --ds-accent-hover: #b8842f;
+  --ds-accent-soft: rgba(201, 152, 77, 0.16);
+  --ds-on-accent: #14213a;
+  --ds-link: #0f5aa8;
+
+  --ds-success: #177a42;
+  --ds-warning: #9a6416;
+  --ds-danger: #c93c3c;
+  --ds-info: #0f5aa8;
+
+  --ds-focus-ring: 0 0 0 2px var(--ds-surface-0), 0 0 0 4px var(--ds-accent);
+  --ds-shadow-overlay: 0 8px 24px rgba(20, 33, 58, 0.12);
 }

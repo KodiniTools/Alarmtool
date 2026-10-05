@@ -1,0 +1,16 @@
+<!-- @dsCard group="Feedback" height=170 subtitle="Statische Vorschau: .timer, .progress und Erfolgsmeldung aus RecorderControl.vue" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.wrap{max-width:520px}.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="notch" viewBox="0 0 16 16"><path d="M8 2a6 6 0 1 1-4.2 1.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+ <symbol id="check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.2 8.3l1.9 1.9 3.8-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="wrap">
+  <div class="timer"><svg class="ic spin"><use href="#notch"/></svg> Aufnahme läuft … <span>01:12</span> verbleibend</div>
+  <div class="progress mt-2" style="height:20px"><div class="progress-bar" role="progressbar" style="width:40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div></div>
+  <p class="small-text mt-3">Die Aufnahme endet automatisch nach der gewählten Dauer; danach erscheint der Download-Link.</p>
+  <div class="recording-success mt-3" style="color:var(--ds-success);font-size:.85rem"><svg class="ic"><use href="#check"/></svg> Aufnahme abgeschlossen – Download bereit.</div>
+</div>
+</body></html>

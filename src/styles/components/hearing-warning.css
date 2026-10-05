@@ -1,100 +1,101 @@
 /* ─── Hearing-safety warning ────────────────────────────────────────
    Anchored directly above the sticky player bar (bottom offset tracks the
-   --player-bar-height set by App.vue), so it sits next to the volume/transport
-   controls, stays visible on every tab, and never covers the header or lists. */
+   --player-bar-height set by App.vue). Callout-Muster: Panelfläche,
+   3-px-Statuskante links in Danger, Overlay-Schatten. */
 
 .hearing-warning {
   position: fixed;
   left: 0;
   right: 0;
   /* `bottom` is set inline to var(--player-bar-height) so it hugs the player. */
-  z-index: 899;
-  padding: 0 var(--space-5);
+  z-index: calc(var(--ds-z-player) - 1);
+  padding: 0 var(--ds-space-5);
   pointer-events: none;
 }
 
 .hearing-warning__inner {
   max-width: 960px;
-  margin: 0 auto var(--space-2);
+  margin: 0 auto var(--ds-space-2);
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: 12px;
-  border: 1px solid rgba(224, 112, 112, 0.4);
-  background: rgba(40, 16, 20, 0.92);
-  box-shadow: 0 6px 20px rgba(9, 20, 40, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-4);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-left: 3px solid var(--ds-danger);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-1);
+  box-shadow: var(--ds-shadow-overlay);
   pointer-events: auto;
 }
 
-[data-theme='light'] .hearing-warning__inner {
-  background: rgba(255, 244, 240, 0.95);
-  border-color: rgba(200, 60, 60, 0.35);
-  box-shadow: 0 6px 20px rgba(0, 57, 113, 0.12);
-}
-
 .hearing-warning__icon {
-  font-size: 1.1rem;
-  color: var(--at-danger);
+  font-size: var(--ds-icon-md);
+  color: var(--ds-danger);
   flex-shrink: 0;
 }
 
 .hearing-warning__body {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 2px;
   flex: 1;
   min-width: 0;
 }
 
 .hearing-warning__title {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--at-danger);
-  letter-spacing: 0.01em;
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-semibold);
+  color: var(--ds-text);
 }
 
 .hearing-warning__text {
-  font-size: 0.78rem;
-  line-height: 1.35;
-  color: var(--at-text);
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading);
+  color: var(--ds-text-2);
 }
 
+/* Bestätigen: Sekundär-Button, klein */
 .hearing-warning__dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-  border: 1px solid var(--at-danger);
-  background: var(--at-danger);
-  color: #2a0e0e;
-  font-size: 0.78rem;
-  font-weight: 600;
+  height: var(--ds-control-sm);
+  padding: 0 var(--ds-space-3);
+  border: var(--ds-border-width) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-surface-2);
+  color: var(--ds-text);
+  font: inherit;
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  line-height: 1;
   cursor: pointer;
   white-space: nowrap;
-  transition:
-    filter 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--ds-duration) var(--ds-ease);
 }
 
 .hearing-warning__dismiss:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
+  background: var(--ds-surface-3);
+}
+
+.hearing-warning__dismiss:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
 }
 
 /* Slide/fade in from just below its resting spot */
 .hearing-warning-enter-active,
 .hearing-warning-leave-active {
   transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
+    opacity var(--ds-duration-slow) var(--ds-ease),
+    transform var(--ds-duration-slow) var(--ds-ease);
 }
 
 .hearing-warning-enter-from,
 .hearing-warning-leave-to {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(8px);
 }
 
 @media (max-width: 560px) {
@@ -104,6 +105,6 @@
 
   .hearing-warning__dismiss {
     width: 100%;
-    margin-top: var(--space-1);
+    margin-top: var(--ds-space-1);
   }
 }

@@ -1,3 +1,4 @@
 dist
 node_modules
 *.lock
+design-system/content/components/**/*.html

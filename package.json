@@ -10,7 +10,9 @@
     "lint:fix": "eslint src --ext .vue,.js --fix",
     "format": "prettier --write \"src/**/*.{vue,js,css}\"",
     "format:check": "prettier --check \"src/**/*.{vue,js,css}\"",
-    "test": "vitest run"
+    "test": "vitest run",
+    "design-system": "node design-system/build.mjs",
+    "design-system:check": "node design-system/build.mjs --check"
   },
   "dependencies": {
     "pinia": "^2.1.7",

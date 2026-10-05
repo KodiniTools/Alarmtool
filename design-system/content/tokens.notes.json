@@ -1,0 +1,341 @@
+{
+  "color": {
+    "usage": {
+      "ds-surface-0": "Seite: body-Hintergrund; Grund der Tab-Leiste und der Transport-Gruppe (Segment-Controls).",
+      "ds-surface-1": "Panel: .section, Oszillator-Editor, Collapsible, Preset-Karten, FAQ-Items, Player-Bar, Toasts, Gehörschutz-Hinweis; Rand der Slider-Daumen und des Toggle-Knopfs.",
+      "ds-surface-2": "Eingaben und Chips: Inputs, Selects, Sekundär-Buttons, Wellenform-Buttons, Preset-Icon-Kachel, Tags, Zähler-Badge; Hover auf Kopfzeilen und Transport-Buttons.",
+      "ds-surface-3": "Hover auf Flächen und Zeilen: Listenzeilen, Menüpunkte, Sekundär- und Aux-Buttons, Preset-Play.",
+      "ds-border": "Rahmen und Trennlinien: Panels, Karten, Tab-Leiste, Panel-Titel-Linie, Editor-Sektionen, Chips, Tags, Toasts.",
+      "ds-border-strong": "Rahmen von Feldern und Sekundär-Buttons; Spur von Slidern, Fortschritt und Toggle; Hover-Rahmen von Karten; Ring des Toggle-Punkts.",
+      "ds-text": "Primärtext: Überschriften, Buttons, Inputs, Zeilennamen, Toast-Text. Dark 16.0:1 auf surface-0 / 14.5:1 auf surface-1; Light 14.7:1 / 16.1:1.",
+      "ds-text-2": "Sekundärtext: Untertitel, Formular-Labels, Beschreibungen, FAQ-Antworten, Track-Name, ruhende Tabs, Icon- und Transport-Buttons, ORG-Chip. Dark 7.9:1 auf surface-1, 7.0:1 auf surface-2; Light 8.9:1 / 7.7:1.",
+      "ds-text-3": "Tertiärtext: Eyebrows, Meta, Platzhalter, Hilfetexte, Chevrons, ruhender Statuspunkt, Toggle-Punkt aus. Dark 5.4:1 auf surface-1, 4.8:1 auf surface-2; Light 5.4:1 / 4.6:1 — nur ≥ 12 px halbfett oder dekorativ.",
+      "ds-accent": "Die einzige Aktionsfarbe: Primär-Button, aktiver Play-Button, aktive Preset-Wiedergabe, Slider-Daumen, Fortschritt, Fokus-Ring, Auswahlrahmen (Wellenform, Preset, Banner), Balken der gewählten Zeile, Icon-Akzente, SQR-Chip. Als Text/Icon im Light-Theme nur 2.6:1 auf surface-1 (Quellwert) — dort nur als Füllung oder neben Text einsetzen.",
+      "ds-accent-hover": "Primär-Button und aktives Preset-Play :hover.",
+      "ds-accent-soft": "Ausgewählte Zeile, aktive Fläche: gewählte Listenzeile, aktiver Wellenform-Button, Preset-Banner, aktive Preset-Karte, Icon-Kacheln in Collapsible-Kopf und Speichermenü.",
+      "ds-on-accent": "Text und Icons auf Akzent: Primär-Button, aktiver Play, Verlaufszähler, aktives Preset-Play. 8.0:1 dark, 6.2:1 light.",
+      "ds-link": "Links im Fließtext der SSI-Partials; in der App ungenutzt.",
+      "ds-success": "Läuft-Status (Punkt und Label), SIN-Chip, Erfolgs-Toast (Kante, Icon, Countdown). Dark 8.6:1 auf surface-1; Light 5.4:1 / 4.6:1 auf surface-2.",
+      "ds-warning": "Pausiert-Status, PLS-Chip, Warn-Toast. Dark 8.7:1; Light 5.0:1 auf surface-1, 4.3:1 auf surface-2 (Chip, Quellwert — flagged).",
+      "ds-danger": "Danger-Buttons (Text auf flacher Fläche), SAW-Chip, Fehler-Toast, Gehörschutz-Kante und -Icon. Dark 5.6:1; Light 5.0:1 auf surface-1, 4.3:1 auf surface-2 (Chip, Quellwert — flagged).",
+      "ds-info": "TRI-Chip und Standardkante/-Icon der Toasts. Dark 7.2:1; Light 6.9:1 auf surface-1."
+    },
+    "extra": []
+  },
+  "spacing": {
+    "note": "4er-Raster in px. Button-Paddings und Gaps nutzen ausschließlich diese Stufen; 2 px gibt es nur als Innenabstand der Segment-Controls.",
+    "usage": {
+      "ds-space-1": "4 px — Label-Abstand, Chip-Padding, Tag-Gaps, Toggle-Knopfrand, Badge-Padding.",
+      "ds-space-2": "8 px — Standard-Inline-Gap: Icon zu Text, Zeilen-Gaps, Menüpunkt-Padding, Toast-Stapel, FAQ-Abstand.",
+      "ds-space-3": "12 px — Kopfzeilen- und Toast-Padding, Button-Sm-Padding, Sidebar-Gap, Wellenform-Button-Padding, Player-Bar-Padding.",
+      "ds-space-4": "16 px — Button-Padding, Formgruppen-Abstand, Karten-Padding, Editor-Sektionen, Panel-Titel-Abstand.",
+      "ds-space-5": "20 px — Body-Padding, Panel-Padding (.section), Editor-Kopf horizontal, Toast-Rand rechts.",
+      "ds-space-6": "24 px — Tab-Leiste und Kopfzeile nach unten, Parameter-Grid-Spaltenabstand.",
+      "ds-space-8": "32 px — Reserve (Playlist Generator: Abschnittsabstand); in der App ungenutzt.",
+      "ds-space-10": "40 px — ungenutzt.",
+      "ds-space-12": "48 px — ungenutzt.",
+      "ds-space-16": "64 px — Abstand des Toast-Containers von oben."
+    },
+    "extra": []
+  },
+  "radius": {
+    "note": "Drei Radien plus voll gerundet. Kreise (50 %) nur für Punkte, Slider-Daumen und Toggle-Knopf.",
+    "usage": {
+      "ds-radius-sm": "6 px — Controls, Chips, Segmente: Tab-Buttons, Transport-Buttons, Listenzeilen, Menüpunkte, .btn-sm, Icon-Kacheln, Wellenform-Chips, Dismiss, Toast-Schließen.",
+      "ds-radius-md": "10 px — Felder, Buttons, Karten: Inputs, Selects, .btn, Wellenform-Buttons, Preset-Karten und -Banner, FAQ-Items, Toasts, Collapsible, Tab-Leiste, Transport-Gruppe, Aux-Buttons, Gehörschutz-Hinweis.",
+      "ds-radius-lg": "16 px — Panels: .section, Oszillator-Editor, Player-Shell, Editor-Platzhalter.",
+      "ds-radius-full": "999 px — Pills: Tags, Preset-Play, Zähler-Badge, Verlaufszähler, Slider-Spur, Fortschritt, Toggle-Spur."
+    },
+    "extra": []
+  },
+  "shadow": {
+    "note": "Schatten nur für Overlays. Karten, Panels und Buttons haben keinen; der Fokus-Ring ist ein box-shadow (ds-focus-ring, in bundle.css).",
+    "usage": {
+      "ds-shadow-overlay": "Einziger Schatten: Player-Bar, Toasts, Gehörschutz-Hinweis."
+    },
+    "extra": []
+  },
+  "duration": {
+    "note": "Easing immer ds-ease (cubic-bezier(0.2, 0, 0, 1), in bundle.css). prefers-reduced-motion setzt alle Transitions und Animationen auf 0.01 ms.",
+    "usage": {
+      "ds-duration": "150 ms — Hover, Fokus, Chevron, Toggle-Knopf, Statuspunkt-Farbe, Rahmenfarbe.",
+      "ds-duration-slow": "250 ms — Theme-Wechsel, Aufklappen (0fr → 1fr), Toast und Gehörschutz ein/aus, Fortschrittsbreite."
+    },
+    "extra": [
+      {
+        "name": "duration-pulse",
+        "value": "1200ms",
+        "usage": "Literal in player.css: Opazitätspuls des Läuft-Punkts (1 → 0.4 → 1, unendlich)."
+      }
+    ]
+  },
+  "size": {
+    "note": "Control-Höhen und Layoutmaße in px.",
+    "usage": {
+      "ds-border-width": "1 px — einzige Rahmenstärke; Statuskanten links an Toast und Gehörschutz sind 3 px.",
+      "ds-control-sm": "28 px — .btn-sm, Preset-Play, Gehörschutz-Dismiss, Toast-Schließen, Icon-Kacheln (Collapsible, Speichermenü).",
+      "ds-control-md": "36 px — .btn, Selects, Zahlfeld im Slider-Paar, Verlaufs-Buttons, Aux-Buttons, Transport-Gruppe, Tab-Leiste (innen 32 px), Preset-Icon-Kachel ≤ 480 px.",
+      "ds-control-lg": "40 px — Textfelder (.form-control), Preset-Icon-Kachel.",
+      "ds-row-height": "44 px — Mindesthöhe der Collapsible-Kopfzeile.",
+      "ds-topbar-height": "56 px — Kopfzeile der SSI-Navigation; in der App ungenutzt.",
+      "ds-player-height": "60 px — Richtwert der Player-Bar; die App misst die echte Höhe zur Laufzeit (--player-bar-height).",
+      "ds-icon-sm": "16 px — Icons in Buttons, Zeilen und Toasts; Verlaufs-Icons; Sidebar-Titel-Icon.",
+      "ds-icon-md": "20 px — freistehende Icons: Preset-Kachel, Gehörschutz-Lautsprecher.",
+      "ds-icon-stroke": "1.75 — Strichstärke der Inline-SVGs (Verlaufs-Icons, Lucide-Stil).",
+      "ds-container": "1200 px — max-width des .main-container.",
+      "ds-gutter": "24 px — Seitenrand (SSI); die App nutzt space-5.",
+      "ds-gap": "20 px — Abstand zwischen Panels (.section margin-bottom) und im Master-Detail-Grid."
+    },
+    "extra": []
+  },
+  "zIndex": {
+    "usage": {
+      "ds-z-topbar": "500 — SSI-Navigation (außerhalb der App).",
+      "ds-z-player": "900 — Player-Bar; der Gehörschutz-Hinweis liegt eins darunter (calc(ds-z-player - 1)).",
+      "ds-z-backdrop": "1000 — Dialog-Hintergrund; in der App ungenutzt.",
+      "ds-z-dialog": "1001 — Dialoge; in der App ungenutzt.",
+      "ds-z-toast": "9999 — Toast-Container."
+    },
+    "extra": []
+  },
+  "opacity": {
+    "tokens": [
+      {
+        "name": "opacity-disabled",
+        "value": "0.45",
+        "usage": "Deaktivierte Buttons, Wellenform-/ADSR-/Verlaufs-Buttons, Transport, Controls-Overlay, stummer Lautstärke-Regler."
+      },
+      {
+        "name": "opacity-field-disabled",
+        "value": "0.6",
+        "usage": "Deaktivierte Inputs, Selects und Slider."
+      },
+      {
+        "name": "opacity-row-disabled",
+        "value": "0.55",
+        "usage": "Ausgeschaltete Oszillator-Zeile."
+      },
+      {
+        "name": "opacity-editor-disabled",
+        "value": "0.65",
+        "usage": "Ganzer Editor bei ausgeschaltetem Oszillator."
+      }
+    ]
+  },
+  "type": {
+    "families": {},
+    "groups": [
+      {
+        "name": "Überschriften",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "page-title",
+            "fontSize": "24px",
+            "lineHeight": 1.25,
+            "fontWeight": 700,
+            "letterSpacing": "-0.01em",
+            "sample": "Modernes Alarm-Tool",
+            "usage": ".app-title / h1 — Seitentitel (ds-text-2xl); 20 px ≤ 768 px."
+          },
+          {
+            "name": "section-title",
+            "fontSize": "20px",
+            "lineHeight": 1.25,
+            "fontWeight": 600,
+            "sample": "Oszillatoren",
+            "usage": "h2 außerhalb von Panels (ds-text-xl); in der App selten, da jede h2 in einer .section liegt."
+          },
+          {
+            "name": "panel-title",
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "fontWeight": 600,
+            "sample": "Globaler Filter",
+            "usage": ".section > h2 (mit Trennlinie darunter), .osc-editor-title, .osc-sidebar-title — Panel- und Kopfzeilentitel (ds-text-lg)."
+          }
+        ]
+      },
+      {
+        "name": "Text",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "body",
+            "fontSize": "16px",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "Erstelle und gestalte individuelle Alarmtöne direkt im Browser.",
+            "usage": "Grundgröße des Body (ds-text-lg) in ds-text auf ds-surface-0."
+          },
+          {
+            "name": "subtitle",
+            "fontSize": "14px",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "Mit 12 Oszillatoren & Live-Recorder (Modular)",
+            "usage": ".app-subtitle und .presets-intro in ds-text-2 (ds-text-md); .preset-active-info."
+          },
+          {
+            "name": "button",
+            "fontSize": "14px",
+            "lineHeight": 1,
+            "fontWeight": 500,
+            "sample": "Download",
+            "usage": ".btn (36 px hoch, Padding 0 16 px) — Sekundär und Danger; Primär in Gewicht 600."
+          },
+          {
+            "name": "button-primary",
+            "fontSize": "14px",
+            "lineHeight": 1,
+            "fontWeight": 600,
+            "sample": "Aufnahme starten",
+            "usage": ".btn-primary / .btn-success auf ds-accent mit ds-on-accent; aktives Preset-Play."
+          },
+          {
+            "name": "button-sm",
+            "fontSize": "13px",
+            "lineHeight": 1,
+            "fontWeight": 500,
+            "sample": "Kopieren",
+            "usage": ".btn-sm (28 px), .history-btn, .preset-play-btn, Gehörschutz-Dismiss, Tabs."
+          },
+          {
+            "name": "input",
+            "fontSize": "14px",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "440",
+            "usage": ".form-control (40 px) und .form-select (36 px, Gewicht 500); ≤ 768 px 16 px gegen iOS-Zoom. Zahlfelder im Slider-Paar zentriert mit Tabellenziffern."
+          },
+          {
+            "name": "label",
+            "fontSize": "13px",
+            "lineHeight": 1.5,
+            "fontWeight": 500,
+            "sample": "Frequenz (Hz)",
+            "usage": ".form-label in ds-text-2, 4 px über dem Control."
+          },
+          {
+            "name": "help",
+            "fontSize": "13px",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "Die Aufnahme beginnt, sobald der Alarm läuft.",
+            "usage": ".small-text / .form-text in ds-text-3, 4 px unter dem Control."
+          },
+          {
+            "name": "description",
+            "fontSize": "13px",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "Zwei alternierende Sinustöne mit sanftem Tiefpass.",
+            "usage": ".preset-description, .faq-answer, .hearing-warning__text, .toast-body — Fließtext in Karten, ds-text-2 (Toast: ds-text)."
+          },
+          {
+            "name": "faq-question",
+            "fontSize": "14px",
+            "lineHeight": 1.5,
+            "fontWeight": 500,
+            "sample": "Wie speichere ich meine Einstellungen?",
+            "usage": ".faq-question in ds-text; 13 px ≤ 480 px."
+          },
+          {
+            "name": "preset-name",
+            "fontSize": "14px",
+            "lineHeight": 1.5,
+            "fontWeight": 600,
+            "sample": "Klassische Notfallsirene",
+            "usage": ".preset-name (h3) auf Preset-Karten."
+          },
+          {
+            "name": "row-name",
+            "fontSize": "13px",
+            "lineHeight": 1.5,
+            "fontWeight": 500,
+            "sample": "Oszillator 3",
+            "usage": ".osc-row-name in Listenzeilen; Ellipsis bei Überlauf."
+          },
+          {
+            "name": "menu-name",
+            "fontSize": "13px",
+            "lineHeight": 1.25,
+            "fontWeight": 600,
+            "sample": "Exportieren",
+            "usage": ".settings-menu-name, .collapsible-title, .hearing-warning__title — halbfette Zeilentitel."
+          },
+          {
+            "name": "track-name",
+            "fontSize": "13px",
+            "lineHeight": 1.5,
+            "fontWeight": 500,
+            "sample": "Klassische Notfallsirene",
+            "usage": ".player-track-name in ds-text-2 mit Noten-Icon in ds-accent."
+          }
+        ]
+      },
+      {
+        "name": "Labels",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "eyebrow",
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "fontWeight": 600,
+            "letterSpacing": "0.06em",
+            "sample": "WELLENFORM",
+            "usage": ".osc-section-label, .osc-adsr-toggle, .settings-menu-label, .player-status-label — VERSALIEN in ds-text-3 (Status: ds-success / ds-warning)."
+          },
+          {
+            "name": "chip",
+            "fontSize": "12px",
+            "lineHeight": 1,
+            "fontWeight": 600,
+            "letterSpacing": "0.04em",
+            "sample": "SIN",
+            "usage": ".osc-wave-chip, .osc-editor-wave-badge — 18 px hoch, ds-surface-2 mit ds-border, Ink je Wellenform."
+          },
+          {
+            "name": "badge",
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "fontWeight": 600,
+            "sample": "3/12 aktiv",
+            "usage": ".osc-active-badge (ds-surface-2, ds-text-2, Tabellenziffern), .history-count (ds-accent / ds-on-accent)."
+          },
+          {
+            "name": "tag",
+            "fontSize": "12px",
+            "lineHeight": 1,
+            "fontWeight": 500,
+            "sample": "Sinus",
+            "usage": ".preset-tag — 20 px Pill, ds-surface-2, ds-border, ds-text-2."
+          },
+          {
+            "name": "meta",
+            "fontSize": "12px",
+            "lineHeight": 1.5,
+            "fontWeight": 400,
+            "sample": "440 Hz",
+            "usage": ".osc-row-meta, .collapsible-summary, .settings-menu-desc, .history-caption, .player-hint, .player-volume-pct — ds-text-3."
+          }
+        ]
+      },
+      {
+        "name": "Mono",
+        "family": "mono",
+        "styles": [
+          {
+            "name": "time-display",
+            "fontSize": "13px",
+            "lineHeight": 1.5,
+            "fontWeight": 500,
+            "sample": "00:42",
+            "usage": ".player-time-display — ds-font-mono, Tabellenziffern, ds-text-2."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+<!-- @dsCard group="Oscillators" height=330 subtitle="Statische Vorschau: Sidebar-Kopf, Badge, Listenzeilen und Wellenform-Chips" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.wrap{max-width:300px;display:flex;flex-direction:column;gap:var(--space-3)}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="wave" viewBox="0 0 16 16"><path d="M1 11h3V5h4v6h4V5h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="wrap">
+  <header class="osc-sidebar-header">
+    <h2 class="osc-sidebar-title"><svg class="ic"><use href="#wave"/></svg> Oszillatoren</h2>
+    <span class="osc-active-badge">3/12 aktiv</span>
+  </header>
+  <nav class="osc-list collapsible">
+    <button class="osc-list-row osc-list-row--selected" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot osc-row-toggle-dot--on"></span></span><span class="osc-wave-chip osc-wave-chip--sine">SIN</span><span class="osc-row-name">Oszillator 1</span><span class="osc-row-meta">660 Hz</span></button>
+    <button class="osc-list-row" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot osc-row-toggle-dot--on"></span></span><span class="osc-wave-chip osc-wave-chip--square">SQR</span><span class="osc-row-name">Oszillator 2</span><span class="osc-row-meta">880 Hz</span></button>
+    <button class="osc-list-row" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot osc-row-toggle-dot--on"></span></span><span class="osc-wave-chip osc-wave-chip--sawtooth">SAW</span><span class="osc-row-name">Oszillator 3</span><span class="osc-row-meta">180 Hz</span></button>
+    <button class="osc-list-row osc-list-row--disabled" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot"></span></span><span class="osc-wave-chip osc-wave-chip--triangle">TRI</span><span class="osc-row-name">Oszillator 4</span><span class="osc-row-meta osc-row-meta--dim">aus</span></button>
+    <button class="osc-list-row osc-list-row--disabled" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot"></span></span><span class="osc-wave-chip osc-wave-chip--pulse">PLS</span><span class="osc-row-name">Oszillator 5</span><span class="osc-row-meta osc-row-meta--dim">aus</span></button>
+    <button class="osc-list-row osc-list-row--disabled" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot"></span></span><span class="osc-wave-chip osc-wave-chip--organ">ORG</span><span class="osc-row-name">Oszillator 6</span><span class="osc-row-meta osc-row-meta--dim">aus</span></button>
+  </nav>
+</div>
+</body></html>

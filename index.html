@@ -1,98 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-T7NS656K');</script>
-  <!-- End Google Tag Manager -->
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      ;(function (w, d, s, l, i) {
+        w[l] = w[l] || []
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : ''
+        j.async = true
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+        f.parentNode.insertBefore(j, f)
+      })(window, document, 'script', 'dataLayer', 'GTM-T7NS656K')
+    </script>
+    <!-- End Google Tag Manager -->
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a1324" media="(prefers-color-scheme: dark)" />
+    <!-- Theme vor dem ersten Paint setzen (Tokens: Dark auf :root, Light über data-theme),
+       damit Light-Nutzer keinen dunklen Flash sehen. Die SSI-Navigation und der
+       Settings-Store übernehmen danach. -->
+    <script>
+      try {
+        var storedTheme = localStorage.getItem('theme')
+        document.documentElement.setAttribute(
+          'data-theme',
+          storedTheme === 'light' ? 'light' : 'dark'
+        )
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark')
+      }
+    </script>
 
-  <!-- ─── Primary SEO ──────────────────────────────────────────── -->
-  <title>Online Alarmton Generator – Töne erzeugen, gestalten &amp; exportieren | KodiniTools</title>
-  <meta name="description" content="Erstelle und gestalte individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation." />
-  <meta name="keywords" content="Alarmton Generator, Töne erstellen, Online Synthesizer, Audiotool, ADSR, Oszillator, Klingelton erstellen, kostenlos" />
-  <meta name="author" content="KodiniTools" />
-  <link rel="canonical" href="https://kodinitools.com/alarmtool/" />
+    <!-- ─── Primary SEO ──────────────────────────────────────────── -->
+    <title>
+      Online Alarmton Generator – Töne erzeugen, gestalten &amp; exportieren | KodiniTools
+    </title>
+    <meta
+      name="description"
+      content="Erstelle und gestalte individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation."
+    />
+    <meta
+      name="keywords"
+      content="Alarmton Generator, Töne erstellen, Online Synthesizer, Audiotool, ADSR, Oszillator, Klingelton erstellen, kostenlos"
+    />
+    <meta name="author" content="KodiniTools" />
+    <link rel="canonical" href="https://kodinitools.com/alarmtool/" />
 
-  <!-- ─── Open Graph (Facebook, WhatsApp, LinkedIn) ────────────── -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://kodinitools.com/alarmtool/" />
-  <meta property="og:title" content="Online Alarmton Generator – Töne erzeugen &amp; exportieren" />
-  <meta property="og:description" content="Erstelle individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation." />
-  <meta property="og:image" content="https://kodinitools.com/alarmtool/og-image.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="de_DE" />
-  <meta property="og:locale:alternate" content="en_US" />
-  <meta property="og:site_name" content="KodiniTools" />
+    <!-- ─── Open Graph (Facebook, WhatsApp, LinkedIn) ────────────── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kodinitools.com/alarmtool/" />
+    <meta
+      property="og:title"
+      content="Online Alarmton Generator – Töne erzeugen &amp; exportieren"
+    />
+    <meta
+      property="og:description"
+      content="Erstelle individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation."
+    />
+    <meta property="og:image" content="https://kodinitools.com/alarmtool/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="KodiniTools" />
 
-  <!-- ─── Twitter Card ─────────────────────────────────────────── -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://kodinitools.com/alarmtool/" />
-  <meta name="twitter:title" content="Online Alarmton Generator – Töne erzeugen &amp; exportieren" />
-  <meta name="twitter:description" content="Erstelle individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation." />
-  <meta name="twitter:image" content="https://kodinitools.com/alarmtool/og-image.png" />
+    <!-- ─── Twitter Card ─────────────────────────────────────────── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://kodinitools.com/alarmtool/" />
+    <meta
+      name="twitter:title"
+      content="Online Alarmton Generator – Töne erzeugen &amp; exportieren"
+    />
+    <meta
+      name="twitter:description"
+      content="Erstelle individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation."
+    />
+    <meta name="twitter:image" content="https://kodinitools.com/alarmtool/og-image.png" />
 
-  <!-- ─── Favicon ───────────────────────────────────────────────── -->
-  <!-- Uses the shared favicon.ico from the server document root
+    <!-- ─── Favicon ───────────────────────────────────────────────── -->
+    <!-- Uses the shared favicon.ico from the server document root
        (/var/www/kodinitools.com/public → served at /favicon.ico). -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-  <!-- ─── Structured Data (JSON-LD) ────────────────────────────── -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Online Alarmton Generator",
-    "description": "Erstelle und gestalte individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion.",
-    "url": "https://kodinitools.com/alarmtool/",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Any",
-    "browserRequirements": "Requires a modern browser with Web Audio API support",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR"
-    },
-    "featureList": [
-      "Mehrere Oszillatoren (Sinus, Rechteck, Sägezahn, Dreieck)",
-      "Globaler Bandpass-Filter",
-      "ADSR-Hüllkurve pro Oszillator",
-      "Rhythmusmuster-Editor",
-      "Aufnahme als WAV oder MP3",
-      "Import / Export von Einstellungen",
-      "Vordefinierte Alarm-Presets",
-      "Kostenlos und ohne Installation"
-    ],
-    "inLanguage": ["de", "en"],
-    "provider": {
-      "@type": "Organization",
-      "name": "KodiniTools",
-      "url": "https://kodinitools.com"
-    }
-  }
-  </script>
+    <!-- ─── Structured Data (JSON-LD) ────────────────────────────── -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Online Alarmton Generator",
+        "description": "Erstelle und gestalte individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion.",
+        "url": "https://kodinitools.com/alarmtool/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires a modern browser with Web Audio API support",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "featureList": [
+          "Mehrere Oszillatoren (Sinus, Rechteck, Sägezahn, Dreieck)",
+          "Globaler Bandpass-Filter",
+          "ADSR-Hüllkurve pro Oszillator",
+          "Rhythmusmuster-Editor",
+          "Aufnahme als WAV oder MP3",
+          "Import / Export von Einstellungen",
+          "Vordefinierte Alarm-Presets",
+          "Kostenlos und ohne Installation"
+        ],
+        "inLanguage": ["de", "en"],
+        "provider": {
+          "@type": "Organization",
+          "name": "KodiniTools",
+          "url": "https://kodinitools.com"
+        }
+      }
+    </script>
 
-  <!-- FontAwesome (lokal) -->
-  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
-</head>
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T7NS656K"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+    <!-- FontAwesome (lokal) -->
+    <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-T7NS656K"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-<!--#include virtual="/partials/nav.html" -->
-  <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
+    <!--#include virtual="/partials/nav.html" -->
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
 
-<!--#include virtual="/partials/footer.html" -->
-<!--#include virtual="/partials/cookie-banner.html" -->
-</body>
+    <!--#include virtual="/partials/footer.html" -->
+    <!--#include virtual="/partials/cookie-banner.html" -->
+  </body>
 </html>

@@ -1,0 +1,19 @@
+<!-- @dsCard group="Feedback" height=280 subtitle="Statische Vorschau: die vier Toast-Typen aus toast.css (Container im Fluss)" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.toast-container{position:static;width:auto;max-width:420px}.toast-progress{animation:none}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.2 8.3l1.9 1.9 3.8-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="excl" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 4.5v4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.3" r=".9"/></symbol>
+ <symbol id="tri" viewBox="0 0 16 16"><path d="M8 2l6.5 11.5h-13z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 6.2v3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.6" r=".8"/></symbol>
+ <symbol id="info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 7.3v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="4.9" r=".9"/></symbol>
+ <symbol id="x" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+</svg>
+<div class="toast-container" aria-live="polite">
+  <div class="toast-item toast-success toast-visible" role="alert"><div class="toast-icon"><svg class="ic"><use href="#check"/></svg></div><div class="toast-body">Einstellungen gespeichert.</div><button class="toast-close" aria-label="Schließen"><svg class="ic"><use href="#x"/></svg></button><div class="toast-progress" style="transform:scaleX(.7)"></div></div>
+  <div class="toast-item toast-error toast-visible" role="alert"><div class="toast-icon"><svg class="ic"><use href="#excl"/></svg></div><div class="toast-body">Aufnahme fehlgeschlagen: Der Browser unterstützt kein MediaRecorder-Format.</div><button class="toast-close" aria-label="Schließen"><svg class="ic"><use href="#x"/></svg></button><div class="toast-progress" style="transform:scaleX(.5)"></div></div>
+  <div class="toast-item toast-warning toast-visible" role="alert"><div class="toast-icon"><svg class="ic"><use href="#tri"/></svg></div><div class="toast-body">Starte zuerst den Alarm, bevor du aufnimmst.</div><button class="toast-close" aria-label="Schließen"><svg class="ic"><use href="#x"/></svg></button><div class="toast-progress" style="transform:scaleX(.35)"></div></div>
+  <div class="toast-item toast-info toast-visible" role="alert"><div class="toast-icon"><svg class="ic"><use href="#info"/></svg></div><div class="toast-body">Preset „Sanfter Wecker" geladen.</div><button class="toast-close" aria-label="Schließen"><svg class="ic"><use href="#x"/></svg></button><div class="toast-progress" style="transform:scaleX(.2)"></div></div>
+</div>
+</body></html>

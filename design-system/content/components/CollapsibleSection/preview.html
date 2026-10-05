@@ -1,0 +1,37 @@
+<!-- @dsCard group="Layout" height=230 subtitle="Statische Vorschau: CollapsibleSection.vue + sidebar.css (offen und geschlossen)" -->
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<style>body{min-height:0}.ic{width:1em;height:1em;fill:currentColor;vertical-align:-0.125em;flex-shrink:0}.wrap{max-width:320px;display:flex;flex-direction:column;gap:var(--space-3)}</style>
+</head><body>
+<svg style="display:none" aria-hidden="true">
+ <symbol id="list" viewBox="0 0 16 16"><path d="M5.5 4h9M5.5 8h9M5.5 12h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="2.4" cy="4" r="1.1"/><circle cx="2.4" cy="8" r="1.1"/><circle cx="2.4" cy="12" r="1.1"/></symbol>
+ <symbol id="save" viewBox="0 0 16 16"><path d="M2.5 2.5h8.5l2.5 2.5v8.5h-11z M5 2.5v3.5h5V2.5 M5 13.5V9.5h6v4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+ <symbol id="chev" viewBox="0 0 16 16"><path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<div class="wrap">
+  <section class="collapsible collapsible--open">
+    <button type="button" class="collapsible-header" aria-expanded="true">
+      <span class="collapsible-icon"><svg class="ic"><use href="#list"/></svg></span>
+      <span class="collapsible-title">Oszillator wählen</span>
+      <span class="collapsible-summary">Oszillator 1</span>
+      <svg class="ic collapsible-chevron"><use href="#chev"/></svg>
+    </button>
+    <div class="collapsible-body" role="region">
+      <div class="collapsible-inner">
+        <nav class="osc-list">
+          <button class="osc-list-row osc-list-row--selected" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot osc-row-toggle-dot--on"></span></span><span class="osc-wave-chip osc-wave-chip--sine">SIN</span><span class="osc-row-name">Oszillator 1</span><span class="osc-row-meta">660 Hz</span></button>
+          <button class="osc-list-row osc-list-row--disabled" type="button"><span class="osc-row-toggle"><span class="osc-row-toggle-dot"></span></span><span class="osc-wave-chip osc-wave-chip--square">SQR</span><span class="osc-row-name">Oszillator 2</span><span class="osc-row-meta osc-row-meta--dim">aus</span></button>
+        </nav>
+      </div>
+    </div>
+  </section>
+  <section class="collapsible">
+    <button type="button" class="collapsible-header" aria-expanded="false">
+      <span class="collapsible-icon"><svg class="ic"><use href="#save"/></svg></span>
+      <span class="collapsible-title">Speicheroptionen</span>
+      <svg class="ic collapsible-chevron"><use href="#chev"/></svg>
+    </button>
+    <div class="collapsible-body" role="region" inert><div class="collapsible-inner"></div></div>
+  </section>
+</div>
+</body></html>

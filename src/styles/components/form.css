@@ -1,97 +1,125 @@
+/* Formulare nach UiTextField / UiSelect (Collage Maker) */
 .form-label {
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: var(--at-text);
   display: block;
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
+  margin-bottom: var(--ds-space-1);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  color: var(--ds-text-2);
 }
 
 .form-control,
 .form-select {
   width: 100%;
-  padding: 0.55rem 0.85rem;
-  border-radius: var(--at-radius-xs);
-  border: 1px solid rgba(122, 141, 160, 0.25);
-  background-color: rgba(14, 28, 50, 0.4);
-  color: var(--at-text);
-  font-size: 0.9rem;
+  height: var(--ds-control-lg);
+  padding: 0 var(--ds-space-3);
+  border: var(--ds-border-width) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface-2);
+  color: var(--ds-text);
+  font: inherit;
+  font-size: var(--ds-text-md);
+  transition:
+    border-color var(--ds-duration) var(--ds-ease),
+    box-shadow var(--ds-duration) var(--ds-ease);
 }
 
-[data-theme='light'] .form-control,
-[data-theme='light'] .form-select {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 57, 113, 0.2);
+.form-select {
+  height: var(--ds-control-md);
+  font-weight: var(--ds-weight-medium);
+  cursor: pointer;
 }
 
-.form-control:focus,
-.form-select:focus {
+.form-control::placeholder {
+  color: var(--ds-text-3);
+}
+
+.form-control:focus-visible,
+.form-select:focus-visible {
   outline: none;
-  border-color: var(--at-primary);
-  box-shadow: 0 0 0 0.2rem rgba(201, 152, 77, 0.15);
-  background-color: rgba(20, 38, 64, 0.6);
+  border-color: var(--ds-accent);
+  box-shadow: var(--ds-focus-ring);
 }
 
-[data-theme='light'] .form-control:focus,
-[data-theme='light'] .form-select:focus {
-  border-color: var(--at-info);
-  box-shadow: 0 0 0 0.2rem rgba(1, 79, 153, 0.15);
-  background-color: rgba(255, 255, 255, 1);
+.form-control:disabled,
+.form-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .form-select option {
-  background-color: var(--at-panel);
-  color: var(--at-text);
+  background-color: var(--ds-surface-1);
+  color: var(--ds-text);
 }
 
-/* Range Slider */
+/* Range Slider: Spur Rahmenfarbe, Daumen Akzent, Fokus-Ring */
 .form-range {
-  width: 100%;
-  height: 4px;
-  background: rgba(122, 141, 160, 0.25);
-  border-radius: 2px;
-  outline: none;
   -webkit-appearance: none;
-}
-
-.form-range:hover {
-  background: rgba(122, 141, 160, 0.35);
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-border-strong);
+  outline: none;
+  touch-action: pan-y;
+  cursor: pointer;
 }
 
 .form-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 14px;
   width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: var(--at-primary);
-  border: none;
+  background: var(--ds-accent);
+  border: 2px solid var(--ds-surface-1);
   cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-  transition: all var(--at-speed) ease;
-}
-
-.form-range::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 .form-range::-moz-range-thumb {
-  height: 14px;
   width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: var(--at-primary);
-  border: none;
+  background: var(--ds-accent);
+  border: 2px solid var(--ds-surface-1);
   cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
-  transition: all var(--at-speed) ease;
+}
+
+.form-range::-moz-range-track {
+  height: 6px;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-border-strong);
+}
+
+.form-range:focus-visible {
+  box-shadow: var(--ds-focus-ring);
+}
+
+.form-range:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (pointer: coarse) {
+  .form-range {
+    height: 8px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Slider + number input pair */
 .slider-input-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--ds-space-2);
 }
 
 .slider-input-group .form-range {
@@ -100,34 +128,81 @@
 
 .slider-input-group .form-control {
   width: 80px;
+  height: var(--ds-control-md);
   flex-shrink: 0;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 .control-group {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--ds-space-4);
 }
 
 .param-container {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--ds-space-4);
+}
+
+/* Toggle-Schalter (Oszillator an/aus) */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--ds-radius-full);
+  background-color: var(--ds-border-strong);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--ds-surface-1);
+  transition: transform var(--ds-duration) var(--ds-ease);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--ds-accent);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(16px);
+}
+
+.toggle-switch input:focus-visible + .toggle-slider {
+  box-shadow: var(--ds-focus-ring);
 }
 
 @media (max-width: 768px) {
   .slider-input-group .form-control {
-    width: 65px;
+    width: 72px;
   }
 
   .form-control,
   .form-select {
-    font-size: 16px; /* prevents iOS zoom on focus */
+    font-size: var(--ds-text-lg); /* prevents iOS zoom on focus */
   }
 }
 
 @media (max-width: 480px) {
-  .form-label {
-    font-size: 0.8rem;
-  }
-
   .slider-input-group .form-control {
-    width: 55px;
+    width: 64px;
   }
 }
