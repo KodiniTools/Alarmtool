@@ -1,73 +1,71 @@
-Alarmtool ist der Online-Alarmton-Generator von KodiniTools: zwölf Oszillatoren, globaler Filter, ADSR, Rhythmusmuster, Live-Recorder — als reine Browser-App. Die Oberfläche ist **Navy & Gold**: tiefes Marineblau als Grund, warmes Gold als einzige Markenfarbe, cremefarbene Schrift. Alles sitzt auf halbtransparenten „Glas"-Flächen mit weichem Blur. Das System beschreibt genau, was `src/styles/` der App definiert — keine Ergänzungen.
+Alarmtool ist der Online-Alarmton-Generator von KodiniTools: zwölf Oszillatoren, globaler Filter, ADSR, Rhythmusmuster, Live-Recorder — als reine Browser-App. Die Oberfläche läuft auf den **KodiniTools-Tokens v2**, die sie mit dem Collage Maker und dem Playlist Generator teilt: flache Flächen in vier Stufen, Text in drei Stufen, ein einziger Akzent (Gold), 1-px-Rahmen, drei Radien, 150 ms Motion. Keine Gradients, kein Blur, keine Kartenschatten, keine Hover-Lifts. Die Werte werden im Collage Maker gepflegt (`src/design-system/tokens-v2.css`) und nach `src/styles/tokens.css` übernommen.
 
 ## Inhalt und Tonalität
 
 - **Sprache:** Deutsch zuerst, Englisch als zweite Locale (`src/i18n/translations.js`). Jede UI-Zeichenkette existiert in beiden Sprachen; Layouts müssen beide Längen vertragen (die Player-Bar misst ihre Höhe deshalb zur Laufzeit).
 - **Anrede:** Du-Form, kurz, technisch, direkt. Beispiele aus der App: „Reduziere die Lautstärke, bevor du abspielst — besonders mit Kopfhörern.", „Steuerung: Leertaste = Play/Pause | Esc = Stop | M = Mute | L = Loop".
-- **Casing:** Satzschreibung für Labels und Buttons („Aufnahme starten", „Verstanden"); VERSALIEN nur für Eyebrows (`eyebrow`, `menu-label`, `status-label`) und Wellenform-Kürzel (SIN, SQR, SAW, TRI, PLS, ORG).
-- **Fachbegriffe bleiben Fachbegriffe:** Hz, Q-Faktor, Attack/Decay/Sustain/Release, Tiefpass/Hochpass/Bandpass/Notch, Pan. Nicht umschreiben.
+- **Casing:** Satzschreibung für Labels und Buttons („Aufnahme starten", „Verstanden"); VERSALIEN nur für Eyebrows (`eyebrow`) und Wellenform-Kürzel (SIN, SQR, SAW, TRI, PLS, ORG).
+- **Fachbegriffe bleiben Fachbegriffe:** Hz, Q-Faktor, Attack/Decay/Sustain/Release, Tiefpass/Hochpass/Bandpass/Notch, Pan.
 - **Keine Emojis in der Oberfläche.** Symbole kommen aus Font Awesome; Emojis gibt es nur in Repo-Dokumentation.
-- **Status wird benannt, nicht nur gefärbt:** „Bereit / Läuft / Pausiert" steht neben dem Statuspunkt; Toasts tragen Icon und Text.
+- **Status wird benannt, nicht nur gefärbt:** „Bereit / Läuft / Pausiert" steht neben dem Statuspunkt; Toasts tragen Icon und Text; Wellenform-Chips tragen das Kürzel.
 
 ## Farbe
 
-Zwei Themes, Dark ist Standard (`:root`), Light liegt auf `[data-theme='light']`. Umschalten animiert Hintergrund, Text, Rahmen und Schatten über `at-speed-slow`.
+Zwei Themes, Dark ist Standard (`:root`), Light liegt auf `html[data-theme='light']` und wird von der SSI-Navigation oder dem Pre-Paint-Skript in `index.html` gesetzt. Alle Variablen wechseln mit dem Theme; Komponenten kennen keine festen Farbwerte.
 
-- **Grund:** Der `body` zeigt den 145°-Verlauf aus `at-bg` → `at-surface` → `at-panel` (Light: `at-bg` → Weiß → `at-elev` → `at-text-dim`). Flächen darüber sind *Alpha-Tints* der Grundfarben, nie deckend: `.section` = `at-surface` bei 85 % mit `backdrop-filter: blur(12px)`, Player-Shell 60 %, Preset-Karten 50 %, FAQ-Items und Inputs 40 %.
-- **Text:** `at-text` für alles Primäre, `at-text-dim` für Hilfetexte und Beschreibungen, `at-muted` für Eyebrows, Meta und ruhende Icons. Info-Text (Untertitel, Tab-Labels, FAQ-Antworten) steht in `at-info-text`, **nie** in `at-info` — das dunkle Blau ist nur Füllfarbe.
-- **Gold ist die Marke:** `at-primary` füllt aktive Tabs, den aktiven Play-Button, Slider-Daumen, Fortschrittsbalken und die 3-px-Linie oben auf jeder `.section` (Verlauf `at-primary` → `at-text`). Als Wash (`at-primary-tint`, 6–15 %) markiert es Hover, ausgewählte Zeilen, Icon-Kacheln, Badges und Chips. Auf Gold steht immer `at-primary-fg`.
-- **Signalfarben:** `at-success` = läuft / Aufnahme / Erfolg, `at-danger` = Stop, Verwerfen, Gehörschutz, Fehler, `at-warning` (= Gold) = pausiert / Warnung, `at-info` (Füllung) / `at-info-text` (Text) = neutral-informativ. Die sechs Wellenformen haben feste Chip-Farben: SIN `at-success`, SQR `at-primary`, SAW `at-danger`, TRI `at-info-text`, PLS `at-wave-pulse`, ORG `at-wave-organ`.
-- **Light-Theme-Regel:** Wo Dark Gold-Washes nutzt, nutzt Light oft Blau-Washes (`rgba(1,79,153,…)`): Preset-Tags, Preset-Play, Zeilen-Hover, Fokus-Halo. Gold bleibt für Füllungen (aktiver Tab, Primary-Button).
-- **Kontrast-Hinweise (Quellwerte, unverändert):** Im Light-Theme erreicht `at-primary` als Text nur 2.3:1 auf `at-bg` (Preset-Banner, Track-Name, SQR-Chip) und `at-success`/`at-danger` als Text 1.8:1 / 2.8:1; `at-primary-fg` auf `at-primary` liegt bei 4.4:1. Im Dark-Theme fällt `at-on-danger` (Weiß) auf `at-danger` mit 3.1:1 durch und `at-muted` auf `at-elev` mit 3.9:1. Neue Oberflächen: Gold im Light-Theme nur als Füllung oder ≥ 24 px einsetzen, Text auf Rot in `at-on-danger-deep`.
+- **Vier Flächen, flach und deckend:** `ds-surface-0` ist die Seite, `ds-surface-1` jedes Panel (`.section`, Editor, Collapsible, Karten, Player-Bar, Toasts), `ds-surface-2` alles Eingebbare oder Chip-artige (Inputs, Sekundär-Buttons, Wellenform-Buttons, Tags, Zähler), `ds-surface-3` der Hover auf Zeilen, Menüpunkten und Sekundär-Buttons. Flächen werden durch `ds-border` getrennt, nie durch Schatten oder Transparenz.
+- **Drei Textstufen:** `ds-text` für Überschriften, Buttons, Eingaben und Zeilennamen; `ds-text-2` für Labels, Untertitel, Beschreibungen, FAQ-Antworten und ruhende Icon-Buttons; `ds-text-3` für Eyebrows, Meta, Platzhalter, Hilfetexte und Chevrons. Alle drei erreichen auf `ds-surface-0` bis `ds-surface-2` mindestens 4.6:1 in beiden Themes.
+- **Gold ist die einzige Aktionsfarbe.** `ds-accent` als Vollfläche nur für die Primäraktion (`.btn-primary`, `.btn-success`), den aktiven Play-Button, das aktive Preset-Play und den Verlaufszähler — eine Goldfläche pro Ansicht. Darauf steht immer `ds-on-accent`. Als Markierung: Slider-Daumen, Fortschrittsbalken, Fokus-Ring, Auswahlrahmen, der 3-px-Balken der gewählten Zeile, kleine Icon-Akzente neben Text.
+- **Auswahl und aktive Fläche:** `ds-accent-soft` als Grund plus `ds-accent` als Rahmen — gewählte Listenzeile, aktiver Wellenform-Button, Preset-Banner, aktive Preset-Karte. Icon-Kacheln in Sidebar und Speichermenü nutzen denselben Wash.
+- **Status:** `ds-success` = läuft / Erfolg, `ds-warning` = pausiert / Warnung, `ds-danger` = Stop, Verwerfen, Gehörschutz, Fehler, `ds-info` = neutral. Status erscheint als Text, Icon, Statuspunkt oder 3-px-Kante links an Toast und Gehörschutz-Hinweis — nie als Button-Füllung. Destruktive Buttons sind `ds-danger`-Text auf flacher Fläche.
+- **Wellenformen** haben feste Chip-Inks auf `ds-surface-2`: SIN `ds-success`, SQR `ds-accent`, SAW `ds-danger`, TRI `ds-info`, PLS `ds-warning`, ORG `ds-text-2`.
+- **Kontrast-Hinweise (Quellwerte, unverändert):** Im Light-Theme erreicht `ds-accent` als Text oder Icon nur 2.6:1 auf `ds-surface-1` — Gold dort nur als Füllung oder neben Text einsetzen (SQR-Chip, Icon-Akzente sind davon betroffen). `ds-warning` und `ds-danger` liegen als 12-px-Chip auf `ds-surface-2` im Light-Theme bei 4.3:1.
 
 ## Typografie
 
-- **Eine Schrift, ein Schnitt:** Supreme Regular (400) per `@font-face` aus `/fonts/Supreme-Regular.woff2`, dahinter `ui-sans-serif, system-ui, …`. Alle 500/600/700-Gewichte des Systems sind Browser-Synthese — Headlines deshalb nie über 700 setzen und auf Fallback-Fonts (Segoe UI, Roboto) prüfen. Die Schriftdatei liegt nicht im Repo (Host-Root); dieses System trägt keine Fontdatei.
-- **Hierarchie über Größe und Tracking, kaum über Gewicht:** `app-title` 2 rem / 500, `h2` 1.75 rem / 600 mit 60-px-Goldunterstrich, `h2-narrow` 1.1 rem in schmalen Sektionen, `editor-title` 1.05 rem, `sidebar-title` 1 rem / 700. Headings tragen `letter-spacing: 0.02em` und im Dark-Theme einen 1-px-Textschatten.
-- **Lauftext** 1 rem `body`; UI-Texte liegen zwischen 0.78 und 0.9 rem (`input`, `label`, `button`, `faq-question`); Hilfe `small-text` 0.8 rem in `at-text-dim`.
-- **Eyebrows** (`eyebrow`, `menu-label`, `status-label`) sind 0.62–0.72 rem, 600–700, VERSALIEN, Tracking 0.06–0.08 em, `at-muted` mit goldenem Icon.
-- **Zahlen:** Zeitanzeige in `time-display` (Mono, Tracking 0.04 em); Werte-Pills im Editor und `volume-pct` mit `font-variant-numeric: tabular-nums`.
-- **Mobil:** Inputs ≤ 768 px auf 16 px (verhindert iOS-Zoom); Titel 1.5 → 1.3 rem; Tab-Labels ≤ 480 px ausgeblendet.
+- **Eine Schrift, drei echte Schnitte:** Supreme 400, 500 und 700 liegen im Repo (`src/assets/fonts/`) und werden gebündelt; `ds-font-sans` fällt auf `sans-serif` zurück. Gewicht 600 (`ds-weight-semibold`) wird aus 700 synthetisiert — Panel-Titel und Chips nutzen es trotzdem, wie im Collage Maker. Mono (`ds-font-mono`) nur für die Zeitanzeige.
+- **Sieben Stufen:** 12 `xs` (Chips, Meta, Eyebrows) · 13 `sm` (Labels, Hilfe, Beschreibungen, kleine Buttons, Tabs) · 14 `md` (Buttons, Felder, Fragen, Preset-Namen) · 16 `lg` (Body, Panel-Titel) · 20 `xl` (Abschnittstitel) · 24 `2xl` (Seitentitel `page-title`) · 32 `3xl` (Hero, in der App nur das Platzhalter-Icon). Zeilenhöhe 1.5, ab 24 px 1.25 mit Tracking −0.01 em.
+- **Hierarchie über Größe und Gewicht:** `page-title` 24/700, `panel-title` 16/600 mit Trennlinie darunter, `button` 14/500 (Primär 600), `label` 13/500 in `ds-text-2`, `eyebrow` 12/600 VERSALIEN in `ds-text-3`. Keine Textschatten, kein Tracking über 0.06 em.
+- **Zahlen:** Zeit in `time-display` (Mono); Zahlfelder, Zähler und Prozent mit `font-variant-numeric: tabular-nums`.
+- **Mobil:** Eingaben ≤ 768 px auf 16 px (verhindert iOS-Zoom); Seitentitel 20 px; Tab-Labels ≤ 480 px ausgeblendet (nur Icons).
 
 ## Abstand, Form, Fläche
 
-- **Skala** `space-1` … `space-8` (4–32 px, kein `space-7`). `space-2` ist der Standard-Inline-Abstand, `space-4` der Block-Abstand (Formgruppen, Karten-Padding), `space-6` das Sektions-Padding. Button-Paddings bleiben bewusst außerhalb der Skala (0.55 rem 1.1 rem; `btn-sm` 0.35 rem 0.7 rem; Pills 0.4 rem 0.9 rem).
-- **Radien, drei Stufen plus Pill:** `at-radius` 12 px für Container (Sektion, Editor, Collapsible, Player, Tab-Leiste), `at-radius-sm` 8 px für Buttons in Gruppen (Tabs, Wellenform-, Verlaufs-, Aux-Buttons), `at-radius-xs` 6 px für Buttons, Inputs, Zeilen und Icon-Kacheln. Karten, Toasts und FAQ nutzen literal `radius-card` 10 px; Tags, Preset-Play und Gehörschutz-Button `radius-pill` 20 px; Badges 999 px; Chips `radius-chip` 4 px. Punkte und Slider-Daumen sind Kreise.
-- **Rahmen statt Kanten:** Jede Fläche hat einen 1-px-Hairline aus `at-muted`-Tint (`at-hairline`, 8–25 %); Light-Theme nutzt Navy-Tints. Aktive Zustände verstärken den Rahmen zu `at-primary` (Wellenform-Button, Preset-Karte mit zusätzlichem 1-px-Ring).
-- **Schatten sind navyfarben und weich:** `at-shadow-1` für Editor, `at-shadow-2` für Toasts, `shadow-section` für Sektionen, `shadow-player-bar` nach oben. Hover hebt um 1 px (`translateY(-1px)`) mit `shadow-hover`.
-- **Glas:** `.section`, `.player-bar`, Toasts und die Gehörschutz-Warnung nutzen `backdrop-filter: blur(8–16px)` über Alpha-Grund.
+- **4er-Raster** `ds-space-1` … `ds-space-16`. `ds-space-2` ist der Inline-Gap (Icon zu Text, Zeilen), `ds-space-3` das Kopfzeilen-Padding, `ds-space-4` das Button- und Karten-Padding, `ds-space-5` das Panel-Padding, `ds-gap` (20 px) der Abstand zwischen Panels. Innenabstände von Segment-Controls sind 2 px.
+- **Control-Höhen:** `ds-control-sm` 28 (kleine Buttons, Pills, Icon-Kacheln) · `ds-control-md` 36 (Buttons, Selects, Icon-Buttons, Tab-Leiste, Transport-Gruppe) · `ds-control-lg` 40 (Textfelder). Listenzeilen und Kopfzeilen mindestens 44 px.
+- **Drei Radien plus Pill:** `ds-radius-sm` 6 für Controls, Chips und Segmente (Tabs, Transport, Zeilen, Menüpunkte, `.btn-sm`), `ds-radius-md` 10 für Felder, Buttons und Karten (Inputs, `.btn`, Wellenform-Buttons, Preset-Karten, FAQ, Toasts, Collapsible), `ds-radius-lg` 16 für Panels (`.section`, Editor, Player-Shell), `ds-radius-full` für Tags, Preset-Play, Badges, Slider- und Toggle-Spuren. Kreise nur für Punkte, Daumen und Toggle-Knopf.
+- **Ein Rahmen:** 1 px `ds-border` um jede Fläche; Felder und Sekundär-Buttons tragen `ds-border-strong`. Hover auf Karten wechselt den Rahmen zu `ds-border-strong`, auf Wellenform-Buttons zu `ds-accent`.
+- **Schatten nur für Overlays:** `ds-shadow-overlay` auf Player-Bar, Toasts und Gehörschutz-Hinweis. Panels, Karten und Buttons bleiben flach. Keine Gradients, kein `backdrop-filter`.
 
 ## Zustände
 
-- **Hover:** Gold-Wash (`at-primary-tint`) als Grund, Text zu `at-text`, 1 px Lift. Buttons zeigen zusätzlich einen Lichtstreifen (`::before`, 0.4 s).
-- **Aktiv/ausgewählt:** Goldfüllung mit `at-primary-fg` (Tab, Play, Preset-Play) **oder** Gold-Wash 10–15 % mit `at-primary`-Text und -Rahmen (Wellenform-Button, Aux-Button, Listenzeile mit 3-px-Goldbalken links).
-- **Fokus:** Buttons und Menüpunkte `outline: 2px solid at-primary` (Offset 2 px, in Listen −2 px). Inputs: Rahmen `at-primary` (Light: `at-info`) plus `shadow-focus`-Halo, kein Outline.
-- **Deaktiviert:** nur Opazität, keine Farbänderung — `opacity-disabled-button` 0.45, Controls 0.4, Transport 0.35, Zeilen 0.55, ganzer Editor 0.65; `cursor: not-allowed`, kein Lift.
-- **Läuft:** Statuspunkt `at-success` pulsiert (`duration-pulse`), Label grün; pausiert gelb/gold; gestoppt `at-muted`.
+- **Hover** ändert nur Farbe, nie Größe oder Position: Sekundär-Buttons und Zeilen zu `ds-surface-3`, Primär zu `ds-accent-hover`, Karten-Rahmen zu `ds-border-strong`, Textbuttons (Tabs, Transport, Chevrons) zu `ds-text`.
+- **Aktiv / gewählt:** entweder Goldfüllung mit `ds-on-accent` (Play, Preset-Play, Primär) oder `ds-accent-soft` plus `ds-accent`-Rahmen (Wellenform, Preset-Karte, Zeile). Segment-Controls (Tabs, Transport) zeigen die aktive Option als `ds-surface-1` mit `ds-border-strong`; der Play-Button als einzige Ausnahme in Gold. Umschalter (Loop, Mute) zeigen „an" über `ds-accent`-Rahmen und -Text.
+- **Fokus:** immer `ds-focus-ring` als `box-shadow` (2 px Abstand in `ds-surface-0`, 2 px `ds-accent`), `outline: none`. Inputs färben zusätzlich den Rahmen `ds-accent`. In Listen und Kopfzeilen `inset`.
+- **Deaktiviert:** nur Opazität, keine Farbänderung — Buttons und Controls 0.45, Felder 0.6, Zeilen 0.55, ganzer Editor 0.65; `cursor: not-allowed`.
+- **Läuft / pausiert / bereit:** Statuspunkt in `ds-success` (pulsierend), `ds-warning`, `ds-text-3`; Label in derselben Farbe.
 
 ## Bewegung
 
-`at-speed` 200 ms für alles Kleine (Hover, Chevron, Daumen), `at-speed-slow` 300 ms für Theme-Wechsel und das Aufklappen (`grid-template-rows: 0fr → 1fr`, ohne Höhenmessung). Toasts gleiten von rechts (`duration-toast`, mobil von unten). `prefers-reduced-motion` schaltet Collapsible- und Chevron-Transitions ab — neue Animationen daran anschließen.
+`ds-duration` 150 ms für Hover, Fokus, Chevron, Toggle; `ds-duration-slow` 250 ms für Theme-Wechsel, Aufklappen (`grid-template-rows: 0fr → 1fr`), Toast- und Hinweis-Einblendung (16 px seitlich bzw. 8 px von unten). Easing immer `ds-ease`. `prefers-reduced-motion` setzt alle Transitions und Animationen global auf 0.01 ms.
 
 ## Ikonografie
 
-- **Font Awesome 6 Solid** (`<i class="fas fa-…">`), lokal vom Host unter `/fontawesome/` geladen — nicht im Repo. Feste Zuordnung: Tabs `fa-filter`, `fa-wave-square`, `fa-microphone`, `fa-music`, `fa-question-circle`, `fa-blog`; Transport `fa-play` / `fa-pause` / `fa-stop`; Loop `fa-repeat`; Lautstärke `fa-volume-mute|down|up`; Toasts `fa-check-circle`, `fa-exclamation-circle`, `fa-exclamation-triangle`, `fa-info-circle`; Gehörschutz `fa-volume-high`; Speichern `fa-save`; Presets `fa-truck-medical`, `fa-industry` u. a.
-- **Eigene Glyphen** liegen unter `assets/Icons/`: die sechs Wellenformen (40×20, Strich 1.5, `currentColor`) und Undo/Redo (24×24, Strich 2). Inline einsetzen, damit sie die Textfarbe erben.
-- **Icon-Kacheln:** 26–28 px, `at-radius-xs`, Gold-Wash 12–14 %, Icon in `at-primary` (Collapsible-Header, Speichermenü); Preset-Icon 44 px bei `radius-card`.
-- Die Vorschauen dieses Systems ersetzen Font-Awesome-Glyphen durch einfache Inline-SVG-Platzhalter, da die Schrift nicht geladen werden kann.
+- **Font Awesome 6 Solid** (`<i class="fas fa-…">`), vom Host unter `/fontawesome/` geladen — nicht im Repo. Zuordnung: Tabs `fa-filter`, `fa-wave-square`, `fa-microphone`, `fa-music`, `fa-question-circle`, `fa-blog`; Transport `fa-play` / `fa-pause` / `fa-stop`; Loop `fa-repeat`; Lautstärke `fa-volume-mute|down|up`; Toasts `fa-check-circle`, `fa-exclamation-circle`, `fa-exclamation-triangle`, `fa-info-circle`; Gehörschutz `fa-volume-high`; Speichern `fa-save`.
+- **Eigene Glyphen** unter `assets/Icons/`: die sechs Wellenformen (40×20, Strich 1.5, `currentColor`) und Undo/Redo (24×24, Strich `ds-icon-stroke` 1.75, Lucide-Stil). Inline einsetzen, damit sie die Textfarbe erben.
+- **Größen:** `ds-icon-sm` 16 in Buttons, Zeilen und Toasts; `ds-icon-md` 20 freistehend (Preset-Kachel, Gehörschutz). Icon-Kacheln 28 px (`ds-control-sm`) in `ds-accent-soft` mit `ds-accent`-Icon; Preset-Kachel 40 px in `ds-surface-2`.
+- Die Vorschauen dieses Systems ersetzen Font-Awesome-Glyphen durch einfache Inline-SVG-Platzhalter.
 
 ## Layout
 
-- Container `max-width: 1400px`, Body-Padding `space-5`; schmale Tabs (Filter, Aufnahme, Presets, FAQ) auf `.section-narrow` 720 px; Tab-Leiste 720 px; Player-Bar und Gehörschutz-Warnung innen 960 px.
-- Oszillatoren als Master-Detail: Sidebar 280 px (≤ 900 px: 240 px, ≤ 640 px: gestapelt) neben dem Editor; Parameter in zwei Spalten (`osc-params-grid`, Gap `space-2` × `space-6`), ≤ 640 px eine Spalte.
-- Die Player-Bar ist `position: fixed` unten (`z-player-bar`), reserviert ihre gemessene Höhe als `--player-bar-height` und respektiert `safe-area-inset-bottom`; die Gehörschutz-Warnung hängt direkt darüber (`z-hearing-warning`), Toasts oben rechts (`z-toast`, mobil unten).
-- Breakpoints: 900, 768, 640, 560, 520, 480, 420 px — jeweils Komponenten-lokal, keine globale Rasterdefinition.
+- Container `ds-container` 1200 px, Body-Padding `ds-space-5`; schmale Tabs (Filter, Aufnahme, Presets, FAQ) auf `.section-narrow` 720 px; Tab-Leiste 720 px; Player-Bar und Gehörschutz-Hinweis innen 960 px.
+- Jede Ansicht ist ein Panel (`.section`) mit Panel-Titel und Trennlinie; Oszillatoren als Master-Detail: Sidebar 280 px (≤ 900 px: 240 px, ≤ 640 px: gestapelt) neben dem Editor-Panel, Parameter in zwei Spalten, ≤ 640 px eine.
+- Die Player-Bar ist `position: fixed` unten (`ds-z-player`), reserviert ihre gemessene Höhe als `--player-bar-height`; der Gehörschutz-Hinweis hängt direkt darüber; Toasts oben rechts (`ds-z-toast`), mobil über der Player-Bar — anders als im Collage Maker (unten rechts), weil dort kein Player liegt.
+- Breakpoints: 900, 768, 640, 560, 520, 480, 420 px — komponenten-lokal; die Token-Breakpoints 480/768/1024 gelten für neue Media Queries.
 
 ## Nicht synchronisiert
 
-- **Fonts:** `Supreme-Regular.woff2` wird vom Server-Root geladen und liegt nicht im Repo — `type.fonts` ist leer, Vorschauen fallen auf `system-ui` zurück.
-- **Logo/Marke:** Kein Logo, Favicon oder OG-Bild im Repo (Host liefert `/favicon.ico`, `og-image.png`); der Name steht in reiner Schrift.
-- **Font Awesome:** vom Host geladen, nicht enthalten.
-- **Nicht als Token abbildbar:** `--at-gradient` (Verlauf) und `--at-border` (Composite) liegen in `components/bundle.css`; `--at-font-sans` wird dort auf `--font-sans` gemappt.
-- **Lücke im Quellcode:** `.toggle-switch` / `.toggle-slider` werden in `OscillatorItem.vue` verwendet, haben aber keine Stilregeln (nur einen Transition-Eintrag in `base.css`) — der Schalter rendert als nackte Checkbox.
-- **Komponenten:** statische Vorschauen (Route „Read-only": Markup mit den Klassen aus `bundle.css`, kein Build ausgeführt, kein `bundle.js`). Token-Notizen in `tokens.json` sind englisch wie die Quellkommentare.
+- **Font Awesome, Favicon, OG-Bild** liegen auf dem Host, nicht im Repo.
+- **Tokens:** Quelle ist der Collage Maker (`src/design-system/tokens-v2.css`, Stand 9dc4eca); `src/styles/tokens.css` ist die Kopie. Lokal ergänzt: `@font-face` für Supreme und `color-scheme`.
+- **Nicht als Token abbildbar:** `ds-focus-ring` (Composite mit `var()`), `ds-ease` und die Typo-Skala (`ds-text-*`, `ds-weight-*`, `ds-leading*`, `ds-tracking-*`) liegen in `components/bundle.css`.
+- **Komponenten:** statische Vorschauen (Markup mit den Klassen aus `bundle.css`, kein `bundle.js`). Die Collage-Maker-Primitives (`UiButton`, `UiPanel`, `UiSegmentedControl`, …) sind nicht übernommen; die Alarmtool-Klassen bilden sie als CSS nach.

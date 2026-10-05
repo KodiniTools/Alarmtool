@@ -1,59 +1,53 @@
 /* ─── Collapsible section (sidebar "dropdowns") ────────────────── */
 
 .collapsible {
-  background: rgba(9, 20, 40, 0.4);
-  border: 1px solid rgba(122, 141, 160, 0.12);
-  border-radius: var(--at-radius);
+  background: var(--ds-surface-1);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
   overflow: hidden;
-}
-
-[data-theme='light'] .collapsible {
-  background: rgba(255, 255, 255, 0.65);
-  border-color: rgba(0, 57, 113, 0.1);
-  box-shadow: var(--at-shadow-1);
 }
 
 .collapsible-header {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--ds-space-2);
   width: 100%;
-  padding: var(--space-3) var(--space-4);
+  min-height: var(--ds-row-height);
+  padding: var(--ds-space-2) var(--ds-space-3);
   background: none;
   border: none;
-  color: var(--at-text);
+  color: var(--ds-text);
   cursor: pointer;
   text-align: left;
   font: inherit;
-  transition: background-color var(--at-speed) ease;
+  transition: background-color var(--ds-duration) var(--ds-ease);
 }
 
 .collapsible-header:hover {
-  background: rgba(201, 152, 77, 0.06);
+  background: var(--ds-surface-2);
 }
 
 .collapsible-header:focus-visible {
-  outline: 2px solid var(--at-primary);
-  outline-offset: -2px;
+  outline: none;
+  box-shadow: inset var(--ds-focus-ring);
 }
 
 .collapsible-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: var(--ds-control-sm);
+  height: var(--ds-control-sm);
   flex-shrink: 0;
-  border-radius: var(--at-radius-xs);
-  background: rgba(201, 152, 77, 0.14);
-  color: var(--at-primary);
-  font-size: 0.75rem;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-accent-soft);
+  color: var(--ds-accent);
+  font-size: var(--ds-text-sm);
 }
 
 .collapsible-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-semibold);
 }
 
 .collapsible-summary {
@@ -62,20 +56,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.7rem;
-  color: var(--at-muted);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
 }
 
 .collapsible-chevron {
   margin-left: auto;
   flex-shrink: 0;
-  font-size: 0.7rem;
-  color: var(--at-muted);
-  transition: transform var(--at-speed) ease;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
+  transition: transform var(--ds-duration) var(--ds-ease);
 }
 
 .collapsible-summary + .collapsible-chevron {
-  margin-left: var(--space-2);
+  margin-left: var(--ds-space-2);
 }
 
 .collapsible--open .collapsible-chevron {
@@ -86,7 +80,7 @@
 .collapsible-body {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--at-speed-slow) ease;
+  transition: grid-template-rows var(--ds-duration-slow) var(--ds-ease);
 }
 
 .collapsible--open .collapsible-body {
@@ -99,23 +93,12 @@
 }
 
 .collapsible--open .collapsible-inner {
-  border-top: 1px solid rgba(122, 141, 160, 0.12);
-}
-
-[data-theme='light'] .collapsible--open .collapsible-inner {
-  border-top-color: rgba(0, 57, 113, 0.08);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .collapsible-body,
-  .collapsible-chevron {
-    transition: none;
-  }
+  border-top: var(--ds-border-width) solid var(--ds-border);
 }
 
 /* Save options below the filter controls */
 .filter-save-options {
-  margin-top: var(--space-5);
+  margin-top: var(--ds-space-5);
 }
 
 /* ─── Undo / Redo history ──────────────────────────────────────── */
@@ -123,13 +106,13 @@
 .history {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--ds-space-2);
 }
 
 .history-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-2);
+  gap: var(--ds-space-2);
 }
 
 .history-btn {
@@ -137,55 +120,45 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  gap: 0.35rem;
+  gap: var(--ds-space-2);
   min-width: 0;
-  padding: 0.5rem 0.5rem;
-  border-radius: var(--at-radius-sm);
-  border: 1px solid rgba(201, 152, 77, 0.35);
-  background: rgba(201, 152, 77, 0.1);
-  color: var(--at-text);
+  height: var(--ds-control-md);
+  padding: 0 var(--ds-space-3);
+  border: var(--ds-border-width) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-2);
+  color: var(--ds-text);
   font: inherit;
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  line-height: 1;
   cursor: pointer;
   transition:
-    background-color var(--at-speed) ease,
-    border-color var(--at-speed) ease,
-    transform var(--at-speed) ease;
-}
-
-[data-theme='light'] .history-btn {
-  background: #ffffff;
-  border-color: rgba(0, 57, 113, 0.18);
-  color: var(--at-text);
+    background-color var(--ds-duration) var(--ds-ease),
+    border-color var(--ds-duration) var(--ds-ease);
 }
 
 .history-btn:hover:not(:disabled) {
-  background: rgba(201, 152, 77, 0.2);
-  border-color: var(--at-primary);
-}
-
-.history-btn:active:not(:disabled) {
-  transform: translateY(1px);
+  background: var(--ds-surface-3);
 }
 
 .history-btn:focus-visible {
-  outline: 2px solid var(--at-primary);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
 }
 
 .history-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .history-icon {
-  width: 16px;
-  height: 16px;
+  width: var(--ds-icon-sm);
+  height: var(--ds-icon-sm);
   flex-shrink: 0;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: var(--ds-icon-stroke);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -202,28 +175,29 @@
   top: -7px;
   right: -7px;
   min-width: 18px;
-  padding: 0 0.3rem;
-  border-radius: 999px;
-  background: var(--at-primary);
-  color: var(--at-primary-fg);
-  font-size: 0.62rem;
-  font-weight: 700;
-  line-height: 1.5;
+  height: 18px;
+  padding: 0 var(--ds-space-1);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-accent);
+  color: var(--ds-on-accent);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-semibold);
+  line-height: 18px;
   text-align: center;
-  box-shadow: 0 0 0 2px var(--at-bg);
+  box-shadow: 0 0 0 2px var(--ds-surface-1);
 }
 
 .history-caption {
   margin: 0;
-  padding: 0 var(--space-1);
+  padding: 0 var(--ds-space-1);
   min-height: 1.2em;
-  font-size: 0.7rem;
-  color: var(--at-muted);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .history-caption-key {
-  font-weight: 600;
+  font-weight: var(--ds-weight-semibold);
 }

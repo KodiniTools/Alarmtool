@@ -1,18 +1,18 @@
 # PlayerBar
 
-Der immer sichtbare Player am unteren Rand: Statuszeile (Punkt, Label, Titel, Zeit), 3-px-Fortschrittslinie, Transport-Gruppe, Loop, Stumm und Lautstärke — als festes Glasband über allen Tabs.
+Der immer sichtbare Player am unteren Rand: Statuszeile (Punkt, Label, Titel, Zeit), 4-px-Fortschrittslinie, Transport-Gruppe als Segment-Control, Loop, Stumm und Lautstärke — als festes `ds-surface-1`-Band mit Trennlinie oben und `ds-shadow-overlay` (Toolbar).
 
 **Aufbau (Quelle `PlayerControl.vue`, `App.vue`, `player.css`):**
-- `.player-bar` — `position: fixed; bottom: 0`, `z-player-bar`, `space-3` `space-5` Padding plus `safe-area-inset-bottom`, Grund `at-bg` 82 % (Light `at-bg` 85 %), Hairline oben, `shadow-player-bar`, Blur 12 px. `App.vue` misst die Höhe und schreibt `--player-bar-height`, das der Container unten reserviert. `.player-bar__inner` 960 px.
-- `.player` — Standalone-Shell (`at-surface` 60 %, `at-radius`, Hairline, Blur 8 px); **innerhalb** der Bar wird sie flach (kein Grund, Rahmen, Padding) und `.player-hint` ist versteckt.
-- `.player-status-bar` — Flex space-between: `.player-status-dot` 8 px (`at-muted` → `at-success` pulsierend → `at-warning`), `.player-status-label` (`status-label`, VERSALIEN, Farbe folgt dem Status: „Bereit / Läuft / Pausiert"), `.player-track-name` (`track-name`, `at-primary`, nur während Wiedergabe), `.player-time-display` (`time-display`, Mono).
-- `.player-progress-track` — 3 px, `at-muted` 20 %; `.player-progress-fill` `at-primary`, 30-s-Zyklus, `width`-Transition 0.25 s linear.
-- `.player-transport` — 10-px-Gruppe, 3 px Padding, `at-scrim` 40 %; `.transport-btn` 32 px, `radius-transport` 7 px, `at-muted`; Hover Gold 10 %; `--play.--active` Gold auf `at-primary-fg`; `disabled` 0.35.
-- `.player-aux-btn` — 32 px, `at-radius-sm`, `at-scrim` 30 %, Hairline; `--active` Gold 15 % mit `at-primary`-Text und Rahmen 40 %; `aria-pressed`.
-- `.player-volume-group` — Stumm-Button, 72-px-Slider (`accent-color: at-primary`, 0.35 bei stumm), `.player-volume-pct` (Tabellenziffern, 2.8ch). ≤ 520 px: 52 px Slider, Prozent versteckt.
+- `.player-bar` — `position: fixed; bottom: 0`, `ds-z-player`, Padding 12 / 20 px plus `safe-area-inset-bottom`, `ds-surface-1`, Rahmen `ds-border` oben, `ds-shadow-overlay`. `App.vue` misst die Höhe und schreibt `--player-bar-height`. `.player-bar__inner` 960 px.
+- `.player` — Standalone-Shell (`ds-surface-1`, `ds-border`, `ds-radius-lg`); innerhalb der Bar flach, `.player-hint` versteckt.
+- `.player-status-bar` — Flex space-between: `.player-status-dot` 8 px (`ds-text-3` → `ds-success` pulsierend → `ds-warning`), `.player-status-label` (`eyebrow`, Farbe folgt dem Status), `.player-track-name` (13 px / 500 in `ds-text-2`, Noten-Icon `ds-accent`, nur während Wiedergabe), `.player-time-display` (`time-display`, Mono, `ds-text-2`).
+- `.player-progress-track` — 4 px, `ds-border-strong`, `ds-radius-full`; `.player-progress-fill` `ds-accent`, 30-s-Zyklus.
+- `.player-transport` — Segment-Control: 36 px, `ds-surface-0`, `ds-border`, `ds-radius-md`, 2 px Innenabstand; `.transport-btn` 32 px breit, `ds-radius-sm`, `ds-text-2`; Hover `ds-surface-2`; `--play.--active` als Primär in `ds-accent` / `ds-on-accent` („an" wird primär gezeigt); `disabled` 0.45.
+- `.player-aux-btn` — Icon-Button sekundär: 36 px, `ds-surface-2`, `ds-border-strong`, `ds-radius-md`; Hover `ds-surface-3`; `--active` (gedrückt) Rahmen und Icon `ds-accent`; `aria-pressed`.
+- `.player-volume-group` — Stumm-Button, 72-px-`.form-range` (0.45 bei stumm), `.player-volume-pct` (12 px, Tabellenziffern, `ds-text-3`). ≤ 520 px: 52 px Slider, Prozent versteckt.
 
 **Der Konsument liefert:** nichts außer dem Store — Status, Zeit, Lautstärke, Loop/Mute und das Preset-Label kommen aus `useAlarmStore`/`usePlayer`; Tastatur: Leertaste, Esc, M, L.
 
-**Dos/Don'ts:** Nur eine Player-Bar pro Seite, immer unten, immer über dem Inhalt. Transport-Icons sind Play / Pause / Stop in dieser Reihenfolge; der Play-Button ist während der Wiedergabe deaktiviert **und** golden. Keine weiteren Buttons in die Transport-Gruppe; Zusatzfunktionen sind `.player-aux-btn`.
+**Dos/Don'ts:** Nur eine Player-Bar pro Seite, immer unten. Transport-Icons sind Play / Pause / Stop in dieser Reihenfolge; der Play-Button ist während der Wiedergabe deaktiviert **und** golden. Zusatzfunktionen sind `.player-aux-btn`, nie in der Transport-Gruppe.
 
 Statische Vorschau (hand-written from `src/components/PlayerControl.vue`, `src/styles/components/player.css`); hier mit `position: relative`.

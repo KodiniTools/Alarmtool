@@ -5,21 +5,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 900;
-  padding: var(--space-3) var(--space-5);
+  z-index: var(--ds-z-player);
+  padding: var(--ds-space-3) var(--ds-space-5);
   /* Respect the iOS home-indicator safe area. */
-  padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-  background: rgba(9, 20, 40, 0.82);
-  border-top: 1px solid rgba(122, 141, 160, 0.18);
-  box-shadow: 0 -8px 24px rgba(9, 20, 40, 0.35);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-[data-theme='light'] .player-bar {
-  background: rgba(249, 242, 213, 0.85);
-  border-top-color: rgba(0, 57, 113, 0.12);
-  box-shadow: 0 -8px 24px rgba(0, 57, 113, 0.12);
+  padding-bottom: calc(var(--ds-space-3) + env(safe-area-inset-bottom, 0px));
+  background: var(--ds-surface-1);
+  border-top: var(--ds-border-width) solid var(--ds-border);
+  box-shadow: var(--ds-shadow-overlay);
 }
 
 .player-bar__inner {
@@ -33,8 +25,7 @@
   border: none;
   border-radius: 0;
   padding: 0;
-  gap: var(--space-2);
-  backdrop-filter: none;
+  gap: var(--ds-space-2);
 }
 
 /* The keyboard hint would make the fixed bar unnecessarily tall. */
@@ -45,19 +36,13 @@
 /* ─── Player Shell ──────────────────────────────────────────────── */
 
 .player {
-  background: rgba(14, 28, 50, 0.6);
-  border-radius: var(--at-radius);
-  border: 1px solid rgba(122, 141, 160, 0.15);
-  padding: var(--space-4) var(--space-5);
+  background: var(--ds-surface-1);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-4) var(--ds-space-5);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  backdrop-filter: blur(8px);
-}
-
-[data-theme='light'] .player {
-  background: rgba(249, 242, 213, 0.6);
-  border-color: rgba(0, 57, 113, 0.12);
+  gap: var(--ds-space-3);
 }
 
 /* ─── Status Bar ────────────────────────────────────────────────── */
@@ -66,53 +51,63 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--ds-space-3);
 }
 
 .player-status-indicator {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--ds-space-2);
 }
 
 .player-status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--at-muted);
+  background: var(--ds-text-3);
   flex-shrink: 0;
-  transition: background var(--at-speed) ease;
+  transition: background-color var(--ds-duration) var(--ds-ease);
 }
 
 .player-status--playing .player-status-dot {
-  background: var(--at-success);
-  animation: pulse-dot 1.2s ease-in-out infinite;
+  background: var(--ds-success);
+  animation: pulse-dot 1.2s var(--ds-ease) infinite;
 }
 
 .player-status--paused .player-status-dot {
-  background: var(--at-warning);
+  background: var(--ds-warning);
 }
 
 .player-status--stopped .player-status-dot {
-  background: var(--at-muted);
+  background: var(--ds-text-3);
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 .player-status-label {
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-semibold);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--at-muted);
-  transition: color var(--at-speed) ease;
+  color: var(--ds-text-3);
+  transition: color var(--ds-duration) var(--ds-ease);
 }
 
-.player-status--playing .player-status-label { color: var(--at-success); }
-.player-status--paused  .player-status-label { color: var(--at-warning); }
+.player-status--playing .player-status-label {
+  color: var(--ds-success);
+}
+
+.player-status--paused .player-status-label {
+  color: var(--ds-warning);
+}
 
 .player-track-name {
   flex: 1;
@@ -120,16 +115,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  font-size: 0.76rem;
-  font-weight: 600;
-  color: var(--at-primary);
-  letter-spacing: 0.01em;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  color: var(--ds-text-2);
 }
 
 .player-track-name i {
-  font-size: 0.68rem;
-  opacity: 0.85;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-accent);
   flex-shrink: 0;
 }
 
@@ -140,33 +134,28 @@
 }
 
 .player-time-display {
-  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--at-text);
-  opacity: 0.8;
-  letter-spacing: 0.04em;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text-2);
   flex-shrink: 0;
 }
 
 /* ─── Progress Track ────────────────────────────────────────────── */
 
 .player-progress-track {
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(122, 141, 160, 0.2);
+  height: 4px;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-border-strong);
   overflow: hidden;
-}
-
-[data-theme='light'] .player-progress-track {
-  background: rgba(0, 57, 113, 0.1);
 }
 
 .player-progress-fill {
   height: 100%;
-  border-radius: 2px;
-  background: var(--at-primary);
-  transition: width 0.25s linear;
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-accent);
+  transition: width var(--ds-duration-slow) linear;
 }
 
 /* ─── Controls Row ──────────────────────────────────────────────── */
@@ -174,28 +163,24 @@
 .player-controls-row {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--ds-space-3);
 }
 
 .player-controls-gap {
   flex: 1;
 }
 
-/* ─── Transport Group ───────────────────────────────────────────── */
+/* ─── Transport Group (Segment-Control) ─────────────────────────── */
 
 .player-transport {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 2px;
-  background: rgba(9, 20, 40, 0.4);
-  border: 1px solid rgba(122, 141, 160, 0.15);
-  border-radius: 10px;
-  padding: 3px;
-}
-
-[data-theme='light'] .player-transport {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(0, 57, 113, 0.12);
+  height: var(--ds-control-md);
+  padding: 2px;
+  background: var(--ds-surface-0);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
 }
 
 .transport-btn {
@@ -203,70 +188,75 @@
   align-items: center;
   justify-content: center;
   width: 32px;
-  height: 32px;
-  border-radius: 7px;
-  border: none;
+  height: 100%;
+  border: var(--ds-border-width) solid transparent;
+  border-radius: var(--ds-radius-sm);
   background: none;
-  color: var(--at-muted);
-  font-size: 0.8rem;
+  color: var(--ds-text-2);
+  font-size: var(--ds-text-sm);
   cursor: pointer;
   transition:
-    background var(--at-speed) ease,
-    color var(--at-speed) ease;
+    background-color var(--ds-duration) var(--ds-ease),
+    border-color var(--ds-duration) var(--ds-ease),
+    color var(--ds-duration) var(--ds-ease);
 }
 
 .transport-btn:hover:not(:disabled) {
-  background: rgba(201, 152, 77, 0.1);
-  color: var(--at-text);
+  background: var(--ds-surface-2);
+  color: var(--ds-text);
+}
+
+.transport-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
 }
 
 .transport-btn:disabled {
-  opacity: 0.35;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
+/* „an" wird als primär gezeigt */
 .transport-btn--play.transport-btn--active {
-  background: var(--at-primary);
-  color: var(--at-primary-fg);
+  background: var(--ds-accent);
+  color: var(--ds-on-accent);
+  opacity: 1;
 }
 
-/* ─── Aux Buttons (loop, mute) ──────────────────────────────────── */
+/* ─── Aux Buttons (loop, mute) — Icon-Buttons ───────────────────── */
 
 .player-aux-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(9, 20, 40, 0.3);
-  color: var(--at-muted);
-  font-size: 0.82rem;
+  width: var(--ds-control-md);
+  height: var(--ds-control-md);
+  border: var(--ds-border-width) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-2);
+  color: var(--ds-text-2);
+  font-size: var(--ds-text-sm);
   cursor: pointer;
   flex-shrink: 0;
   transition:
-    background var(--at-speed) ease,
-    color var(--at-speed) ease,
-    border-color var(--at-speed) ease;
-  border: 1px solid rgba(122, 141, 160, 0.12);
-}
-
-[data-theme='light'] .player-aux-btn {
-  background: rgba(255, 255, 255, 0.6);
-  border-color: rgba(0, 57, 113, 0.1);
+    background-color var(--ds-duration) var(--ds-ease),
+    color var(--ds-duration) var(--ds-ease),
+    border-color var(--ds-duration) var(--ds-ease);
 }
 
 .player-aux-btn:hover {
-  background: rgba(201, 152, 77, 0.1);
-  color: var(--at-text);
-  border-color: rgba(201, 152, 77, 0.25);
+  background: var(--ds-surface-3);
+  color: var(--ds-text);
+}
+
+.player-aux-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
 }
 
 .player-aux-btn--active {
-  background: rgba(201, 152, 77, 0.15) !important;
-  color: var(--at-primary) !important;
-  border-color: rgba(201, 152, 77, 0.4) !important;
+  border-color: var(--ds-accent);
+  color: var(--ds-accent);
 }
 
 /* ─── Volume Group ──────────────────────────────────────────────── */
@@ -274,26 +264,23 @@
 .player-volume-group {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--ds-space-2);
 }
 
 .player-volume-slider {
   width: 72px;
-  height: 3px;
-  accent-color: var(--at-primary);
-  cursor: pointer;
   opacity: 1;
-  transition: opacity var(--at-speed) ease;
+  transition: opacity var(--ds-duration) var(--ds-ease);
 }
 
 .player-volume-slider--muted {
-  opacity: 0.35;
+  opacity: 0.45;
 }
 
 .player-volume-pct {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--at-muted);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-medium);
+  color: var(--ds-text-3);
   min-width: 2.8ch;
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -302,17 +289,20 @@
 /* ─── Keyboard Hint ─────────────────────────────────────────────── */
 
 .player-hint {
-  font-size: 0.68rem;
-  color: var(--at-muted);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
   text-align: center;
   margin: 0;
-  opacity: 0.7;
-  letter-spacing: 0.02em;
 }
 
 /* ─── Responsive ────────────────────────────────────────────────── */
 
 @media (max-width: 520px) {
-  .player-volume-slider { width: 52px; }
-  .player-volume-pct { display: none; }
+  .player-volume-slider {
+    width: 52px;
+  }
+
+  .player-volume-pct {
+    display: none;
+  }
 }

@@ -13,14 +13,15 @@ Keine zusätzlichen Abhängigkeiten – nur Node ≥ 18 und `git` (für den Comm
 
 | Datei im Artifact | Quelle | erzeugt oder handgeschrieben |
 | --- | --- | --- |
-| `tokens.json` | `src/styles/tokens.css` (Werte) + `content/tokens.notes.json` (Notizen, abgeleitete Tokens, Textstile) | erzeugt |
-| `components/bundle.css` | alle `@import`s aus `src/styles/main.css` außer `tokens.css`, unverändert, plus Prelude für `--at-font-sans`, `--at-gradient`, `--at-border` | erzeugt |
-| `assets/Icons/*.svg` | `src/lib/waveforms.js` (`WAVE_TYPES[].svgPath`), `HistoryControls.vue` (`.history-icon`) | erzeugt |
+| `tokens.json` | `src/styles/tokens.css` (Werte der `--ds-*`-Tokens v2, Kopie aus Collage-Maker) + `content/tokens.notes.json` (Notizen, Textstile, Opazitäten) | erzeugt |
+| `components/bundle.css` | alle `@import`s aus `src/styles/main.css` außer `tokens.css`, unverändert, plus Prelude für alles, was kein Token sein kann: Font-Aliasse, `--ds-focus-ring`, `--ds-ease`, die Typo-Skala (`--ds-text-*`, `--ds-weight-*`, `--ds-leading*`, `--ds-tracking-*`) | erzeugt |
+| `assets/Icons/*.svg` | `src/lib/waveforms.js` (`WAVE_TYPES[].svgPath`), `HistoryControls.vue` (`.history-icon`); Tinte `icons.ink` aus `system.json` | erzeugt |
+| `fonts/*.woff2` | die `@font-face`-Dateien aus `tokens.css` (`src/assets/fonts/Supreme-*.woff2`) | kopiert |
 | `design-system.json` (Index) | `system.json` + `assets.lock.json` | erzeugt |
 | `README.md`, `components/*/README.md`, `components/*/preview.html`, `assets/Icons/README.md` | `content/` | handgeschrieben, 1:1 kopiert |
 | `publish.json` (neben `project/`) | Build | Liste der zu sendenden Dateien und Assets |
 
-**Regel:** Werte kommen immer aus dem Code, Texte immer aus `content/`. Ändert sich eine CSS-Variable, ändert sich `tokens.json` beim nächsten Build von selbst. Kommt eine neue Variable dazu, braucht sie eine Notiz in `content/tokens.notes.json` – `--check` schlägt sonst fehl. Literalwerte aus Komponenten-CSS (Hover-Töne, Hairlines, Radien wie 10 px) stehen als `extra`-Einträge in den Notizen und müssen von Hand nachgezogen werden.
+**Regel:** Werte kommen immer aus dem Code, Texte immer aus `content/`. Ändert sich eine CSS-Variable, ändert sich `tokens.json` beim nächsten Build von selbst. Kommt eine neue Variable dazu, braucht sie eine Notiz in `content/tokens.notes.json` – `--check` schlägt sonst fehl. Die Komponenten-Styles nutzen keine Literalwerte mehr (Guard: `tests/designTokens.spec.js`); nur die Opazitäten und die Puls-Dauer stehen als eigene Einträge in den Notizen.
 
 ## Ordner
 
@@ -36,13 +37,13 @@ design-system/
 
 ### `content/tokens.notes.json`
 
-Je Familie (`color`, `spacing`, `radius`, `shadow`, `duration`):
+Je Familie (`color`, `spacing`, `radius`, `shadow`, `duration`, `size`, `zIndex`):
 
 - `usage` – Verwendungsnotiz je CSS-Variable (Schlüssel = Variablenname ohne `--`).
 - `extra` – zusätzliche Tokens mit `name`, `value`, `usage`, die nicht als Variable existieren (werden hinter den CSS-Tokens angehängt).
 - `note` – optionaler Hinweis zur Familie.
 
-Dazu `type` (Fonts, Mono-Stack, Textstile – der Sans-Stack kommt aus `--at-font-sans`), `zIndex` und `opacity` als komplette Familien.
+Dazu `type.groups` (Textstile; Schriftstacks kommen aus `--ds-font-*`, die Fontdateien aus `@font-face`) und `opacity` als komplette Familie.
 
 ### Vorschauen
 
@@ -65,6 +66,7 @@ Ein Workflow-Schritt `npm run design-system:check` stellt sicher, dass jede CSS-
 
 ## Bekannte Grenzen
 
-- Schriftdatei (`/fonts/Supreme-Regular.woff2`), Font Awesome, Favicon und OG-Bild liegen auf dem Host, nicht im Repo – sie sind nicht Teil des Systems.
-- `--at-gradient` und `--at-border` sind keine Tokens (Verlauf, Composite) und wandern in das Prelude von `bundle.css`; die Farbe aus `--at-border` wird als `at-border-color` abgeleitet.
+- Font Awesome, Favicon und OG-Bild liegen auf dem Host, nicht im Repo – sie sind nicht Teil des Systems. Supreme (400/500/700) liegt im Repo und wird mitgeliefert.
+- `--ds-focus-ring` (Composite mit `var()`), `--ds-ease` und die Typo-Skala sind keine Seiten-Tokens und wandern in das Prelude von `bundle.css`.
+- Die Token-Werte werden im Collage-Maker gepflegt (`src/design-system/tokens-v2.css`) und nach `src/styles/tokens.css` übernommen; `tests/designTokens.spec.js` hält Dark und Light deckungsgleich.
 - Komponenten sind statische Vorschauen auf Basis des Original-CSS; es gibt kein `bundle.js`.

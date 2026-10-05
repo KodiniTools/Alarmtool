@@ -1,16 +1,16 @@
 # FAQItem
 
-Das Frage-Antwort-Element im FAQ-Tab: ein natives `<details>` als Glaskarte, Frage mit goldenem Chevron rechts, Antwort in Info-Blau.
+Das Frage-Antwort-Element im FAQ-Tab: ein natives `<details>` als flache `ds-surface-1`-Karte mit 1-px-Rahmen, Frage mit Chevron rechts, Antwort in `ds-text-2`.
 
 **Aufbau (Quelle `FAQSection.vue`, `faq.css`):**
-- `.faq-item` — `<details>`, `space-3` Abstand, 1 px `at-muted` 20 % (Light Navy 10 %), `radius-card`, `at-surface` 40 % (Light `at-bg` 40 %), `overflow: hidden`. Hover: Rahmen Gold 30 % (Light Navy 35 %).
-- `.faq-question` — `<summary>` als Flex space-between, `space-4` `space-5` Padding, `faq-question` 0.9 rem / 500 in `at-text`, kein Marker, `user-select: none`. Hover Gold 5 %. Das `<i>` (Chevron) ist `at-primary` 0.8 rem und dreht bei `[open]` um 180°.
-- `.faq-answer` — `max-height: 0 → 500px` mit 0.3 s, Padding 0 `space-5` → unten `space-4`; `faq-answer` 0.85 rem, Zeilenhöhe 1.6, in `at-info-text`.
+- `.faq-item` — `<details>`, 8 px Abstand, `ds-border`, `ds-radius-md`, `ds-surface-1`, `overflow: hidden`. Hover: Rahmen `ds-border-strong`.
+- `.faq-question` — `<summary>` als Flex space-between, Padding 12 / 16 px, 14 px / 500 in `ds-text`, kein Marker, `user-select: none`. Hover `ds-surface-2`; Fokus `ds-focus-ring` nach innen. Das Chevron (`<i>`) ist `ds-text-3`, 12 px, dreht bei `[open]` um 180°.
+- `.faq-answer` — `max-height: 0 → 500px` über `ds-duration-slow`, Padding 0 16 px → unten 16 px; 13 px, Zeilenhöhe 1.5, `ds-text-2`.
 
 **Der Konsument liefert:** `faqData` als Liste `{ q, a }` mit i18n-Keys; die Komponente rendert `details` pro Eintrag. Mehrere können gleichzeitig offen sein.
 
-**Responsiv:** ≤ 480 px Frage 0.85 rem mit 0.85 rem `space-4` Padding, Antwort 0.8 rem.
+**Responsiv:** ≤ 480 px Frage 13 px mit 12 px Padding.
 
-**Dos/Don'ts:** Antworten unter 500 px Höhe halten (Animationsgrenze) — längere Inhalte gehören in den Blog. Keine Links oder Buttons in der Frage. Antworten in `at-info-text`, nicht `at-text`, damit Frage und Antwort sich unterscheiden.
+**Dos/Don'ts:** Antworten unter 500 px Höhe halten (Animationsgrenze) — längere Inhalte gehören in den Blog. Keine Links oder Buttons in der Frage.
 
 Statische Vorschau (hand-written from `src/components/FAQSection.vue`, `src/styles/components/faq.css`).

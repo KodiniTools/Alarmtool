@@ -19,14 +19,16 @@ import {
   readFileSync,
   rmSync,
   statSync,
+  copyFileSync,
   writeFileSync,
 } from 'node:fs'
-import { dirname, join, relative } from 'node:path'
+import { basename, dirname, join, relative } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import {
   buildBundleCss,
   buildIndex,
   buildTokens,
+  extractFontFaces,
   extractHistoryPaths,
   extractTokens,
   historyIconSvg,
@@ -92,12 +94,23 @@ const meta = {
   components: system.components,
   synced: now.slice(0, 10),
 }
+const tokensDir = dirname(join(repoRoot, system.sources.tokens))
+const fontFaces = extractFontFaces(tokensCss).map((face) => {
+  const source = join(tokensDir, face.file)
+  const file = `fonts/${basename(face.file)}`
+  if (!existsSync(source))
+    errors.push(`font file ${relative(repoRoot, source)} (from @font-face) is missing`)
+  else if (statSync(source).size > 1024 * 1024)
+    errors.push(`font file ${relative(repoRoot, source)} exceeds 1 MB`)
+  return { source, entry: { family: face.family, file, weight: face.weight, style: face.style } }
+})
 const { tokens, missingUsage, problems } = buildTokens({
   extracted,
   notes,
   themes: system.themes,
   name: system.name,
   meta,
+  fonts: fontFaces.map((f) => f.entry),
 })
 errors.push(...problems)
 for (const m of missingUsage) {
@@ -121,6 +134,7 @@ const bundleCss = buildBundleCss({
   ].join('\n'),
   themes: system.themes,
   families: extracted.families,
+  familyNames: extracted.familyNames,
   carried: extracted.carried,
   parts,
 })
@@ -159,7 +173,7 @@ const counts = `${tokens.color.tokens.length} colors × ${system.themes.length} 
   0
 )} text styles, ${tokens.spacing.tokens.length} spacing, ${tokens.radius.tokens.length} radii, ${
   tokens.shadow.tokens.length
-} shadows, ${Object.keys(system.components).length} components, ${icons.length} icons`
+} shadows, ${fontFaces.length} font files, ${Object.keys(system.components).length} components, ${icons.length} icons`
 const { index, stale } = buildIndex({
   system,
   lock,
@@ -187,6 +201,10 @@ const write = (rel, text) => {
 }
 write('tokens.json', JSON.stringify(tokens, null, 2) + '\n')
 write('components/bundle.css', bundleCss)
+for (const { source, entry } of fontFaces) {
+  mkdirSync(join(projectDir, 'fonts'), { recursive: true })
+  copyFileSync(source, join(projectDir, entry.file))
+}
 for (const icon of icons) write(`assets/${icon.group}/${icon.name}`, icon.svg)
 write('design-system.json', JSON.stringify(index, null, 2) + '\n')
 

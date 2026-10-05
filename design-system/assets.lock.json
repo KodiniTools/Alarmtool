@@ -1,50 +1,50 @@
 {
   "Icons/wave-sine.svg": {
-    "blob": "1da9e8721f03780da2129fb2f7b6654a",
-    "sha256": "f964a13e19e17e429cdbecead11c47c3aa6c82d828900766618999d7f51152d8",
+    "blob": "73264e658d64959251cfe698fdd4c556",
+    "sha256": "36afe00851a9826a9d90c3fa62372caff9c3df596fbc198fc62c7ae6cf5b2941",
     "size": 259,
     "type": "image/svg+xml"
   },
   "Icons/wave-square.svg": {
-    "blob": "659ac2fefdecf52c036d568a5d8d5853",
-    "sha256": "4ee94a6a0ca6455575599e878255f2fc2e56263f52b8c5515da7d5521b04baee",
+    "blob": "c257814dc6bdcf90492051fa514e581c",
+    "sha256": "36d55e5182c1e48fd24750b612bba811edceb1a761ca8b051fe0b3b528bcd5ab",
     "size": 251,
     "type": "image/svg+xml"
   },
   "Icons/wave-sawtooth.svg": {
-    "blob": "07830d4a0a6397126aa8470d8befb574",
-    "sha256": "0fa44153174f52302aef635e268a85d9c467510dbf96fd41370629cc52a8ef93",
+    "blob": "3e5d41673dd8b79e737fbfb61651c025",
+    "sha256": "e3f168088041a8bb99e5c6f593c38a62c2dc7366f96ff2814b8bad089a5db0a7",
     "size": 239,
     "type": "image/svg+xml"
   },
   "Icons/wave-triangle.svg": {
-    "blob": "a3da783108bc8d844c1e6fbb2a49d959",
-    "sha256": "df704048df49e497a8e0c56e9dd39d97a3c8b6e3669945b12332b24493ca4a38",
+    "blob": "32c6f467f4473d5c9ed671355d26d1fe",
+    "sha256": "e985641cde7ffc02aaf9028d5344bad7785b583f0fc01f637b6e2b959b27db4c",
     "size": 232,
     "type": "image/svg+xml"
   },
   "Icons/wave-pulse.svg": {
-    "blob": "544ff0b8d385e842f19ad18eadfede4e",
-    "sha256": "6d9988985cd5514f6a9848f20083c19bae1ea559d8ee1f732406deade05f37fb",
+    "blob": "ff2383777c78c3fb1b866b79e6daef8c",
+    "sha256": "f3de82e427bc4e7dacff7b65318249e4025352eb23a6cd28293e55b0c4eb3cd9",
     "size": 256,
     "type": "image/svg+xml"
   },
   "Icons/wave-organ.svg": {
-    "blob": "139ce060eb647ed508bc80cfa18cf1dd",
-    "sha256": "572870dad895c69a94f3140a4736e7ec6142b47c7bfd8366d321df6de49c38b7",
+    "blob": "ea8904a7b4012c2068f7f8ab739a93ac",
+    "sha256": "9ce860b3a105d4f77fe894069fe00b5311868dfe4caba047f9ee6a5e65686299",
     "size": 294,
     "type": "image/svg+xml"
   },
   "Icons/history-undo.svg": {
-    "blob": "8c216da924b64f7e5bc1c461adbf89cb",
-    "sha256": "70f78b91e0d4b389bd022f02605aab2c92571b990090e7d4788d9ac8b62bb2c8",
-    "size": 262,
+    "blob": "336e3fa4f4a228a8c0d841a82935b61a",
+    "sha256": "75831115f061bcf135efdba65cb1683a802ca4e6eea78a50c9df00d6181c2321",
+    "size": 265,
     "type": "image/svg+xml"
   },
   "Icons/history-redo.svg": {
-    "blob": "08d43e4bf8c47875a1c9ac0e5b7879be",
-    "sha256": "9507694e3a2f328a758b6b479b6c1088aeb07713d4fe8f65099f75e782553d82",
-    "size": 263,
+    "blob": "de674f31a70efed6a5a313f8f8925ebb",
+    "sha256": "c029054ed6d0bd5f7bfabc1a2d887029dde5d9148ae703b0501ad6026fcadcde",
+    "size": 266,
     "type": "image/svg+xml"
   }
 }

@@ -4,23 +4,35 @@
   "name": "Alarmtool",
   "namespace": "Alarmtool",
   "repo": "KodiniTools/Alarmtool",
-  "createdOnFiles": { "v": 1, "at": "2026-10-05T16:16:01Z" },
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-05T16:16:01Z"
+  },
   "libraries": [],
   "themes": [
-    { "id": "dark", "name": "Dark (Navy & Gold, default)", "selector": ":root" },
-    { "id": "light", "name": "Light (Cream & Navy)", "selector": "[data-theme='light']" }
+    {
+      "id": "dark",
+      "name": "Dark (Standard)",
+      "selector": ":root"
+    },
+    {
+      "id": "light",
+      "name": "Light",
+      "selector": "[data-theme='light']"
+    }
   ],
   "sources": {
     "tokens": "src/styles/tokens.css",
     "stylesEntry": "src/styles/main.css",
     "waveforms": "src/lib/waveforms.js",
     "history": "src/components/oscillator/HistoryControls.vue",
-    "docs": ["README.md", "CONTEXT.md", "src/i18n/translations.js"]
+    "docs": ["README.md", "CONTEXT.md", "src/i18n/translations.js"],
+    "upstream": "KodiniTools/Collage-Maker · src/design-system/tokens-v2.css @ 9dc4eca"
   },
   "icons": {
     "group": "Icons",
     "tile": "s",
-    "ink": "#7a8da0",
+    "ink": "#8593a8",
     "history": ["history-undo.svg", "history-redo.svg"]
   },
   "components": {

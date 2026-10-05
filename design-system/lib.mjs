@@ -7,6 +7,17 @@ const COLOR_RE = /^(#[0-9a-f]{3,8}|(?:rgba?|hsla?|oklch|oklab|lab|lch|color)\([^
 const DURATION_RE = /^\d*\.?\d+m?s$/
 export const TOKEN_NAME_RE = /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/
 
+/** Token families read from the CSS, in the order tokens.json lists them; `themed` = per-theme values. */
+export const CSS_FAMILIES = [
+  { key: 'color', themed: true },
+  { key: 'spacing', themed: false },
+  { key: 'radius', themed: false },
+  { key: 'shadow', themed: true },
+  { key: 'duration', themed: false },
+  { key: 'size', themed: false },
+  { key: 'zIndex', themed: false },
+]
+
 export const collapse = (s) => s.replace(/\s+/g, ' ').trim()
 export const sha256 = (s) => createHash('sha256').update(s).digest('hex')
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -83,14 +94,28 @@ export function parseDeclarations(rawBlock) {
   return decls
 }
 
-/** Which token family a custom property belongs to. */
+/**
+ * Which token family a custom property belongs to. `carried` properties are
+ * not tokens the page can show (composites with var(), gradients, easing, the
+ * typography scale) and go into the bundle.css prelude instead.
+ */
 export function classify(name, value) {
-  if (/^at-font-/.test(name)) return 'family'
-  if (/gradient\(/.test(value)) return 'carried'
+  if (/(^|-)font-/.test(name)) return 'family'
+  if (/var\(|gradient\(|cubic-bezier\(/.test(value)) return 'carried'
   if (/^\d*\.?\d+px\s+(solid|dashed|dotted)\s+/.test(value)) return 'border'
+  if (/(^|-)(text-(xs|sm|md|lg|xl|2xl|3xl)|weight|leading|tracking)(-|$)/.test(name))
+    return 'carried'
   if (/shadow/.test(name)) return 'shadow'
+  if (/(^|-)z-/.test(name)) return 'zIndex'
   if (/speed|duration/.test(name) || DURATION_RE.test(value)) return 'duration'
-  if (/(^|-)(space|gap|pad)/.test(name)) return 'spacing'
+  if (
+    /(^|-)(control|row-height|topbar|player-height|icon|container|gutter|gap|border-width)/.test(
+      name
+    )
+  ) {
+    return 'size'
+  }
+  if (/(^|-)(space|pad)/.test(name)) return 'spacing'
   if (/radius|rounded/.test(name)) return 'radius'
   if (COLOR_RE.test(value)) return 'color'
   return 'unplaced'
@@ -100,19 +125,14 @@ export const normalizeColor = (v) => (v.startsWith('#') ? v.toLowerCase() : coll
 
 /**
  * Reads every theme block of tokens.css into per-family maps
- * (name → { themeId: value }, in source order), the font families, the
- * properties that must be carried into bundle.css (gradients, composite
- * borders), source comments and anything that could not be placed.
+ * (name → { themeId: value }, in source order), the font families (key →
+ * stack, plus the original variable name per key), the properties carried
+ * into bundle.css, source comments and anything that could not be placed.
  */
 export function extractTokens(css, themes) {
-  const groups = {
-    color: new Map(),
-    spacing: new Map(),
-    radius: new Map(),
-    shadow: new Map(),
-    duration: new Map(),
-  }
+  const groups = Object.fromEntries(CSS_FAMILIES.map((f) => [f.key, new Map()]))
   const families = {}
+  const familyNames = {}
   const carried = {}
   const comments = new Map()
   const unplaced = []
@@ -126,10 +146,16 @@ export function extractTokens(css, themes) {
     for (const d of parseDeclarations(extractBlock(css, theme.selector))) {
       const comment = d.trailing || d.leading
       if (comment && !comments.has(d.name)) comments.set(d.name, comment)
-      switch (classify(d.name, d.value)) {
-        case 'family':
-          if (themeIndex === 0) families[d.name.replace(/^at-font-/, '')] = d.value
+      const kind = classify(d.name, d.value)
+      switch (kind) {
+        case 'family': {
+          if (themeIndex === 0) {
+            const key = d.name.replace(/^.*?font-/, '')
+            families[key] = d.value
+            familyNames[key] = d.name
+          }
           break
+        }
         case 'carried':
           ;(carried[d.name] ??= {})[theme.id] = d.value
           break
@@ -139,27 +165,37 @@ export function extractTokens(css, themes) {
           if (color) put(groups.color, `${d.name}-color`, theme.id, normalizeColor(color))
           break
         }
-        case 'shadow':
-          put(groups.shadow, d.name, theme.id, collapse(d.value))
-          break
-        case 'duration':
-          put(groups.duration, d.name, theme.id, d.value)
-          break
-        case 'spacing':
-          put(groups.spacing, d.name, theme.id, d.value)
-          break
-        case 'radius':
-          put(groups.radius, d.name, theme.id, d.value)
-          break
         case 'color':
           put(groups.color, d.name, theme.id, normalizeColor(d.value))
           break
-        default:
+        case 'unplaced':
           unplaced.push({ name: d.name, theme: theme.id, value: d.value })
+          break
+        default:
+          put(groups[kind], d.name, theme.id, kind === 'shadow' ? collapse(d.value) : d.value)
       }
     }
   })
-  return { groups, families, carried, comments, unplaced }
+  return { groups, families, familyNames, carried, comments, unplaced }
+}
+
+/** The @font-face rules of a stylesheet: family, weight, style and the relative file each loads. */
+export function extractFontFaces(css) {
+  const faces = []
+  for (const m of blankComments(css).matchAll(/@font-face\s*\{([^}]*)\}/g)) {
+    const body = m[1]
+    const prop = (name) => collapse(new RegExp(`${name}\\s*:\\s*([^;]+);`).exec(body)?.[1] ?? '')
+    const family = prop('font-family').replace(/^['"]|['"]$/g, '')
+    const file = /url\(\s*['"]?([^'")]+)['"]?\s*\)/.exec(prop('src'))?.[1]
+    if (!family || !file) continue
+    faces.push({
+      family,
+      file,
+      weight: prop('font-weight') || '400',
+      style: prop('font-style') || 'normal',
+    })
+  }
+  return faces
 }
 
 /** A plain string when only the first theme defines it, else per-theme values. */
@@ -176,7 +212,7 @@ export function shapeValue(entry, themes) {
  * (content/tokens.notes.json) into the tokens.json the page reads.
  * Returns { tokens, missingUsage, problems }.
  */
-export function buildTokens({ extracted, notes, themes, name, meta }) {
+export function buildTokens({ extracted, notes, themes, name, meta, fonts = [] }) {
   const missingUsage = []
   const problems = []
   const seen = new Map()
@@ -229,7 +265,7 @@ export function buildTokens({ extracted, notes, themes, name, meta }) {
       problems.push(`type family "${key}" has a stack the page drops`)
     }
   }
-  const type = { fonts: notes.type?.fonts ?? [], families, groups: notes.type?.groups ?? [] }
+  const type = { fonts, families, groups: notes.type?.groups ?? [] }
 
   const tokens = {
     name,
@@ -237,10 +273,10 @@ export function buildTokens({ extracted, notes, themes, name, meta }) {
     meta,
     color: { themes: themes.map(({ id, name: n }) => ({ id, name: n })), ...color },
     type,
-    spacing: family('spacing', false),
-    radius: family('radius', false),
-    shadow: family('shadow', true),
-    duration: family('duration', false),
+  }
+  for (const { key, themed } of CSS_FAMILIES) {
+    if (key === 'color') continue
+    if (extracted.groups[key].size || notes[key]?.extra?.length) tokens[key] = family(key, themed)
   }
   for (const [key, value] of Object.entries(notes)) {
     if (!(key in tokens) && key !== 'type' && value?.tokens) {
@@ -264,12 +300,14 @@ export function parseImports(entryCss) {
 
 /**
  * bundle.css = a prelude declaring the custom properties tokens.json cannot
- * carry (font aliases, gradients, composite borders), then every imported
- * stylesheet except the token file, verbatim and in import order.
+ * carry (font aliases, composites, easing, the typography scale), then every
+ * imported stylesheet except the token file, verbatim and in import order.
  */
-export function buildBundleCss({ header, themes, families, carried, parts }) {
+export function buildBundleCss({ header, themes, families, familyNames = {}, carried, parts }) {
   const lines = [header, ':root {']
-  for (const key of Object.keys(families)) lines.push(`  --at-font-${key}: var(--font-${key});`)
+  for (const key of Object.keys(families)) {
+    lines.push(`  --${familyNames[key] ?? `font-${key}`}: var(--font-${key});`)
+  }
   for (const [name, byTheme] of Object.entries(carried)) {
     if (themes[0].id in byTheme) lines.push(`  --${name}: ${byTheme[themes[0].id]};`)
   }
@@ -291,7 +329,7 @@ export const waveIconSvg = (path, ink) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="${ink}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>\n`
 
 export const historyIconSvg = (paths, ink) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${ink}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${ink}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${paths
     .map((d) => `<path d="${d}"/>`)
     .join('')}</svg>\n`
 

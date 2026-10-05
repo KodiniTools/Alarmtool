@@ -1,16 +1,16 @@
 # SettingsMenu
 
-Das Speicheroptionen-Menü: Gruppen mit VERSAL-Eyebrow, darunter Zeilen aus Gold-Icon-Kachel, Name und einzeiliger Beschreibung.
+Das Speicheroptionen-Menü: Gruppen mit VERSAL-Eyebrow in `ds-text-3`, darunter Zeilen aus Icon-Kachel (`ds-accent-soft`), Name und einzeiliger Beschreibung; Hover `ds-surface-3`.
 
 **Aufbau (Quelle `SettingsPanel.vue`, `settings.css`):**
-- `.settings-menu` — Spalte, Gap und Padding `space-2`; lebt im Körper einer `CollapsibleSection`.
-- `.settings-menu-group` — Spalte mit 2 px Gap; ab der zweiten Gruppe `space-2` oben und ein `at-hairline` als Trenner. `role="group"` mit `aria-label`.
-- `.settings-menu-label` — `menu-label` 0.62 rem / 700, VERSALIEN, Tracking 0.08 em, `at-muted`.
-- `.settings-menu-item` — `<button>` volle Breite, `space-2` Padding, Gap `space-3`, `at-radius-xs`; Hover Gold 10 %, aktiv 16 %, Fokus 2 px `at-primary` innen.
-- `.settings-menu-icon` — 28 px Kachel, Gold 12 %, Icon `at-primary` 0.78 rem. `.settings-menu-name` 0.8 rem / 600, `.settings-menu-desc` 0.68 rem `at-muted`.
+- `.settings-menu` — Spalte, Gap und Padding 8 px; lebt im Körper einer `CollapsibleSection`.
+- `.settings-menu-group` — Spalte mit 2 px Gap; ab der zweiten Gruppe 8 px oben und eine Trennlinie `ds-border`. `role="group"` mit `aria-label`.
+- `.settings-menu-label` — `eyebrow` 12 px / 600, VERSALIEN, Tracking 0.06 em, `ds-text-3`.
+- `.settings-menu-item` — `<button>` volle Breite, Padding 8 px, Gap 12 px, `ds-radius-sm`; Hover `ds-surface-3`, aktiv `ds-surface-2`, Fokus `ds-focus-ring`.
+- `.settings-menu-icon` — 28-px-Kachel, `ds-radius-sm`, `ds-accent-soft`, Icon `ds-accent` 13 px. `.settings-menu-name` 13 px / 600, `.settings-menu-desc` 12 px `ds-text-3`.
 - `.settings-import-input` — visuell verstecktes `<input type="file">` für den Import.
 
-**Der Konsument liefert:** Gruppen `{ labelKey, items[] }` mit `{ nameKey, descKey, icon, run }`; die Komponente rendert und ruft `run` auf. Aktionen der App: Speichern/Laden (LocalStorage), Exportieren/Importieren (JSON), Zurücksetzen.
+**Der Konsument liefert:** Gruppen `{ labelKey, items[] }` mit `{ nameKey, descKey, icon, run }`. Aktionen der App: Speichern/Laden (LocalStorage), Exportieren/Importieren (JSON), Zurücksetzen.
 
 **Dos/Don'ts:** Beschreibung maximal eine Zeile. Destruktive Einträge (Zurücksetzen) als eigene letzte Gruppe, nicht rot eingefärbt — die Bestätigung kommt per Toast. Keine Checkboxen oder Schalter im Menü.
 

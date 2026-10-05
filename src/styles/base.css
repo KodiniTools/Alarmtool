@@ -7,7 +7,16 @@
   box-sizing: border-box;
 }
 
-/* Theme transition — applied to elements that visually change between light/dark */
+/* Farbschema für native Controls (Select-Listen, Scrollbalken) */
+:root {
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+/* Theme-Wechsel: nur Farben, nie Größen */
 body,
 .section,
 .preset-card,
@@ -19,112 +28,123 @@ body,
 .toast-item,
 .toggle-slider {
   transition:
-    background-color var(--at-speed-slow) ease,
-    color var(--at-speed-slow) ease,
-    border-color var(--at-speed-slow) ease,
-    box-shadow var(--at-speed-slow) ease;
+    background-color var(--ds-duration-slow) var(--ds-ease),
+    color var(--ds-duration-slow) var(--ds-ease),
+    border-color var(--ds-duration-slow) var(--ds-ease);
 }
 
 body {
-  font-family: var(--at-font-sans);
-  color: var(--at-text);
-  background: var(--at-gradient);
+  font-family: var(--ds-font-sans);
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading);
+  color: var(--ds-text);
+  background: var(--ds-surface-0);
   min-height: 100vh;
-  padding: var(--space-5);
+  padding: var(--ds-space-5);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography */
+/* Typography: Hierarchie über Größe und Gewicht, keine Schatten */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--at-text);
-  /* Tight, crisp shadow — a wider blur made the light headings look fuzzy on
-     the dark background. */
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-  font-weight: 500;
-  letter-spacing: 0.02em;
-}
-
-[data-theme='light'] h1,
-[data-theme='light'] h2,
-[data-theme='light'] h3,
-[data-theme='light'] h4,
-[data-theme='light'] h5,
-[data-theme='light'] h6 {
-  text-shadow: none;
+  color: var(--ds-text);
+  font-weight: var(--ds-weight-semibold);
+  line-height: var(--ds-leading-tight);
 }
 
 h1 {
-  font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: var(--ds-text-2xl);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-tight);
 }
 
 h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: var(--space-6);
+  font-size: var(--ds-text-xl);
+  margin-bottom: var(--ds-space-4);
 }
 
 /* Utilities */
 .mb-3 {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--ds-space-4);
 }
 
 .mt-2 {
-  margin-top: var(--space-2);
+  margin-top: var(--ds-space-2);
 }
 
 .mt-3 {
-  margin-top: var(--space-4);
+  margin-top: var(--ds-space-4);
 }
 
 .small-text,
 .form-text {
-  font-size: 0.8rem;
-  color: var(--at-text-dim);
-  margin-top: 0.2rem;
-  letter-spacing: 0.01em;
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading);
+  color: var(--ds-text-3);
+  margin-top: var(--ds-space-1);
 }
 
 .text-muted {
-  color: var(--at-text-dim);
+  color: var(--ds-text-2);
 }
 
 /* Timer */
 .timer {
-  margin-top: 10px;
-  font-weight: bold;
-  color: var(--at-text);
+  margin-top: var(--ds-space-2);
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-semibold);
+  color: var(--ds-text);
 }
 
 /* Progress Bar */
 .progress {
-  background-color: rgba(14, 28, 50, 0.5);
-  border-radius: 10px;
-  height: 20px;
+  background-color: var(--ds-border-strong);
+  border-radius: var(--ds-radius-full);
+  height: 8px;
   overflow: hidden;
 }
 
 .progress-bar {
-  background-color: var(--at-primary);
+  background-color: var(--ds-accent);
   height: 100%;
-  transition: width 0.3s ease;
+  border-radius: var(--ds-radius-full);
+  transition: width var(--ds-duration-slow) var(--ds-ease);
+}
+
+/* Touch: kein grauer Tap-Highlight, keine Klickverzögerung */
+button,
+[role='button'],
+select,
+input[type='range'] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 @media (max-width: 768px) {
   body {
-    padding: 10px;
+    padding: var(--ds-space-3);
   }
 }
 
 @media (max-width: 480px) {
   body {
-    padding: 6px;
+    padding: var(--ds-space-2);
+  }
+}
+
+/* Reduzierte Bewegung */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

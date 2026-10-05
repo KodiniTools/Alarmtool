@@ -7,6 +7,7 @@ import {
   buildTokens,
   classify,
   extractBlock,
+  extractFontFaces,
   extractHistoryPaths,
   extractTokens,
   parseDeclarations,
@@ -48,14 +49,21 @@ describe('CSS custom-property parsing', () => {
   })
 
   it('classifies by name and value', () => {
-    expect(classify('at-font-sans', "'Supreme', sans-serif")).toBe('family')
-    expect(classify('at-gradient', 'linear-gradient(1deg, #000, #fff)')).toBe('carried')
+    expect(classify('ds-font-sans', "'Supreme', sans-serif")).toBe('family')
+    expect(classify('ds-focus-ring', '0 0 0 2px var(--ds-surface-0)')).toBe('carried')
+    expect(classify('ds-ease', 'cubic-bezier(0.2, 0, 0, 1)')).toBe('carried')
+    expect(classify('ds-text-md', '14px')).toBe('carried')
+    expect(classify('ds-weight-bold', '700')).toBe('carried')
     expect(classify('at-border', '1px solid rgba(0,0,0,.2)')).toBe('border')
-    expect(classify('at-shadow-1', '0 4px 16px rgba(0,0,0,.2)')).toBe('shadow')
-    expect(classify('at-speed', '200ms')).toBe('duration')
-    expect(classify('space-4', '1rem')).toBe('spacing')
-    expect(classify('at-radius-sm', '8px')).toBe('radius')
-    expect(classify('at-bg', '#091428')).toBe('color')
+    expect(classify('ds-shadow-overlay', '0 8px 24px rgba(0,0,0,.35)')).toBe('shadow')
+    expect(classify('ds-z-toast', '9999')).toBe('zIndex')
+    expect(classify('ds-duration', '150ms')).toBe('duration')
+    expect(classify('ds-control-md', '36px')).toBe('size')
+    expect(classify('ds-border-width', '1px')).toBe('size')
+    expect(classify('ds-space-4', '16px')).toBe('spacing')
+    expect(classify('ds-radius-full', '999px')).toBe('radius')
+    expect(classify('ds-text-2', '#a7b3c4')).toBe('color')
+    expect(classify('ds-accent-soft', 'rgba(212, 162, 87, 0.14)')).toBe('color')
     expect(classify('weird', 'calc(1px + 2px)')).toBe('unplaced')
   })
 
@@ -77,46 +85,73 @@ describe('extractTokens on src/styles/tokens.css', () => {
     expect(extracted.unplaced).toEqual([])
   })
 
-  it('reads both themes of a colour and derives the border colour', () => {
-    expect(extracted.groups.color.get('at-bg')).toEqual({ dark: '#091428', light: '#f9f2d5' })
-    expect(extracted.groups.color.get('at-success')).toEqual({ dark: '#7ec89b' })
-    expect(extracted.groups.color.get('at-border-color')).toEqual({
-      dark: 'rgba(122, 141, 160, 0.25)',
-      light: 'rgba(0, 57, 113, 0.15)',
+  it('reads both themes of a colour', () => {
+    expect(extracted.groups.color.get('ds-surface-0')).toEqual({
+      dark: '#0a1324',
+      light: '#f6f5f1',
+    })
+    expect(extracted.groups.color.get('ds-success')).toEqual({ dark: '#5fcf8a', light: '#177a42' })
+    expect(extracted.groups.color.get('ds-accent-soft')).toEqual({
+      dark: 'rgba(212, 162, 87, 0.14)',
+      light: 'rgba(201, 152, 77, 0.16)',
     })
   })
 
-  it('finds the spacing scale, radii, shadows and durations', () => {
+  it('finds the spacing scale, radii, shadows, durations, sizes and layers', () => {
     expect([...extracted.groups.spacing.keys()]).toEqual([
-      'space-1',
-      'space-2',
-      'space-3',
-      'space-4',
-      'space-5',
-      'space-6',
-      'space-8',
+      'ds-space-1',
+      'ds-space-2',
+      'ds-space-3',
+      'ds-space-4',
+      'ds-space-5',
+      'ds-space-6',
+      'ds-space-8',
+      'ds-space-10',
+      'ds-space-12',
+      'ds-space-16',
     ])
     expect([...extracted.groups.radius.keys()]).toEqual([
-      'at-radius',
-      'at-radius-sm',
-      'at-radius-xs',
+      'ds-radius-sm',
+      'ds-radius-md',
+      'ds-radius-lg',
+      'ds-radius-full',
     ])
-    expect(extracted.groups.shadow.get('at-shadow-1')).toEqual({
-      dark: '0 4px 16px rgba(9, 20, 40, 0.2)',
-      light: '0 4px 16px rgba(0, 57, 113, 0.08)',
+    expect(extracted.groups.shadow.get('ds-shadow-overlay')).toEqual({
+      dark: '0 8px 24px rgba(0, 0, 0, 0.35)',
+      light: '0 8px 24px rgba(20, 33, 58, 0.12)',
     })
-    expect([...extracted.groups.duration.keys()]).toEqual(['at-speed', 'at-speed-slow'])
+    expect([...extracted.groups.duration.keys()]).toEqual(['ds-duration', 'ds-duration-slow'])
+    expect(extracted.groups.size.get('ds-control-md')).toEqual({ dark: '36px' })
+    expect(extracted.groups.zIndex.get('ds-z-toast')).toEqual({ dark: '9999' })
   })
 
-  it('carries the gradient and composite border for bundle.css and keeps the font stack', () => {
-    expect(Object.keys(extracted.carried)).toEqual(['at-gradient', 'at-border'])
-    expect(extracted.carried['at-gradient'].light).toMatch(/^linear-gradient\(145deg, #f9f2d5 0%/)
-    expect(extracted.families.sans).toMatch(/^'Supreme', ui-sans-serif/)
+  it('carries the focus ring, easing and typography scale for bundle.css and keeps the font stacks', () => {
+    expect(Object.keys(extracted.carried)).toContain('ds-focus-ring')
+    expect(Object.keys(extracted.carried)).toContain('ds-ease')
+    expect(Object.keys(extracted.carried)).toContain('ds-text-md')
+    expect(extracted.carried['ds-focus-ring'].light).toBe(
+      '0 0 0 2px var(--ds-surface-0), 0 0 0 4px var(--ds-accent)'
+    )
+    expect(extracted.families).toEqual({
+      sans: "'Supreme', sans-serif",
+      mono: "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+    })
+    expect(extracted.familyNames.sans).toBe('ds-font-sans')
   })
 
   it('uses source comments as fallback usage', () => {
-    expect(extracted.comments.get('space-1')).toBe('4px')
-    expect(extracted.comments.get('at-primary-fg')).toMatch(/text\/icon color on primary/)
+    expect(extracted.comments.get('ds-surface-0')).toMatch(/Flächen/)
+  })
+
+  it('reads the bundled Supreme faces from @font-face', () => {
+    const faces = extractFontFaces(tokensCss)
+    expect(faces.map((f) => f.weight)).toEqual(['400', '500', '700'])
+    expect(faces[0]).toEqual({
+      family: 'Supreme',
+      file: '../assets/fonts/Supreme-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    })
   })
 })
 
@@ -128,6 +163,9 @@ describe('buildTokens', () => {
     themes: system.themes,
     name: system.name,
     meta: { source: 'test' },
+    fonts: [
+      { family: 'Supreme', file: 'fonts/Supreme-Regular.woff2', weight: '400', style: 'normal' },
+    ],
   })
 
   it('has a usage note for every CSS variable and no grammar problems', () => {
@@ -135,23 +173,47 @@ describe('buildTokens', () => {
     expect(problems).toEqual([])
   })
 
-  it('lists CSS tokens before the hand-written extras and keeps names unique', () => {
-    const names = tokens.color.tokens.map((t) => t.name)
-    expect(names.slice(0, 3)).toEqual(['at-bg', 'at-surface', 'at-panel'])
-    expect(names).toContain('at-hairline')
-    const all = ['color', 'spacing', 'radius', 'shadow', 'duration', 'zIndex', 'opacity'].flatMap(
-      (f) => tokens[f].tokens.map((t) => t.name)
-    )
+  it('lists CSS tokens in source order, adds the extra families and keeps names unique', () => {
+    expect(tokens.color.tokens.slice(0, 3).map((t) => t.name)).toEqual([
+      'ds-surface-0',
+      'ds-surface-1',
+      'ds-surface-2',
+    ])
+    expect(Object.keys(tokens)).toEqual([
+      'name',
+      'version',
+      'meta',
+      'color',
+      'type',
+      'spacing',
+      'radius',
+      'shadow',
+      'duration',
+      'size',
+      'zIndex',
+      'opacity',
+    ])
+    const all = [
+      'color',
+      'spacing',
+      'radius',
+      'shadow',
+      'duration',
+      'size',
+      'zIndex',
+      'opacity',
+    ].flatMap((f) => tokens[f].tokens.map((t) => t.name))
     expect(new Set(all).size).toBe(all.length)
   })
 
-  it('takes the sans stack from CSS and the rest of type from the notes', () => {
+  it('takes the font stacks from CSS, the fonts from the caller and the styles from the notes', () => {
     expect(Object.keys(tokens.type.families)).toEqual(['sans', 'mono'])
+    expect(tokens.type.fonts[0].file).toBe('fonts/Supreme-Regular.woff2')
     expect(tokens.type.groups.length).toBeGreaterThan(0)
   })
 
   it('flags a CSS variable without a note', () => {
-    const css = ':root { --at-bg: #000; --new-thing: #123456; }'
+    const css = ':root { --ds-surface-0: #000; --new-thing: #123456; }'
     const r = buildTokens({
       extracted: extractTokens(css, system.themes),
       notes,
@@ -170,17 +232,19 @@ describe('bundle, icons and index', () => {
     expect(imports).toContain('./components/button.css')
   })
 
-  it('writes a prelude with the font alias and carried properties per theme', () => {
+  it('writes a prelude with the font aliases and carried properties per theme', () => {
     const extracted = extractTokens(tokensCss, system.themes)
     const css = buildBundleCss({
       header: '/* h */',
       themes: system.themes,
       families: extracted.families,
+      familyNames: extracted.familyNames,
       carried: extracted.carried,
       parts: [{ path: 'a.css', css: '.a{}' }],
     })
-    expect(css).toContain('--at-font-sans: var(--font-sans);')
-    expect(css).toContain("[data-theme='light'] {\n  --at-gradient:")
+    expect(css).toContain('--ds-font-sans: var(--font-sans);')
+    expect(css).toContain('--ds-text-md: 14px;')
+    expect(css).toContain("[data-theme='light'] {\n  --ds-focus-ring:")
     expect(css).toContain('/* ── a.css ── */\n.a{}')
   })
 

@@ -1,16 +1,16 @@
 # Section
 
-Die Glaskarte, in der jeder Tab-Inhalt liegt: Goldlinie oben, 85 % `at-surface` mit Blur, 12-px-Radius, `space-6` Innenabstand.
+Das Panel, in dem jeder Tab-Inhalt liegt — nach `UiPanel`: flache `ds-surface-1`-Fläche, 1-px-Rahmen `ds-border`, 16-px-Radius, 20 px Innenabstand, Panel-Titel mit Trennlinie.
 
 **Aufbau (Quelle `layout.css`, `base.css`):**
-- `.section` — `backdrop-filter: blur(12px)`, Rahmen 1 px Gold bei 8 % (Light: Navy 10 %), `shadow-section`, `overflow: hidden`, `space-5` Abstand nach unten. `::before` zeichnet die 3-px-Linie `at-primary` → `at-text`.
-- `h2` darin — `h2`-Stil 1.75 rem / 600, `space-6` darunter, `::after` setzt einen 60 × 2 px Goldunterstrich.
-- `.section-narrow` — `max-width: 720px`, zentriert; `h2` wird `h2-narrow` (1.1 rem, `space-4`), Slider werden feiner (3 px Spur, 12 px Daumen).
+- `.section` — `ds-surface-1`, `ds-border`, `ds-radius-lg`, Padding `ds-space-5`, `ds-gap` (20 px) Abstand nach unten. Kein Schatten, kein Blur, keine Goldlinie.
+- `.section > h2` — `panel-title` 16 px / 600, 12 px Abstand und Trennlinie `ds-border` darunter, 16 px bis zum Inhalt.
+- `.section-narrow` — `max-width: 720px`, zentriert; für Filter, Aufnahme, Presets und FAQ. Die Oszillatoren nutzen die volle Containerbreite (1200 px).
 
-**Der Konsument liefert:** genau eine `h2` als erstes Kind, dann Inhalt (Formgruppen, Listen, Karten). Breite Sektion nur für den Oszillator-Master-Detail; alle anderen Tabs sind `.section-narrow`.
+**Der Konsument liefert:** genau eine `h2` als erstes Kind, dann Inhalt (Formgruppen, Listen, Karten).
 
-**Responsiv:** ≤ 768 px Padding 1.1 rem, Radius 10 px; ≤ 480 px Padding 0.85 rem, `at-radius-sm`.
+**Responsiv:** ≤ 768 px Padding 16 px, Radius `ds-radius-md`; ≤ 480 px Padding 12 px.
 
-**Dos/Don'ts:** Keine Sektion in Sektion. Keine zusätzliche Linie oder Hintergrundfarbe — `.section` ist die einzige Karte erster Ordnung; innere Flächen nutzen Editor, Collapsible oder Preset-Karte. Die Goldlinie nicht entfernen, sie ist das Erkennungsmerkmal.
+**Dos/Don'ts:** Keine Sektion in Sektion; innere Flächen sind Editor, Collapsible oder Preset-Karte (gleiche Fläche, eigener Rahmen). Keine Akzentlinien oder Hintergrundbilder — der Rahmen trennt.
 
 Statische Vorschau (hand-written from `src/styles/layout.css`, `App.vue`).

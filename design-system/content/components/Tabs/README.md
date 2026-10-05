@@ -1,17 +1,17 @@
 # Tabs
 
-Die Hauptnavigation der App: eine 720 px breite, abgedunkelte Leiste mit Icon-Text-Buttons, von denen genau einer golden hervorgehoben ist.
+Die Hauptnavigation als Segment-Control nach `UiSegmentedControl`: eine 720 px breite Leiste auf `ds-surface-0` mit 1-px-Rahmen, darin Icon-Text-Optionen, von denen genau eine als `ds-surface-1`-Fläche mit `ds-border-strong` hervorsteht.
 
 **Aufbau (Quelle `layout.css`, `App.vue`):**
-- `.tabs` — Flex, Gap `space-2`, Padding `space-1`, `at-radius`, Grund `at-bg` bei 50 % (Light: `at-text-dim` 40 %), weicher Schatten, zentriert, `space-8` Abstand nach unten.
-- `.tab-btn` — transparent, `at-radius-sm`, 0.6 rem × `space-5` Padding, Text `tab` 0.9 rem / 500 in `at-info-text`, Icon-Gap 0.4 rem. Hover: Gold-Wash, `at-text`, 1 px Lift.
-- `.tab-btn.active` — `at-primary` auf `at-primary-fg` mit `shadow-tab-active`.
-- `.tab-btn--link` — gleicher Look für einen externen Link (Blog), `margin-left: auto` schiebt ihn ans Ende, Fokus-Outline 2 px `at-primary`.
+- `.tabs` — Flex, Gap und Padding 2 px, `ds-radius-md`, zentriert, 24 px Abstand nach unten.
+- `.tab-btn` — 32 px hoch (`ds-control-md` minus Innenabstand), `flex: 1`, Padding 0 12 px, `ds-radius-sm`, transparenter 1-px-Rahmen, `tab` 13 px / 500 in `ds-text-2`, Icon-Gap 8 px. Hover: Text `ds-text`. Fokus: `ds-focus-ring`.
+- `.tab-btn.active` — `ds-surface-1`, Rahmen `ds-border-strong`, Text `ds-text`. Kein Gold: Gold bleibt der Primäraktion vorbehalten.
+- `.tab-btn--link` — gleicher Look für den externen Blog-Link, `margin-left: auto`, feste Breite.
 
-**Der Konsument liefert:** je Tab ein `<button>` mit Icon (`<i class="fas …">`) und `<span>`-Label; den aktiven Tab per `.active`. Reihenfolge der App: Filter · Oszillatoren · Aufnahme · Presets · FAQ · Blog. Der Inhalt darunter wird per `v-show` gewechselt, der Player bleibt sichtbar.
+**Der Konsument liefert:** je Tab ein `<button>` mit Icon (`<i class="fas …">`) und `<span>`-Label; den aktiven Tab per `.active`. Reihenfolge der App: Filter · Oszillatoren · Aufnahme · Presets · FAQ · Blog.
 
-**Responsiv:** ≤ 768 px horizontal scrollbar ohne Scrollbar, Padding `space-2` `space-3`, Schrift 0.8 rem; ≤ 480 px nur Icons (`span` ausgeblendet, Icon 1 rem).
+**Responsiv:** ≤ 768 px horizontal scrollbar ohne Scrollbalken, Optionen in Inhaltsbreite, 12 px; ≤ 480 px nur Icons.
 
-**Dos/Don'ts:** Maximal eine Leiste pro Seite. Keine Badges oder Zähler auf Tabs. Externe Ziele nur über `.tab-btn--link` mit `target="_blank" rel="noopener noreferrer"`.
+**Dos/Don'ts:** Maximal eine Leiste pro Seite. Keine Badges auf Tabs. Externe Ziele nur über `.tab-btn--link` mit `target="_blank" rel="noopener noreferrer"`.
 
 Statische Vorschau (hand-written from `src/styles/layout.css`, `App.vue`).
