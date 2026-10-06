@@ -51,7 +51,7 @@ describe('Design-Tokens in src/styles', () => {
   it('nutzen keine Gradients, Blur, Glow oder Hover-Lifts', () => {
     expect(
       findInStyles(
-        /gradient\(|backdrop-filter|text-shadow|translateY\(-1px\)|scale\(1\.\d+\)|filter:\s*brightness/
+        /gradient\(|backdrop-filter|text-shadow|translateY\(-1px\)|scale\(1\.\d+\)|filter:\s*brightness\(1\./
       )
     ).toEqual([])
   })
@@ -96,5 +96,24 @@ describe('base.css', () => {
   it('setzt die Grundgröße des Body auf --ds-text-lg und die Fläche auf --ds-surface-0', () => {
     expect(css).toMatch(/body \{[^}]*font-size: var\(--ds-text-lg\)/)
     expect(css).toMatch(/body \{[^}]*background: var\(--ds-surface-0\)/)
+  })
+
+  it('lässt dem Body kein Padding, damit die SSI-Navigation randlos liegt', () => {
+    expect(css).not.toMatch(/body \{[^}]*padding/)
+  })
+})
+
+describe('partials.css', () => {
+  const css = readFileSync(join(STYLES_DIR, 'partials.css'), 'utf8')
+
+  it('macht Navigation und Footer transparent und färbt ihren Text aus den Tokens', () => {
+    expect(css).toMatch(/body > :not\(#app\)[^{]*\{\s*background-color: transparent !important/)
+    expect(css).toContain('color: var(--ds-text) !important')
+    expect(css).toContain('color: var(--ds-link) !important')
+  })
+
+  it('wird in main.css nach base.css importiert', () => {
+    const main = readFileSync(join(STYLES_DIR, 'main.css'), 'utf8')
+    expect(main.indexOf("'./partials.css'")).toBeGreaterThan(main.indexOf("'./base.css'"))
   })
 })

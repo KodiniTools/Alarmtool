@@ -58,10 +58,11 @@ Zwei Themes, Dark ist Standard (`:root`), Light liegt auf `html[data-theme='ligh
 
 ## Layout
 
-- Container `ds-container` 1200 px, Body-Padding `ds-space-5`; schmale Tabs (Filter, Aufnahme, Presets, FAQ) auf `.section-narrow` 720 px; Tab-Leiste 720 px; Player-Bar und Gehörschutz-Hinweis innen 960 px.
+- Container `ds-container` 1200 px mit `ds-space-5` Rand (der Body hat kein Padding, damit die SSI-Navigation randlos auf `ds-surface-0` liegt); schmale Tabs (Filter, Aufnahme, Presets, FAQ) auf `.section-narrow` 720 px; Tab-Leiste 720 px; Player-Bar und Gehörschutz-Hinweis innen 960 px.
 - Jede Ansicht ist ein Panel (`.section`) mit Panel-Titel und Trennlinie; Oszillatoren als Master-Detail: Sidebar 280 px (≤ 900 px: 240 px, ≤ 640 px: gestapelt) neben dem Editor-Panel, Parameter in zwei Spalten, ≤ 640 px eine.
 - Die Player-Bar ist `position: fixed` unten (`ds-z-player`), reserviert ihre gemessene Höhe als `--player-bar-height`; der Gehörschutz-Hinweis hängt direkt darüber; Toasts oben rechts (`ds-z-toast`), mobil über der Player-Bar — anders als im Collage Maker (unten rechts), weil dort kein Player liegt.
 - Breakpoints: 900, 768, 640, 560, 520, 480, 420 px — komponenten-lokal; die Token-Breakpoints 480/768/1024 gelten für neue Media Queries.
+- **SSI-Partials:** Navigation, Footer und Cookie-Banner kommen vom Host und liegen außerhalb von `#app`. `partials.css` (aus dem Collage Maker übernommen) nimmt Navigation und Footer ihre eigenen Hintergründe, färbt Text `ds-text`, Links `ds-link` (Hover `ds-accent`) und gibt Dropdowns `ds-surface-1`; der Cookie-Banner bleibt unverändert und liegt über allem.
 
 ## Nicht synchronisiert
 

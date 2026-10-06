@@ -1,6 +1,7 @@
 /* Entry point — imports all style modules in dependency order */
 @import './tokens.css';
 @import './base.css';
+@import './partials.css';
 @import './layout.css';
 @import './components/button.css';
 @import './components/form.css';
