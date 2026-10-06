@@ -3,7 +3,8 @@
   max-width: var(--ds-container);
   margin: 0 auto;
   /* Reserve space for the fixed sticky player bar (fallback until JS measures). */
-  padding: 0 var(--ds-space-5) calc(var(--player-bar-height, 120px) + var(--ds-space-5));
+  padding: var(--ds-space-5) var(--ds-space-5)
+    calc(var(--player-bar-height, 120px) + var(--ds-space-5));
 }
 
 /* App Header */
@@ -109,7 +110,8 @@
 /* Responsive */
 @media (max-width: 768px) {
   .main-container {
-    padding: 0 var(--ds-space-2) calc(var(--player-bar-height, 120px) + var(--ds-space-5));
+    padding: var(--ds-space-3) var(--ds-space-4)
+      calc(var(--player-bar-height, 120px) + var(--ds-space-5));
   }
 
   .app-header {
@@ -150,7 +152,8 @@
 
 @media (max-width: 480px) {
   .main-container {
-    padding: 0 var(--ds-space-1) calc(var(--player-bar-height, 120px) + var(--ds-space-5));
+    padding: var(--ds-space-2) var(--ds-space-3)
+      calc(var(--player-bar-height, 120px) + var(--ds-space-5));
   }
 
   .app-header {
