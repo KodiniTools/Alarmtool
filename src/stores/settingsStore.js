@@ -1,7 +1,24 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { DEFAULT_FILTER } from '@/lib/oscillatorDefaults'
 import { DEFAULT_LANG, normalizeLang } from '@/i18n/locale'
+import { applyLocaleHead } from '@/utils/localeSeo'
+
+export const SITE_URL = 'https://kodinitools.com/alarmtool/'
+
+/** Title and description per language (German is also static in index.html). */
+export const PAGE_META = {
+  de: {
+    title: 'Online Alarmton Generator – Töne erzeugen, gestalten & exportieren | KodiniTools',
+    description:
+      'Erstelle und gestalte individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation.',
+  },
+  en: {
+    title: 'Online Alarm Sound Generator – Create, Shape & Export Tones | KodiniTools',
+    description:
+      'Create and shape custom alarm sounds right in your browser. Multiple oscillators, filters, ADSR envelope and recording – free, no installation.',
+  },
+}
 
 const STORAGE_KEYS = { lang: 'locale', theme: 'theme' }
 
@@ -32,8 +49,12 @@ function persist(key, value) {
 }
 
 export const useSettingsStore = defineStore('settings', () => {
-  // Stored values may be stale or tampered with — fall back to defaults.
-  const currentLang = ref(normalizeLang(readStorage(STORAGE_KEYS.lang)) ?? DEFAULT_LANG)
+  // ?lang=de|en (hreflang target) wins over the stored value; stored values may
+  // be stale or tampered with — fall back to defaults.
+  const urlLang = normalizeLang(new URLSearchParams(globalThis.location?.search ?? '').get('lang'))
+  const currentLang = ref(urlLang ?? normalizeLang(readStorage(STORAGE_KEYS.lang)) ?? DEFAULT_LANG)
+  // Persist so the SSI navigation shows the same language
+  if (urlLang) persist(STORAGE_KEYS.lang, urlLang)
   const currentTheme = ref(normalizeTheme(readStorage(STORAGE_KEYS.theme)) ?? DEFAULT_THEME)
   const filterSettings = ref({ ...DEFAULT_FILTER })
 
@@ -52,6 +73,13 @@ export const useSettingsStore = defineStore('settings', () => {
     currentTheme.value = theme
     persist(STORAGE_KEYS.theme, theme)
   }
+
+  // <html lang>, title, canonical (EN = ?lang=en) and hreflang follow the language.
+  // Without ?lang the static German head stays until the language changes, so
+  // App.vue can still adopt the lang attribute set by the SSI nav.
+  const applyHead = (lang) => applyLocaleHead(SITE_URL, lang, PAGE_META[lang])
+  watch(currentLang, applyHead)
+  if (urlLang) applyHead(urlLang)
 
   function updateFilterSettings(patch) {
     filterSettings.value = { ...filterSettings.value, ...patch }

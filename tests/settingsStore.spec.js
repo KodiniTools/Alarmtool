@@ -45,6 +45,19 @@ describe('settingsStore', () => {
     expect(store.currentLang).toBe('de')
   })
 
+  it('?lang=en wins over the stored language and is persisted', () => {
+    const storage = memoryStorage({ locale: 'de' })
+    vi.stubGlobal('localStorage', storage)
+    vi.stubGlobal('location', { search: '?lang=en' })
+    const store = useSettingsStore()
+    expect(store.currentLang).toBe('en')
+    expect(storage.data.locale).toBe('en')
+
+    setActivePinia(createPinia())
+    vi.stubGlobal('location', { search: '?lang=fr' })
+    expect(useSettingsStore().currentLang).toBe('en')
+  })
+
   it('falls back to defaults and keeps working when storage is blocked', () => {
     vi.stubGlobal('localStorage', blockedStorage)
     const store = useSettingsStore()
