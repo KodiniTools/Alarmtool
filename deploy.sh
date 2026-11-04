@@ -53,7 +53,7 @@ mkdir -p "$TARGET/assets"
 #    (dieser Ordner enthält ausschließlich Build-Output).
 rsync -a --delete dist/assets/ "$TARGET/assets/"
 
-# 2) Restlicher Build-Output (index.html, sitemap.xml, ...): OHNE --delete,
+# 2) Restlicher Build-Output (index.html, robots.txt, ...): OHNE --delete,
 #    damit manuell abgelegte Dateien wie og-image.png erhalten bleiben.
 rsync -a --exclude 'assets/' dist/ "$TARGET/"
 
