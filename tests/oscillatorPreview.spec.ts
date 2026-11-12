@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
+  envelopeAt,
   envelopeSamples,
   mixSamples,
   parsePatternSteps,
@@ -98,5 +99,28 @@ describe('Zeitfenster und Summe', () => {
   it('valuesToPath skaliert mittig oder vom Boden aus', () => {
     expect(valuesToPath([0, 1], 10, 20)).toBe('M0.0,10.0 L10.0,1.0')
     expect(valuesToPath([0, 1], 10, 20, 1, 'bottom')).toBe('M0.0,20.0 L10.0,2.0')
+  })
+})
+
+describe('envelopeAt', () => {
+  const o = osc({
+    attack: 100,
+    decay: 100,
+    sustain: 0.5,
+    volume: 1,
+    release: 100,
+    pattern: '300,300',
+  })
+
+  it('entspricht envelopeSamples im ersten Durchlauf', () => {
+    expect(envelopeAt(o, 50)).toBeCloseTo(0.5)
+    expect(envelopeAt(o, 250)).toBeCloseTo(0.5)
+    expect(envelopeAt(o, 450)).toBe(0)
+  })
+
+  it('wiederholt sich mit dem Muster und ist ausgeschaltet 0', () => {
+    expect(envelopeAt(o, 600 * 7 + 50)).toBeCloseTo(envelopeAt(o, 650))
+    expect(envelopeAt(osc({ enabled: false }), 100)).toBe(0)
+    expect(envelopeAt(o, -1)).toBe(0)
   })
 })

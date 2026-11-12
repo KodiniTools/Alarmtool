@@ -354,7 +354,6 @@ export default {
   // Live preview of the oscillators
   scope_title: 'Live preview',
   scope_live: 'Playing',
-  scope_wave: 'Waveform of the mix',
-  scope_rhythm: 'Volume over the rhythm',
   scope_empty: 'No oscillator is active. Switch one on to see the preview.',
+  scope_mix: 'Mix',
 }

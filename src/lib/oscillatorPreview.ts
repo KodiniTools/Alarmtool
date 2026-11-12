@@ -164,3 +164,16 @@ export function valuesToPath(
     })
     .join(' ')
 }
+
+/**
+ * Lautstärke eines Oszillators zum Zeitpunkt `ms` seit Wiedergabestart (gleiche Regeln
+ * wie envelopeSamples). Ab dem zweiten Musterdurchlauf ist der Verlauf periodisch, daher
+ * wird die Zeit auf zwei Durchläufe zurückgefaltet.
+ */
+export function envelopeAt(osc: PreviewOscillator, ms: number): number {
+  if (!osc.enabled || !(ms >= 0)) return 0
+  const cycle = patternCycleMs(osc)
+  const t = ms < cycle ? ms : cycle + ((ms - cycle) % cycle)
+  const values = envelopeSamples(osc, t, 2)
+  return values[1]
+}
