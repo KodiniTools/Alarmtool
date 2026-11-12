@@ -13,7 +13,8 @@ export default {
 
   // Presets
   presets_title: 'Alarm Presets',
-  presets_intro: 'Ready-to-use alarm tone configurations. Click "Load" to activate a preset.',
+  presets_intro:
+    'Ready-to-use alarm tone configurations. "Play" starts a preset, "Edit" loads it into the oscillators for adjusting, "Record" plays it and opens the recorder.',
   preset_emergency_name: 'Classic Emergency Siren',
   preset_emergency_desc:
     'Two-tone Hi-Lo siren (660/880 Hz) with overtone — classic emergency services alarm.',
@@ -269,6 +270,10 @@ export default {
 
   // Preset Play (via sticky player)
   preset_play: 'Play',
+  preset_edit: 'Edit',
+  preset_edit_title: 'Load preset and adjust it in the oscillator editor',
+  preset_record: 'Record',
+  preset_record_title: 'Play preset and switch to recording',
 
   // Hearing-safety warning
   hearing_warning_title: 'Hearing safety notice',
