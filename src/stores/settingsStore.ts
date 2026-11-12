@@ -3,22 +3,13 @@ import { ref, watch } from 'vue'
 import { DEFAULT_FILTER, type FilterSettings } from '@/lib/oscillatorDefaults'
 import { DEFAULT_LANG, normalizeLang, type Lang } from '@/i18n/locale'
 import { applyLocaleHead, type PageMeta } from '@/utils/localeSeo'
+import { PAGE_META as ALL_PAGE_META, pageUrl, type Page } from '@/lib/pageMeta'
 
-export const SITE_URL = 'https://kodinitools.com/alarmtool/'
+export { SITE_URL } from '@/lib/pageMeta'
+export type { Page } from '@/lib/pageMeta'
 
-/** Title and description per language (German is also static in index.html). */
-export const PAGE_META: Record<Lang, PageMeta> = {
-  de: {
-    title: 'Online Alarmton Generator – Töne erzeugen, gestalten & exportieren | KodiniTools',
-    description:
-      'Erstelle und gestalte individuelle Alarmtöne direkt im Browser. Mehrere Oszillatoren, Filter, ADSR-Hüllkurve und Aufnahmefunktion – kostenlos, ohne Installation.',
-  },
-  en: {
-    title: 'Online Alarm Sound Generator – Create, Shape & Export Tones | KodiniTools',
-    description:
-      'Create and shape custom alarm sounds right in your browser. Multiple oscillators, filters, ADSR envelope and recording – free, no installation.',
-  },
-}
+/** Title and description of the landing page per language (German is also static in index.html). */
+export const PAGE_META: Record<Lang, PageMeta> = ALL_PAGE_META.landing
 
 const STORAGE_KEYS = { lang: 'locale', theme: 'theme' }
 
@@ -61,6 +52,8 @@ export const useSettingsStore = defineStore('settings', () => {
   if (urlLang) persist(STORAGE_KEYS.lang, urlLang)
   const currentTheme = ref<Theme>(normalizeTheme(readStorage(STORAGE_KEYS.theme)) ?? DEFAULT_THEME)
   const filterSettings = ref<FilterSettings>({ ...DEFAULT_FILTER })
+  /** Current router page; set by the router (main.ts), drives canonical, title and description. */
+  const currentPage = ref<Page>('landing')
 
   /** Sets the UI language ('en-US' → 'en'); unsupported values are ignored. */
   function setLanguage(locale: unknown) {
@@ -78,16 +71,35 @@ export const useSettingsStore = defineStore('settings', () => {
     persist(STORAGE_KEYS.theme, theme)
   }
 
-  // <html lang>, title, canonical (EN = ?lang=en) and hreflang follow the language.
-  // Without ?lang the static German head stays until the language changes, so
+  /** Sets the current page; unknown values are ignored. */
+  function setPage(page: unknown) {
+    if (page === 'landing' || page === 'app') currentPage.value = page
+  }
+
+  // <html lang>, title, canonical (EN = ?lang=en) and hreflang follow language and page.
+  // Without ?lang the static German head stays until language or page change, so
   // App.vue can still adopt the lang attribute set by the SSI nav.
-  const applyHead = (lang: Lang) => applyLocaleHead(SITE_URL, lang, PAGE_META[lang])
-  watch(currentLang, applyHead)
-  if (urlLang) applyHead(urlLang)
+  const applyHead = () =>
+    applyLocaleHead(
+      pageUrl(currentPage.value),
+      currentLang.value,
+      ALL_PAGE_META[currentPage.value][currentLang.value]
+    )
+  watch([currentLang, currentPage], applyHead)
+  if (urlLang) applyHead()
 
   function updateFilterSettings(patch: Partial<FilterSettings>) {
     filterSettings.value = { ...filterSettings.value, ...patch }
   }
 
-  return { currentLang, currentTheme, filterSettings, setLanguage, setTheme, updateFilterSettings }
+  return {
+    currentLang,
+    currentTheme,
+    currentPage,
+    filterSettings,
+    setLanguage,
+    setTheme,
+    setPage,
+    updateFilterSettings,
+  }
 })

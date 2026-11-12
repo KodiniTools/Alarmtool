@@ -1,9 +1,29 @@
 // @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { createRouter, createMemoryHistory } from 'vue-router'
 import { UiButton, UiIconButton } from '@/components/ui'
 
 describe('UiButton', () => {
+  it('rendert mit `to` einen RouterLink mit den Button-Klassen', async () => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: '/', component: { template: '<div />' } },
+        { path: '/app/', component: { template: '<div />' } },
+      ],
+    })
+    await router.push('/')
+    const w = mount(UiButton, {
+      props: { to: '/app/', variant: 'primary' },
+      slots: { default: 'Los' },
+      global: { plugins: [router] },
+    })
+    expect(w.element.tagName).toBe('A')
+    expect(w.attributes('href')).toBe('/app/')
+    expect(w.classes()).toEqual(expect.arrayContaining(['btn', 'btn-primary']))
+  })
+
   it('rendert einen sekundären <button type="button"> als Standard', () => {
     const w = mount(UiButton, { slots: { default: 'Speichern' } })
     const el = w.element

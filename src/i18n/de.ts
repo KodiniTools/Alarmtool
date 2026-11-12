@@ -300,4 +300,57 @@ export default {
   // Toast Messages - Copy/Paste
   toast_osc_copied: 'Oszillator-Einstellungen kopiert.',
   toast_osc_pasted: 'Oszillator-Einstellungen eingefügt.',
+
+  // Landing-Page
+  lp_eyebrow: 'Alarmton-Generator im Browser',
+  lp_title: 'Bau deinen eigenen Alarmton aus bis zu 12 Oszillatoren',
+  lp_lead:
+    'Wellenform wählen, Frequenz und Hüllkurve formen, Rhythmus festlegen und als WAV oder MP3 speichern. Alles läuft direkt im Browser, ohne Installation und ohne Konto.',
+  lp_cta_start: 'Alarmton erstellen',
+  lp_cta_learn: 'Funktionen ansehen',
+  lp_trust_free: 'Kostenlos',
+  lp_trust_account: 'Ohne Anmeldung',
+  lp_trust_local: 'Klang entsteht lokal im Browser',
+  lp_visual_label:
+    'Illustration der Oszillator-Ansicht: vier aktive Oszillatoren mit Sinus-, Rechteck-, Sägezahn- und Dreieckwelle ergeben zusammen den Alarmton, der im eingestellten Rhythmus an- und ausgeht.',
+  lp_visual_title: 'Oszillatoren',
+  lp_visual_active: '4 von 12 aktiv',
+  lp_visual_off: 'Aus',
+  lp_visual_more: '+ 7 weitere Oszillatoren',
+  lp_visual_mix: 'Summe',
+  lp_visual_mix_hint: 'Hüllkurve und Muster 300, 150 ms',
+  lp_fact_oscillators: 'Oszillatoren gleichzeitig',
+  lp_fact_waveforms: 'Wellenformen',
+  lp_fact_presets: 'fertige Alarm-Presets',
+  lp_fact_uploads: 'Uploads, alles bleibt im Browser',
+  lp_features_title: 'Alles für einen Alarmton, der auffällt',
+  lp_features_lead:
+    'Vom einzelnen Piepton bis zur mehrstimmigen Sirene: Jeder Oszillator hat eigene Wellenform, Frequenz, Lautstärke, Panorama, Hüllkurve und Muster.',
+  lp_feat_osc_title: '12 Oszillatoren',
+  lp_feat_osc_desc:
+    'Sinus, Rechteck, Sägezahn, Dreieck, Puls und Orgel. Frequenz von 50 bis 2000 Hz, Lautstärke und Stereo-Panorama je Oszillator.',
+  lp_feat_env_title: 'Hüllkurve und Rhythmus',
+  lp_feat_env_desc:
+    'Attack, Decay, Sustain und Release formen jeden Ton. Ein Muster aus An- und Aus-Zeiten in Millisekunden gibt den Takt vor.',
+  lp_feat_filter_title: 'Globaler Filter',
+  lp_feat_filter_desc:
+    'Tiefpass, Hochpass, Bandpass oder Notch mit einstellbarer Frequenz und Güte färben den gesamten Klang.',
+  lp_feat_rec_title: 'Aufnahme und Export',
+  lp_feat_rec_desc:
+    'Live als WebM, OGG oder WAV aufnehmen und die Aufnahme anschließend in MP3 oder WAV umwandeln.',
+  lp_feat_presets_title: 'Fertige Presets',
+  lp_feat_presets_desc:
+    'Sirene, Weckton, Herzmonitor und mehr: abspielen, im Editor anpassen oder direkt aufnehmen.',
+  lp_feat_history_title: 'Rückgängig und Speichern',
+  lp_feat_history_desc:
+    'Änderungen rückgängig machen, Einstellungen im Browser speichern oder als Datei exportieren und importieren.',
+  lp_steps_title: 'In drei Schritten zum Alarmton',
+  lp_step1_title: 'Starten',
+  lp_step1_desc: 'Ein Preset als Ausgangspunkt wählen oder mit einem leeren Oszillator beginnen.',
+  lp_step2_title: 'Formen',
+  lp_step2_desc: 'Wellenform, Frequenz, Hüllkurve und Muster einstellen und sofort anhören.',
+  lp_step3_title: 'Speichern',
+  lp_step3_desc: 'Aufnehmen und als Datei herunterladen, zum Beispiel als Klingel- oder Weckton.',
+  lp_final_title: 'Bereit für deinen Alarmton?',
+  lp_final_desc: 'Das Tool öffnet sich direkt im Browser. Keine Installation, kein Konto.',
 }

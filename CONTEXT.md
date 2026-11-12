@@ -53,7 +53,9 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
 │
 └── src/                           # Quellcode
     ├── main.ts                    # Vue App Entry Point
-    ├── App.vue                    # Root Component
+    ├── App.vue                    # Root Component (SSI-Sync für Sprache/Theme + RouterView)
+    ├── router/index.ts            # Vue Router: / = Landing-Page, /app/ = Tool
+    ├── views/                     # LandingPage.vue, AppPage.vue (Tabs + Player-Leiste)
     ├── style.css                  # Globale CSS Styles
     │
     ├── components/                # Vue Komponenten
