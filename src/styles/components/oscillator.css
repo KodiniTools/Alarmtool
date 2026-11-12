@@ -487,6 +487,11 @@
    Kurven zeichnet das Canvas mit --ds-info, --ds-success und --ds-warning. */
 
 .osc-viz {
+  /* Bleibt beim Bearbeiten sichtbar, direkt unter der globalen Navigation
+     (--site-nav-height misst useSiteNavOffset, 0 ohne mitlaufende Navigation) */
+  position: sticky;
+  top: calc(var(--site-nav-height, 0px) + var(--ds-space-2));
+  z-index: 2;
   margin-bottom: var(--ds-gap);
   padding: var(--ds-space-4);
   border: var(--ds-border-width) solid var(--ds-border);
@@ -552,7 +557,7 @@
 .osc-viz__canvas {
   display: block;
   width: 100%;
-  height: 260px;
+  height: 200px;
   border-radius: var(--ds-radius-sm);
 }
 
@@ -597,7 +602,16 @@
   }
 
   .osc-viz__canvas {
-    height: 200px;
+    height: 120px;
+  }
+
+  /* Auf dem Handy kompakt: Farben stehen in der Oszillator-Liste */
+  .osc-viz__legend {
+    display: none;
+  }
+
+  .osc-viz__head {
+    margin-bottom: var(--ds-space-2);
   }
 
   /* Zeitfenster nur auf breiten Bildschirmen */
