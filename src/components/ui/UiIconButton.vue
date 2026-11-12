@@ -4,7 +4,7 @@
   </UiButton>
 </template>
 
-<script setup>
+<script setup lang="ts">
   /**
    * Button nur mit Icon. `label` wird zu aria-label und title, damit die Aktion
    * für Screenreader und als Tooltip benannt ist. Alle UiButton-Props (variant,

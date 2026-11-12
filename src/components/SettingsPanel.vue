@@ -34,7 +34,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useAudioContext } from '@/composables/useAudioContext'
@@ -42,14 +42,14 @@
   import { useToast } from '@/composables/useToast'
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
-  import { normalizeOscSettings, pickOscParams } from '@/lib/oscillatorDefaults'
+  import { normalizeOscSettings, pickOscParams, type SoundSettings } from '@/lib/oscillatorDefaults'
 
   const store = useAlarmStore()
   const { updateFilter } = useAudioContext()
   const { parsePattern } = useOscillators()
   const toast = useToast()
   const { withHistory } = useUndoRedo()
-  const importInput = ref(null)
+  const importInput = ref<HTMLInputElement | null>(null)
 
   const { t } = useI18n()
 
@@ -94,7 +94,7 @@
     },
   ]
 
-  function buildSnapshot() {
+  function buildSnapshot(): SoundSettings {
     return {
       globalFilter: {
         type: store.filterSettings.type,
@@ -146,13 +146,14 @@
     }
   }
 
-  function importSettings(event) {
-    const file = event.target.files[0]
+  function importSettings(event: Event) {
+    const input = event.target as HTMLInputElement
+    const file = input.files?.[0]
     if (!file) return
     const reader = new FileReader()
     reader.onload = (e) => {
       try {
-        const settings = JSON.parse(e.target.result)
+        const settings = JSON.parse(e.target!.result as string)
         withHistory({ labelKey: 'settings_import' }, () => applySettings(settings))
         toast.success('toast_settings_imported')
       } catch {
@@ -160,10 +161,10 @@
       }
     }
     reader.readAsText(file)
-    event.target.value = ''
+    input.value = ''
   }
 
-  function applySettings(settings) {
+  function applySettings(settings: SoundSettings) {
     if (settings.globalFilter) updateFilter(settings.globalFilter)
     if (settings.oscillators?.length === store.oscillators.length) {
       settings.oscillators.forEach((s, i) => {

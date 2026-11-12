@@ -13,7 +13,7 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | **Pinia** | ^2.1.7 | State Management (Vuex-Nachfolger) |
 | **Vite** | ^5.0.0 | Build Tool & Dev Server |
 | **JavaScript** | ES6+ | Programmiersprache (Migration nach TypeScript vorbereitet) |
-| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; `src/lib`, `src/composables`, `src/stores`, `src/i18n`, `src/utils` und `main.ts` sind TypeScript (in `src/lib` außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
+| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; Alle Komponenten (`<script setup lang="ts">`), `src/lib`, `src/composables`, `src/stores`, `src/i18n`, `src/utils` und `main.ts` sind TypeScript (in `src/lib` außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
 
 ### Browser APIs
 | API | Verwendung |

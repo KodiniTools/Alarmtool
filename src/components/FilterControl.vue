@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref, computed, watch } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useAudioContext } from '@/composables/useAudioContext'
@@ -102,7 +102,7 @@
 
   function onFilterTypeChange() {
     // Set default values for the selected filter type
-    const defaults = FILTER_DEFAULTS[filterType.value]
+    const defaults = FILTER_DEFAULTS[filterType.value as keyof typeof FILTER_DEFAULTS]
     if (filterType.value !== 'none' && defaults) {
       filterFrequency.value = defaults.frequency
       filterQ.value = defaults.Q
@@ -110,12 +110,12 @@
     updateFilter()
   }
 
-  function setFrequency(value) {
+  function setFrequency(value: number) {
     filterFrequency.value = value
     updateFilter()
   }
 
-  function setQ(value) {
+  function setQ(value: number) {
     filterQ.value = value
     updateFilter()
   }

@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   /** Restzeit und Fortschrittsbalken, solange eine Aufnahme läuft. */
   import { computed } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'

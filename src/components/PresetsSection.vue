@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useAudioContext } from '@/composables/useAudioContext'
@@ -70,7 +70,11 @@
     DEFAULT_FILTER,
     DEFAULT_OSCILLATOR,
     normalizeOscSettings,
+    type OscParams,
+    type SoundSettings,
   } from '@/lib/oscillatorDefaults'
+
+  type Preset = (typeof presets)[number]
 
   const store = useAlarmStore()
   const { updateFilter } = useAudioContext()
@@ -80,10 +84,10 @@
   const { withHistory } = useUndoRedo()
   const { t } = useI18n()
 
-  const activePreset = ref(null)
+  const activePreset = ref<string | null>(null)
 
   // Load the preset and (re)start the sticky player so it takes over playback.
-  function playPreset(preset) {
+  function playPreset(preset: Preset) {
     withHistory({ labelKey: 'history_preset', detailKey: preset.nameKey }, () => loadPreset(preset))
     restartAlarm()
 
@@ -128,7 +132,7 @@
     toast.info('toast_preset_reset')
   }
 
-  function isDefaultOsc(oscSettings) {
+  function isDefaultOsc(oscSettings: Partial<OscParams>) {
     return (
       oscSettings.frequency === DEFAULT_OSCILLATOR.frequency &&
       oscSettings.volume === DEFAULT_OSCILLATOR.volume &&
@@ -137,9 +141,9 @@
     )
   }
 
-  function loadPreset(preset) {
+  function loadPreset(preset: Preset) {
     try {
-      const settings = preset.data
+      const settings: SoundSettings = preset.data
 
       if (settings.globalFilter) {
         updateFilter(settings.globalFilter)

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { useToast } from './useToast'
 import { formatTime } from '@/lib/formatTime'
 
@@ -19,7 +19,8 @@ export function useRecordingDownload() {
   const downloadUrl = ref('')
   const downloadFilename = ref('')
   const showDownload = ref(false)
-  const recordedBlob = ref<Blob | null>(null)
+  // shallowRef: Vue does not proxy Blobs anyway; keeps the type a plain Blob
+  const recordedBlob = shallowRef<Blob | null>(null)
 
   function create(mimeType: string, chunks: BlobPart[]) {
     try {

@@ -166,8 +166,8 @@
             class="form-control"
             :disabled="!settings.enabled"
             placeholder="500, 200, 300, 100"
-            @input="updateParameter('pattern', $event.target.value)"
-            @change="updateParameter('pattern', $event.target.value)"
+            @input="updateParameter('pattern', ($event.target as HTMLInputElement).value)"
+            @change="updateParameter('pattern', ($event.target as HTMLInputElement).value)"
           />
           <div class="form-text">{{ t('osc_pattern_help') }}</div>
         </div>
@@ -176,8 +176,8 @@
   </div>
 </template>
 
-<script setup>
-  import { ref, watch } from 'vue'
+<script setup lang="ts">
+  import { ref, watch, type PropType } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useOscillators } from '@/composables/useOscillators'
   import { useUndoRedo } from '@/composables/useUndoRedo'
@@ -186,10 +186,13 @@
   import { SliderField, UiButton, UiSwitch } from '@/components/ui'
   import { WAVE_TYPES, WAVE_ABBR } from '@/lib/waveforms'
   import { OSC_PARAMS, pickOscParams } from '@/lib/oscillatorDefaults'
+  import type { Oscillator } from '@/stores/oscillatorStore'
+
+  type EditableParam = Exclude<keyof Oscillator, 'id'>
 
   const props = defineProps({
     oscillatorId: { type: Number, required: true },
-    oscillator: { type: Object, required: true },
+    oscillator: { type: Object as PropType<Oscillator>, required: true },
   })
 
   const store = useAlarmStore()
@@ -199,7 +202,7 @@
   const { t } = useI18n()
 
   const showAdsr = ref(false)
-  const settings = ref({ ...props.oscillator })
+  const settings = ref<Oscillator>({ ...props.oscillator })
 
   watch(
     () => props.oscillator,
@@ -209,7 +212,7 @@
     { deep: true }
   )
 
-  function updateParameter(param, value) {
+  function updateParameter<K extends EditableParam>(param: K, value: Oscillator[K]) {
     settings.value[param] = value
     updateOscillatorParameter(props.oscillatorId, param, value)
   }
@@ -220,10 +223,11 @@
   }
 
   function pasteSettings() {
-    if (!store.oscClipboard) return
+    const clipboard = store.oscClipboard
+    if (!clipboard) return
     withHistory({ labelKey: 'osc_paste', oscId: props.oscillatorId }, () => {
       OSC_PARAMS.forEach((param) => {
-        updateOscillatorParameter(props.oscillatorId, param, store.oscClipboard[param])
+        updateOscillatorParameter(props.oscillatorId, param, clipboard[param])
       })
       parsePattern(props.oscillatorId)
     })
