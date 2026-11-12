@@ -360,4 +360,6 @@ export default {
   scope_empty:
     'Kein Oszillator aktiv. Schalte in der Auswahl einen Oszillator ein, um die Vorschau zu sehen.',
   scope_mix: 'Summe',
+  tab_home: 'Start',
+  tab_home_title: 'Zur Startseite des Alarmtools',
 }

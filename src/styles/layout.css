@@ -74,6 +74,11 @@
   color: var(--ds-text);
 }
 
+/* Link zur Landing-Page, erster Eintrag der Leiste */
+.tab-btn--home {
+  flex: 0 0 auto;
+}
+
 /* Tab-styled external link (e.g. blog article) */
 .tab-btn--link {
   flex: 0 0 auto;

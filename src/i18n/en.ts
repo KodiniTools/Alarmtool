@@ -356,4 +356,6 @@ export default {
   scope_live: 'Playing',
   scope_empty: 'No oscillator is active. Switch one on to see the preview.',
   scope_mix: 'Mix',
+  tab_home: 'Home',
+  tab_home_title: 'Back to the Alarm Tool home page',
 }

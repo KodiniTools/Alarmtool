@@ -8,6 +8,15 @@
 
     <!-- Tabs -->
     <div ref="tabsEl" class="tabs">
+      <!-- Back to the landing page (router, no reload) -->
+      <RouterLink
+        class="tab-btn tab-btn--home"
+        :to="PAGE_PATHS.landing"
+        :title="t('tab_home_title')"
+      >
+        <i class="fas fa-house" aria-hidden="true"></i>
+        <span>{{ t('tab_home') }}</span>
+      </RouterLink>
       <button
         v-for="tab in tabs"
         :key="tab.id"
@@ -84,7 +93,9 @@
 
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue'
+  import { RouterLink } from 'vue-router'
   import { useI18n } from '@/i18n'
+  import { PAGE_PATHS } from '@/lib/pageMeta'
   import { usePlayer } from '@/composables/usePlayer'
 
   import FilterControl from '@/components/FilterControl.vue'
