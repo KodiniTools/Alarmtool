@@ -13,7 +13,7 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | **Pinia** | ^2.1.7 | State Management (Vuex-Nachfolger) |
 | **Vite** | ^5.0.0 | Build Tool & Dev Server |
 | **JavaScript** | ES6+ | Programmiersprache (Migration nach TypeScript vorbereitet) |
-| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; `src/lib` ist TypeScript (außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
+| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; `src/lib`, `src/stores`, `src/i18n`, `src/utils` und `main.ts` sind TypeScript (in `src/lib` außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
 
 ### Browser APIs
 | API | Verwendung |
@@ -52,7 +52,7 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
 ├── vite.config.js                 # Vite Konfiguration
 │
 └── src/                           # Quellcode
-    ├── main.js                    # Vue App Entry Point
+    ├── main.ts                    # Vue App Entry Point
     ├── App.vue                    # Root Component
     ├── style.css                  # Globale CSS Styles
     │
@@ -75,20 +75,20 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
     │   └── useRecorder.js         # Aufnahme & Download
     │
     ├── stores/                    # Pinia State Management
-    │   └── alarmStore.js          # Zentraler State Store
+    │   └── alarmStore.ts          # Fassade über die Domain-Stores (TypeScript)
     │
     ├── lib/                       # Reine Logik ohne Vue, TypeScript (u. a. filterConfig.ts, recordingFormats.ts)
     │
     └── i18n/                      # Internationalisierung
-        ├── de.js / en.js          # Texte je Sprache (gleiche Schlüssel, Test tests/i18n.spec.js)
-        └── translations.js        # fasst de und en zusammen
+        ├── de.ts / en.ts          # Texte je Sprache (gleiche Schlüssel, Test tests/i18n.spec.js)
+        └── translations.ts        # fasst de und en zusammen (Typ Lang)
 ```
 
 ---
 
 ## Datenbankschema / State Management
 
-Da diese Anwendung **keine Datenbank** verwendet, wird hier die State-Management-Struktur dokumentiert, die im Pinia Store (`src/stores/alarmStore.js`) definiert ist.
+Da diese Anwendung **keine Datenbank** verwendet, wird hier die State-Management-Struktur dokumentiert, die im Pinia Store (`src/stores/alarmStore.ts`, Fassade über `oscillatorStore`, `playerStore`, `recorderStore`, `settingsStore` und `audioNodes`) definiert ist.
 
 ### Audio Context & Nodes
 
@@ -232,7 +232,7 @@ Lint, Prettier, Typprüfung, Tests, Design-System-Check und Build aus.
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Pinia Store                             │
-│                    (alarmStore.js)                           │
+│                    (alarmStore.ts)                           │
 │  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌───────────┐ │
 │  │ Audio Nodes│ │Player State│ │ Oscillators│ │ Settings  │ │
 │  └────────────┘ └────────────┘ └────────────┘ └───────────┘ │

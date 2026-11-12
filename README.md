@@ -74,13 +74,13 @@ alarm-tool-vue/
 │   │   ├── usePlayer.js
 │   │   └── useRecorder.js
 │   ├── stores/              # Pinia State Management
-│   │   └── alarmStore.js
+│   │   └── alarmStore.ts
 │   ├── i18n/                # Internationalisierung
-│   │   ├── de.js
-│   │   ├── en.js
-│   │   └── translations.js
+│   │   ├── de.ts
+│   │   ├── en.ts
+│   │   └── translations.ts
 │   ├── App.vue              # Haupt-Komponente
-│   ├── main.js              # Entry Point
+│   ├── main.ts              # Entry Point
 │   └── style.css            # Globale Styles
 ├── index.html
 ├── vite.config.js
@@ -139,8 +139,8 @@ Alle Browser müssen die Web Audio API und MediaRecorder API unterstützen.
 
 ### Neue Übersetzung hinzufügen
 
-Lege eine Datei je Sprache an (z. B. `src/i18n/fr.js` mit denselben Schlüsseln wie `de.js`),
-und trage sie in `src/i18n/translations.js` ein (`SUPPORTED_LANGS` in `locale.js` liest die Sprachen daraus):
+Lege eine Datei je Sprache an (z. B. `src/i18n/fr.ts` mit denselben Schlüsseln wie `de.ts`),
+und trage sie in `src/i18n/translations.ts` ein (`SUPPORTED_LANGS` in `locale.ts` liest die Sprachen daraus):
 
 ```javascript
 import de from './de'
@@ -152,7 +152,7 @@ export const translations = { de, en, fr }
 
 ### Neuen Oszillator-Parameter hinzufügen
 
-1. Erweitere den Store in `src/stores/alarmStore.js`
+1. Erweitere den passenden Domain-Store in `src/stores/` (z. B. `oscillatorStore.ts`)
 2. Füge UI-Element in `src/components/OscillatorItem.vue` hinzu
 3. Implementiere Logik in `src/composables/useOscillators.js`
 

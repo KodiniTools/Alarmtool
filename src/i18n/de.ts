@@ -1,4 +1,4 @@
-/** Deutsche Texte der Oberfläche. Schlüssel müssen mit en.js übereinstimmen (Test: tests/i18n.spec.js). */
+/** Deutsche Texte der Oberfläche. Schlüssel müssen mit en.ts übereinstimmen (Test: tests/i18n.spec.js). */
 export default {
   app_title: 'Modernes Alarm-Tool',
   app_subtitle: 'Mit 12 Oszillatoren & Live-Recorder (Modular)',

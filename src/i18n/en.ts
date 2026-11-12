@@ -1,4 +1,4 @@
-/** English UI strings. Keys must match de.js (test: tests/i18n.spec.js). */
+/** English UI strings. Keys must match de.ts (test: tests/i18n.spec.js). */
 export default {
   app_title: 'Modern Alarm Tool',
   app_subtitle: 'With 12 Oscillators & Live Recorder (Modular)',
