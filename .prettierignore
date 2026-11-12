@@ -2,3 +2,5 @@ dist
 node_modules
 *.lock
 design-system/content/components/**/*.html
+# Fremdbibliothek (minifiziert, unverändert übernommen); ESLint ignoriert src/lib ebenfalls
+src/lib/lamejs.js
