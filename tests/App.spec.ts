@@ -3,6 +3,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import App from '@/App.vue'
+import AppPage from '@/views/AppPage.vue'
 import { useAlarmStore } from '@/stores/alarmStore'
 import { normalizeLang } from '@/i18n'
 
@@ -31,7 +32,7 @@ describe('App.vue — SSI nav sync', () => {
     expect(store.currentLang).toBe('en')
     expect(store.currentTheme).toBe('light')
     expect(localStorage.getItem('locale')).toBe('en')
-    expect(wrapper.find('.app-title').text()).not.toBe('app_title')
+    expect(wrapper.findComponent({ name: 'RouterView' }).exists()).toBe(true)
   })
 
   it('ignores an unsupported lang attribute', () => {
@@ -65,9 +66,15 @@ describe('App.vue — SSI nav sync', () => {
   })
 })
 
-describe('App.vue — tab switch from presets', () => {
+function mountAppPage() {
+  const pinia = createPinia()
+  setActivePinia(pinia)
+  return shallowMount(AppPage, { global: { plugins: [pinia] } })
+}
+
+describe('AppPage.vue — tab switch from presets', () => {
   it('opens the tab a section asks for via navigate', async () => {
-    const wrapper = mountApp()
+    const wrapper = mountAppPage()
     const sections = () => wrapper.findAll('.tab-content > .section')
     const visibleIndex = () => sections().findIndex((s) => s.isVisible())
     expect(visibleIndex()).toBe(0)
@@ -88,11 +95,11 @@ describe('normalizeLang', () => {
   })
 })
 
-describe('App.vue — save options', () => {
+describe('AppPage.vue — save options', () => {
   it('offers the save options menu in the filter tab', () => {
     const pinia = createPinia()
     setActivePinia(pinia)
-    const wrapper = shallowMount(App, {
+    const wrapper = shallowMount(AppPage, {
       global: { plugins: [pinia], stubs: { CollapsibleSection: false } },
     })
     const filterTab = wrapper.find('.section-narrow')

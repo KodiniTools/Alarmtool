@@ -1,5 +1,8 @@
 <template>
-  <a v-if="href" :class="classes" :href="href" :download="download || undefined">
+  <RouterLink v-if="to" :class="classes" :to="to">
+    <slot />
+  </RouterLink>
+  <a v-else-if="href" :class="classes" :href="href" :download="download || undefined">
     <slot />
   </a>
   <button v-else :type="type" :class="classes" :disabled="disabled">
@@ -13,10 +16,12 @@
    * Rendert die globalen Klassen aus src/styles/components/button.css, damit der
    * Design-System-Export (bundle.css, preview.html) unverändert gilt.
    *
-   * Mit `href` entsteht ein <a> (z. B. Download-Link), sonst ein <button type="button">.
+   * Mit `to` entsteht ein RouterLink (Seitenwechsel ohne Neuladen), mit `href` ein <a>
+   * (z. B. Download-Link), sonst ein <button type="button">.
    * Weitere Attribute (id, title, class) und Listener (@click) fallen auf das Wurzelelement durch.
    */
   import { computed, type PropType } from 'vue'
+  import { RouterLink, type RouteLocationRaw } from 'vue-router'
 
   export type ButtonVariant = 'primary' | 'secondary' | 'danger'
   export type ButtonSize = 'md' | 'sm'
@@ -40,6 +45,8 @@
       default: 'button',
       validator: (v: string) => ['button', 'submit', 'reset'].includes(v),
     },
+    /** Router-Ziel; rendert einen RouterLink (hat Vorrang vor href) */
+    to: { type: [String, Object] as PropType<RouteLocationRaw>, default: '' },
     /** Rendert einen Link statt eines Buttons */
     href: { type: String, default: '' },
     /** Dateiname für <a download>; nur zusammen mit href */

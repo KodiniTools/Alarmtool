@@ -47,3 +47,14 @@ auf `main` tut es nichts.
   `og-image.png` erhalten bleiben.
 - `favicon.ico` liegt im Document-Root `/var/www/kodinitools.com/public` und
   wird vom Deploy nicht angefasst.
+
+## Seiten und URLs
+
+- `/alarmtool/` – Landing-Page (Vue Router, `src/views/LandingPage.vue`)
+- `/alarmtool/app/` – das eigentliche Tool (`src/views/AppPage.vue`)
+
+Der Build legt zusätzlich `dist/app/index.html` ab (Kopie der `index.html` mit
+Canonical/Titel der App-Seite, siehe `appPageCopy()` in `vite.config.js`). Dadurch
+funktionieren Neuladen und Direktaufruf von `/alarmtool/app/` ohne Rewrite-Regel im
+Webserver, und die SSI-Includes werden wie auf der Startseite verarbeitet. `deploy.sh`
+kopiert den Ordner mit dem restlichen Build-Output (`rsync … dist/`).

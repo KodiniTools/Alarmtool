@@ -1,0 +1,528 @@
+/* ==========================================================================
+   Landing-Page (/alarmtool/)
+   --------------------------------------------------------------------------
+   Flache Flächen nach Tokens v2: kein Gradient, kein Schatten, ein Akzent.
+   Das Hero-Bild (HeroOscillators.vue) ist eine nachgebaute Oszillator-Ansicht;
+   Wellenfarben kommen aus .osc-wave-chip--* (oscillator.css) über currentColor.
+   ========================================================================== */
+
+.landing-page {
+  color: var(--ds-text);
+}
+
+.lp-wrap {
+  max-width: var(--ds-container);
+  margin: 0 auto;
+  padding: 0 var(--ds-gutter);
+}
+
+/* ─── Hero ─────────────────────────────────────────────────────── */
+
+.lp-hero {
+  padding: var(--ds-space-16) 0 var(--ds-space-12);
+}
+
+.lp-hero__text {
+  max-width: 760px;
+  margin: 0 auto var(--ds-space-12);
+  text-align: center;
+}
+
+.lp-eyebrow {
+  display: inline-block;
+  margin-bottom: var(--ds-space-4);
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-accent-soft);
+  color: var(--ds-text);
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-medium);
+}
+
+.lp-title {
+  margin-bottom: var(--ds-space-5);
+  font-size: clamp(var(--ds-text-3xl), 5vw, calc(var(--ds-text-3xl) * 1.5));
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-tight);
+  text-wrap: balance;
+}
+
+.lp-lead {
+  margin: 0 auto var(--ds-space-8);
+  max-width: 640px;
+  font-size: var(--ds-text-xl);
+  line-height: var(--ds-leading);
+  color: var(--ds-text-2);
+}
+
+.lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ds-space-3);
+}
+
+/* Größere Variante des Textbuttons nur für die Landing-Page */
+.btn.lp-cta {
+  height: var(--ds-row-height);
+  padding: 0 var(--ds-space-6);
+  font-size: var(--ds-text-lg);
+}
+
+.lp-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--ds-space-2) var(--ds-space-5);
+  margin-top: var(--ds-space-5);
+  list-style: none;
+  font-size: var(--ds-text-sm);
+  color: var(--ds-text-3);
+}
+
+.lp-trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.lp-trust .fa-check {
+  color: var(--ds-success);
+}
+
+/* ─── Hero-Bild: Oszillator-Ansicht ────────────────────────────── */
+
+.lp-visual {
+  margin: 0;
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-1);
+  overflow: hidden;
+}
+
+.lp-visual__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-5);
+  border-bottom: var(--ds-border-width) solid var(--ds-border);
+  background: var(--ds-surface-2);
+}
+
+.lp-visual__title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-md);
+  font-weight: var(--ds-weight-semibold);
+}
+
+.lp-visual__title .fas {
+  color: var(--ds-accent);
+}
+
+.lp-visual__badge {
+  padding: var(--ds-space-1) var(--ds-space-3);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-accent-soft);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-medium);
+  white-space: nowrap;
+}
+
+.lp-visual__rows {
+  padding: var(--ds-space-3) var(--ds-space-5) var(--ds-space-5);
+}
+
+.lp-osc {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ds-space-5);
+  padding: var(--ds-space-2) 0;
+  border-bottom: var(--ds-border-width) solid var(--ds-border);
+}
+
+.lp-osc__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  min-width: 0;
+}
+
+/* Kleiner Schalter wie UiSwitch, nur als Bild */
+.lp-osc__switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 28px;
+  height: var(--ds-space-4);
+  border-radius: var(--ds-radius-full);
+  background: var(--ds-accent);
+}
+
+.lp-osc__switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: var(--ds-space-3);
+  height: var(--ds-space-3);
+  border-radius: 50%;
+  background: var(--ds-on-accent);
+}
+
+.lp-osc__name {
+  font-size: var(--ds-text-sm);
+  font-weight: var(--ds-weight-semibold);
+  white-space: nowrap;
+}
+
+.lp-osc__chip {
+  padding: 2px var(--ds-space-2);
+  border: var(--ds-border-width) solid currentColor;
+  border-radius: var(--ds-radius-sm);
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-semibold);
+  line-height: var(--ds-leading-tight);
+}
+
+.lp-osc__freq {
+  margin-left: auto;
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-sm);
+  color: var(--ds-text-2);
+  white-space: nowrap;
+}
+
+.lp-osc__lane {
+  display: block;
+  width: 100%;
+  height: 44px;
+}
+
+.lp-axis {
+  stroke: var(--ds-border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.lp-wave {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Ausgeschalteter Oszillator: gedämpft, Nulllinie */
+.lp-osc--off .lp-osc__switch {
+  background: var(--ds-surface-3);
+}
+
+.lp-osc--off .lp-osc__switch::after {
+  right: auto;
+  left: 2px;
+  background: var(--ds-text-3);
+}
+
+.lp-osc--off .lp-osc__name,
+.lp-osc--off .lp-osc__chip,
+.lp-osc--off .lp-osc__freq,
+.lp-osc--off .lp-osc__lane {
+  color: var(--ds-text-3);
+}
+
+.lp-visual__more {
+  padding: var(--ds-space-2) 0;
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
+}
+
+/* Summe: größere Spur mit Muster-Abschnitten */
+.lp-osc--mix {
+  margin-top: var(--ds-space-2);
+  padding: var(--ds-space-4);
+  border: var(--ds-border-width) solid var(--ds-border-strong);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-surface-0);
+}
+
+.lp-osc--mix .lp-osc__meta {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ds-space-1);
+}
+
+.lp-osc__name--mix {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-text-lg);
+}
+
+.lp-osc__name--mix .fas {
+  color: var(--ds-accent);
+  font-size: var(--ds-text-sm);
+}
+
+.lp-osc__hint {
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
+}
+
+.lp-osc--mix .lp-osc__lane {
+  height: 120px;
+}
+
+.lp-gate {
+  fill: var(--ds-accent-soft);
+}
+
+.lp-wave--mix {
+  stroke: var(--ds-accent);
+  stroke-width: 2.5;
+}
+
+/* ─── Fakten ───────────────────────────────────────────────────── */
+
+.lp-facts {
+  border-top: var(--ds-border-width) solid var(--ds-border);
+  border-bottom: var(--ds-border-width) solid var(--ds-border);
+  background: var(--ds-surface-1);
+}
+
+.lp-facts__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.lp-fact {
+  display: grid;
+  gap: var(--ds-space-1);
+  padding: var(--ds-space-5);
+}
+
+.lp-fact + .lp-fact {
+  border-left: var(--ds-border-width) solid var(--ds-border);
+}
+
+.lp-fact dt {
+  font-family: var(--ds-font-mono);
+  font-size: var(--ds-text-3xl);
+  font-weight: var(--ds-weight-semibold);
+  line-height: var(--ds-leading-tight);
+  color: var(--ds-text);
+}
+
+.lp-fact dd {
+  font-size: var(--ds-text-sm);
+  color: var(--ds-text-2);
+}
+
+/* ─── Abschnitte ───────────────────────────────────────────────── */
+
+.lp-section {
+  padding: var(--ds-space-16) 0;
+}
+
+.lp-section--alt {
+  border-top: var(--ds-border-width) solid var(--ds-border);
+  border-bottom: var(--ds-border-width) solid var(--ds-border);
+  background: var(--ds-surface-1);
+}
+
+.lp-section__head {
+  max-width: 640px;
+  margin-bottom: var(--ds-space-10);
+}
+
+.lp-section__head h2,
+.lp-final h2 {
+  margin-bottom: var(--ds-space-3);
+  font-size: var(--ds-text-3xl);
+  font-weight: var(--ds-weight-bold);
+  line-height: var(--ds-leading-tight);
+  letter-spacing: var(--ds-tracking-tight);
+}
+
+.lp-section__head p {
+  font-size: var(--ds-text-lg);
+  color: var(--ds-text-2);
+}
+
+/* Anker unter der globalen Navigation */
+#funktionen {
+  scroll-margin-top: var(--ds-space-16);
+}
+
+.lp-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ds-gap);
+  list-style: none;
+}
+
+.lp-feature {
+  padding: var(--ds-space-6);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-1);
+}
+
+.lp-feature__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-control-lg);
+  height: var(--ds-control-lg);
+  margin-bottom: var(--ds-space-4);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-accent-soft);
+  color: var(--ds-accent);
+}
+
+.lp-feature h3,
+.lp-step h3 {
+  margin-bottom: var(--ds-space-2);
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-semibold);
+}
+
+.lp-feature p,
+.lp-step p {
+  font-size: var(--ds-text-md);
+  color: var(--ds-text-2);
+}
+
+.lp-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ds-gap);
+  list-style: none;
+}
+
+.lp-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ds-control-md);
+  height: var(--ds-control-md);
+  margin-bottom: var(--ds-space-4);
+  border: var(--ds-border-width) solid var(--ds-border-strong);
+  border-radius: 50%;
+  font-family: var(--ds-font-mono);
+  font-weight: var(--ds-weight-semibold);
+}
+
+.lp-final {
+  padding: var(--ds-space-12) var(--ds-space-8);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-surface-1);
+  text-align: center;
+}
+
+.lp-final p {
+  margin-bottom: var(--ds-space-6);
+  font-size: var(--ds-text-lg);
+  color: var(--ds-text-2);
+}
+
+/* ─── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  .lp-hero {
+    padding: var(--ds-space-10) 0 var(--ds-space-8);
+  }
+
+  .lp-osc {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: var(--ds-space-4);
+  }
+
+  .lp-facts__grid,
+  .lp-features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-fact:nth-child(3) {
+    border-left: none;
+  }
+
+  .lp-fact:nth-child(n + 3) {
+    border-top: var(--ds-border-width) solid var(--ds-border);
+  }
+
+  .lp-section {
+    padding: var(--ds-space-12) 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .lp-wrap {
+    padding: 0 var(--ds-space-4);
+  }
+
+  .lp-hero__text {
+    margin-bottom: var(--ds-space-8);
+  }
+
+  .lp-lead {
+    font-size: var(--ds-text-lg);
+  }
+
+  .lp-actions .lp-cta {
+    flex: 1 1 100%;
+  }
+
+  /* Oszillatoren: Kopfzeile über der Spur */
+  .lp-visual__head,
+  .lp-visual__rows {
+    padding-left: var(--ds-space-3);
+    padding-right: var(--ds-space-3);
+  }
+
+  .lp-osc {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--ds-space-1);
+  }
+
+  .lp-osc__lane {
+    height: 32px;
+  }
+
+  .lp-osc--mix {
+    padding: var(--ds-space-3);
+  }
+
+  .lp-osc--mix .lp-osc__meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--ds-space-3);
+  }
+
+  .lp-osc--mix .lp-osc__lane {
+    height: 88px;
+  }
+
+  .lp-features,
+  .lp-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-fact {
+    padding: var(--ds-space-4) var(--ds-space-3);
+  }
+
+  .lp-fact dt {
+    font-size: var(--ds-text-2xl);
+  }
+
+  .lp-final {
+    padding: var(--ds-space-8) var(--ds-space-4);
+  }
+}

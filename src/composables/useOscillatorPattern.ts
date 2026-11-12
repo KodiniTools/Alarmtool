@@ -1,7 +1,6 @@
 import { useAlarmStore } from '@/stores/alarmStore'
 import { getOscRuntime, setOscRuntime } from './useOscillatorRuntime'
-
-const FALLBACK_PATTERN = [1500, 300]
+import { parsePatternSteps } from '@/lib/oscillatorPreview'
 
 export function useOscillatorPattern() {
   const store = useAlarmStore()
@@ -10,17 +9,12 @@ export function useOscillatorPattern() {
     const oscData = store.oscillators[oscId]
     if (!oscData) return
 
-    try {
-      const numbers = oscData.pattern
-        .split(',')
-        .map((x) => parseFloat(x.trim()))
-        .filter((n) => !isNaN(n) && n > 0)
-
-      const steps = numbers.length >= 2 && numbers.length % 2 === 0 ? numbers : FALLBACK_PATTERN
-      setOscRuntime(oscId, { patternSteps: steps, patternIndex: 0, toneIsOn: false })
-    } catch {
-      setOscRuntime(oscId, { patternSteps: FALLBACK_PATTERN, patternIndex: 0, toneIsOn: false })
-    }
+    // Same rules as the live preview (src/lib/oscillatorPreview.ts)
+    setOscRuntime(oscId, {
+      patternSteps: parsePatternSteps(oscData.pattern),
+      patternIndex: 0,
+      toneIsOn: false,
+    })
   }
 
   function setOscTone(oscId: number, on: boolean) {

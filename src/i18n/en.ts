@@ -298,4 +298,63 @@ export default {
   // Toast Messages - Copy/Paste
   toast_osc_copied: 'Oscillator settings copied.',
   toast_osc_pasted: 'Oscillator settings pasted.',
+
+  // Landing page
+  lp_eyebrow: 'Alarm sound generator in your browser',
+  lp_title: 'Build your own alarm sound from up to 12 oscillators',
+  lp_lead:
+    'Pick a waveform, shape frequency and envelope, set the rhythm and save as WAV or MP3. Everything runs right in your browser, with no installation and no account.',
+  lp_cta_start: 'Create alarm sound',
+  lp_cta_learn: 'See features',
+  lp_trust_free: 'Free',
+  lp_trust_account: 'No sign-up',
+  lp_trust_local: 'Sound is generated locally in your browser',
+  lp_visual_label:
+    'Illustration of the oscillator view: four active oscillators with sine, square, sawtooth and triangle waves add up to the alarm sound, which switches on and off in the set rhythm.',
+  lp_visual_title: 'Oscillators',
+  lp_visual_active: '4 of 12 active',
+  lp_visual_off: 'Off',
+  lp_visual_more: '+ 7 more oscillators',
+  lp_visual_mix: 'Mix',
+  lp_visual_mix_hint: 'Envelope and pattern 300, 150 ms',
+  lp_fact_oscillators: 'oscillators at once',
+  lp_fact_waveforms: 'waveforms',
+  lp_fact_presets: 'ready-made alarm presets',
+  lp_fact_uploads: 'uploads, everything stays in your browser',
+  lp_features_title: 'Everything for an alarm sound that stands out',
+  lp_features_lead:
+    'From a single beep to a layered siren: every oscillator has its own waveform, frequency, volume, panning, envelope and pattern.',
+  lp_feat_osc_title: '12 oscillators',
+  lp_feat_osc_desc:
+    'Sine, square, sawtooth, triangle, pulse and organ. Frequency from 50 to 2000 Hz, volume and stereo panning per oscillator.',
+  lp_feat_env_title: 'Envelope and rhythm',
+  lp_feat_env_desc:
+    'Attack, decay, sustain and release shape each tone. A pattern of on and off times in milliseconds sets the beat.',
+  lp_feat_filter_title: 'Global filter',
+  lp_feat_filter_desc:
+    'Low-pass, high-pass, band-pass or notch with adjustable frequency and Q colour the whole sound.',
+  lp_feat_rec_title: 'Recording and export',
+  lp_feat_rec_desc: 'Record live as WebM, OGG or WAV, then convert the recording to MP3 or WAV.',
+  lp_feat_presets_title: 'Ready-made presets',
+  lp_feat_presets_desc:
+    'Siren, wake-up tone, heart monitor and more: play, adjust in the editor or record right away.',
+  lp_feat_history_title: 'Undo and save',
+  lp_feat_history_desc:
+    'Undo changes, save settings in your browser or export and import them as a file.',
+  lp_steps_title: 'Three steps to your alarm sound',
+  lp_step1_title: 'Start',
+  lp_step1_desc: 'Pick a preset as a starting point or begin with an empty oscillator.',
+  lp_step2_title: 'Shape',
+  lp_step2_desc: 'Set waveform, frequency, envelope and pattern and listen right away.',
+  lp_step3_title: 'Save',
+  lp_step3_desc: 'Record and download it as a file, for example as a ringtone or wake-up sound.',
+  lp_final_title: 'Ready for your alarm sound?',
+  lp_final_desc: 'The tool opens right in your browser. No installation, no account.',
+
+  // Live preview of the oscillators
+  scope_title: 'Live preview',
+  scope_live: 'Playing',
+  scope_wave: 'Waveform of the mix',
+  scope_rhythm: 'Volume over the rhythm',
+  scope_empty: 'No oscillator is active. Switch one on to see the preview.',
 }
