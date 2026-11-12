@@ -20,7 +20,11 @@ async function mountLanding() {
 }
 
 describe('LandingPage', () => {
-  beforeEach(() => localStorage.clear())
+  beforeEach(() => {
+    localStorage.clear()
+    // jsdom hat kein Canvas; der Visualizer zeichnet dann einfach nicht
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null)
+  })
 
   it('zeigt Überschrift, Hero-Bild und alle Abschnitte ohne rohe Schlüssel', async () => {
     const { wrapper } = await mountLanding()
@@ -31,14 +35,14 @@ describe('LandingPage', () => {
     expect(wrapper.text()).not.toMatch(/\blp_[a-z0-9_]+/)
   })
 
-  it('zeichnet vier aktive und einen ausgeschalteten Oszillator plus Summe', async () => {
+  it('zeigt vier aktive und einen ausgeschalteten Oszillator plus Summe und den Visualizer', async () => {
     const { wrapper } = await mountLanding()
-    expect(wrapper.findAll('.lp-osc:not(.lp-osc--mix)')).toHaveLength(5)
+    const visual = wrapper.find('.lp-visual')
+    expect(visual.attributes('data-theme')).toBe('dark')
+    expect(wrapper.findAll('.lp-osc:not(.lp-osc--mix):not(.lp-osc--more)')).toHaveLength(5)
     expect(wrapper.findAll('.lp-osc--off')).toHaveLength(1)
-    for (const path of wrapper.findAll('.lp-wave')) {
-      expect(path.attributes('d')).toMatch(/^M[\d.]+,[\d.]+( L[\d.]+,[\d.]+)+$/)
-    }
-    expect(wrapper.findAll('.lp-gate').length).toBeGreaterThan(0)
+    expect(wrapper.find('.lp-osc--mix').exists()).toBe(true)
+    expect(visual.find('canvas.lp-visual__scope').exists()).toBe(true)
   })
 
   it('leitet die Fakten aus der Konfiguration ab', async () => {
