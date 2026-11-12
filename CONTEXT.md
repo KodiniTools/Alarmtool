@@ -77,8 +77,11 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
     ├── stores/                    # Pinia State Management
     │   └── alarmStore.js          # Zentraler State Store
     │
+    ├── lib/                       # Reine Logik ohne Vue (u. a. filterConfig.js, recordingFormats.js)
+    │
     └── i18n/                      # Internationalisierung
-        └── translations.js        # Übersetzungen (de/en)
+        ├── de.js / en.js          # Texte je Sprache (gleiche Schlüssel, Test tests/i18n.spec.js)
+        └── translations.js        # fasst de und en zusammen
 ```
 
 ---
@@ -268,6 +271,9 @@ exportiert über `src/components/ui/index.js`:
 - `UiSwitch`: Ein/Aus-Schalter (`role="switch"`, `label` als zugänglicher Name)
 - `SliderField`: Slider plus Zahlfeld mit Label und Hilfetext (Oszillator- und Filterparameter)
 - `CollapsibleSection`: auf- und zuklappbarer Abschnitt der Sidebar
+
+Teilkomponenten der Aufnahme liegen in `src/components/recorder/`
+(`RecordingConvert` für MP3/WAV-Umwandlung, `RecordingProgress` für Restzeit und Balken).
 
 Buttons werden nur über diese Komponenten gebaut (Test `tests/UiButton.spec.js`).
 Die Stile bleiben global in `src/styles/components/button.css`, weil der

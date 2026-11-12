@@ -61,6 +61,7 @@
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
   import { SliderField } from '@/components/ui'
+  import { FILTER_DEFAULTS, filterLimits, filterTextKey } from '@/lib/filterConfig'
 
   const store = useAlarmStore()
   const { updateFilter: updateAudioFilter } = useAudioContext()
@@ -73,89 +74,20 @@
 
   const { t } = useI18n()
 
-  // Filter-specific default values
-  const filterDefaults = {
-    lowpass: {
-      frequency: 2000,
-      Q: 1,
-      freqMin: 20,
-      freqMax: 20000,
-      qMin: 0.1,
-      qMax: 20,
-      qStep: 0.1,
-    },
-    highpass: {
-      frequency: 200,
-      Q: 1,
-      freqMin: 20,
-      freqMax: 20000,
-      qMin: 0.1,
-      qMax: 20,
-      qStep: 0.1,
-    },
-    bandpass: {
-      frequency: 1000,
-      Q: 5,
-      freqMin: 20,
-      freqMax: 20000,
-      qMin: 0.5,
-      qMax: 30,
-      qStep: 0.5,
-    },
-    notch: { frequency: 1000, Q: 10, freqMin: 20, freqMax: 20000, qMin: 1, qMax: 50, qStep: 1 },
-  }
-
-  // Computed properties for dynamic ranges
   const frequencyRange = computed(() => {
-    const defaults = filterDefaults[filterType.value] || filterDefaults.lowpass
-    return { min: defaults.freqMin, max: defaults.freqMax }
+    const limits = filterLimits(filterType.value)
+    return { min: limits.freqMin, max: limits.freqMax }
   })
 
   const qRange = computed(() => {
-    const defaults = filterDefaults[filterType.value] || filterDefaults.lowpass
-    return { min: defaults.qMin, max: defaults.qMax, step: defaults.qStep }
+    const limits = filterLimits(filterType.value)
+    return { min: limits.qMin, max: limits.qMax, step: limits.qStep }
   })
 
-  // Computed properties for dynamic labels
-  const frequencyLabel = computed(() => {
-    const labels = {
-      lowpass: t('filter_freq_cutoff'),
-      highpass: t('filter_freq_cutoff'),
-      bandpass: t('filter_freq_center'),
-      notch: t('filter_freq_notch'),
-    }
-    return labels[filterType.value] || t('filter_frequency')
-  })
-
-  const frequencyHelp = computed(() => {
-    const helps = {
-      lowpass: t('filter_freq_help_lowpass'),
-      highpass: t('filter_freq_help_highpass'),
-      bandpass: t('filter_freq_help_bandpass'),
-      notch: t('filter_freq_help_notch'),
-    }
-    return helps[filterType.value] || t('filter_freq_help')
-  })
-
-  const qLabel = computed(() => {
-    const labels = {
-      lowpass: t('filter_q_resonance'),
-      highpass: t('filter_q_resonance'),
-      bandpass: t('filter_q_bandwidth'),
-      notch: t('filter_q_width'),
-    }
-    return labels[filterType.value] || t('filter_q')
-  })
-
-  const qHelp = computed(() => {
-    const helps = {
-      lowpass: t('filter_q_help_lowpass'),
-      highpass: t('filter_q_help_highpass'),
-      bandpass: t('filter_q_help_bandpass'),
-      notch: t('filter_q_help_notch'),
-    }
-    return helps[filterType.value] || t('filter_q_help')
-  })
+  const frequencyLabel = computed(() => t(filterTextKey('frequencyLabel', filterType.value)))
+  const frequencyHelp = computed(() => t(filterTextKey('frequencyHelp', filterType.value)))
+  const qLabel = computed(() => t(filterTextKey('qLabel', filterType.value)))
+  const qHelp = computed(() => t(filterTextKey('qHelp', filterType.value)))
 
   // Watch for store changes (e.g., when loading settings)
   watch(
@@ -170,8 +102,8 @@
 
   function onFilterTypeChange() {
     // Set default values for the selected filter type
-    if (filterType.value !== 'none' && filterDefaults[filterType.value]) {
-      const defaults = filterDefaults[filterType.value]
+    const defaults = FILTER_DEFAULTS[filterType.value]
+    if (filterType.value !== 'none' && defaults) {
       filterFrequency.value = defaults.frequency
       filterQ.value = defaults.Q
     }

@@ -26,7 +26,7 @@
     "stylesEntry": "src/styles/main.css",
     "waveforms": "src/lib/waveforms.js",
     "history": "src/components/oscillator/HistoryControls.vue",
-    "docs": ["README.md", "CONTEXT.md", "src/i18n/translations.js"],
+    "docs": ["README.md", "CONTEXT.md", "src/i18n/de.js", "src/i18n/en.js"],
     "upstream": "KodiniTools/Collage-Maker · src/design-system/tokens-v2.css @ 9dc4eca"
   },
   "icons": {
