@@ -22,58 +22,28 @@
       <!-- Filter Parameters (only shown when filter is active) -->
       <template v-if="filterType !== 'none'">
         <!-- Filter Frequency -->
-        <div class="mb-3 param-container">
-          <label for="filterFrequency" class="form-label">{{ frequencyLabel }}</label>
-          <div class="slider-input-group">
-            <input
-              id="filterFrequency"
-              v-model.number="filterFrequency"
-              type="range"
-              class="form-range"
-              :min="frequencyRange.min"
-              :max="frequencyRange.max"
-              step="1"
-              @input="updateFilter"
-            />
-            <input
-              v-model.number="filterFrequency"
-              type="number"
-              class="form-control"
-              :min="frequencyRange.min"
-              :max="frequencyRange.max"
-              step="1"
-              @input="updateFilter"
-            />
-          </div>
-          <small class="form-text">{{ frequencyHelp }}</small>
-        </div>
+        <SliderField
+          id="filterFrequency"
+          :model-value="filterFrequency"
+          :label="frequencyLabel"
+          :min="frequencyRange.min"
+          :max="frequencyRange.max"
+          :step="1"
+          :help="frequencyHelp"
+          @update:model-value="setFrequency"
+        />
 
         <!-- Filter Q -->
-        <div class="mb-3 param-container">
-          <label for="filterQ" class="form-label">{{ qLabel }}</label>
-          <div class="slider-input-group">
-            <input
-              id="filterQ"
-              v-model.number="filterQ"
-              type="range"
-              class="form-range"
-              :min="qRange.min"
-              :max="qRange.max"
-              :step="qRange.step"
-              @input="updateFilter"
-            />
-            <input
-              v-model.number="filterQ"
-              type="number"
-              class="form-control"
-              :min="qRange.min"
-              :max="qRange.max"
-              :step="qRange.step"
-              @input="updateFilter"
-            />
-          </div>
-          <small class="form-text">{{ qHelp }}</small>
-        </div>
+        <SliderField
+          id="filterQ"
+          :model-value="filterQ"
+          :label="qLabel"
+          :min="qRange.min"
+          :max="qRange.max"
+          :step="qRange.step"
+          :help="qHelp"
+          @update:model-value="setQ"
+        />
       </template>
 
       <!-- Info when no filter selected -->
@@ -90,6 +60,7 @@
   import { useAudioContext } from '@/composables/useAudioContext'
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
+  import { SliderField } from '@/components/ui'
 
   const store = useAlarmStore()
   const { updateFilter: updateAudioFilter } = useAudioContext()
@@ -204,6 +175,16 @@
       filterFrequency.value = defaults.frequency
       filterQ.value = defaults.Q
     }
+    updateFilter()
+  }
+
+  function setFrequency(value) {
+    filterFrequency.value = value
+    updateFilter()
+  }
+
+  function setQ(value) {
+    filterQ.value = value
     updateFilter()
   }
 

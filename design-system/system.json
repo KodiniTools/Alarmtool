@@ -37,7 +37,7 @@
   },
   "components": {
     "Button": "src/styles/components/button.css · src/components/ui/UiButton.vue · src/components/ui/UiIconButton.vue",
-    "FormControls": "src/styles/components/form.css · src/components/oscillator/SliderInput.vue",
+    "FormControls": "src/styles/components/form.css · src/components/ui/SliderField.vue · src/components/ui/UiSwitch.vue",
     "Tabs": "src/styles/layout.css · src/App.vue",
     "Section": "src/styles/layout.css · src/App.vue",
     "CollapsibleSection": "src/styles/components/sidebar.css · src/components/ui/CollapsibleSection.vue",
