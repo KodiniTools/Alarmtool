@@ -4,9 +4,10 @@ import { useOscillatorPattern } from './useOscillatorPattern'
 import { useOscillatorLifecycle } from './useOscillatorLifecycle'
 import { getOscRuntime } from './useOscillatorRuntime'
 import { applyWaveType } from '@/lib/waveforms'
+import type { Oscillator } from '@/stores/oscillatorStore'
 
 /** Translation key used to describe a parameter change in the undo history. */
-const PARAM_LABEL_KEYS = {
+const PARAM_LABEL_KEYS: Record<Exclude<keyof Oscillator, 'id'>, string> = {
   enabled: 'history_toggle',
   waveType: 'osc_waveform',
   frequency: 'osc_frequency',
@@ -26,14 +27,18 @@ export function useOscillators() {
   const { createOscillators, startSingleOscillator, stopSingleOscillator, stopOscillators } =
     useOscillatorLifecycle()
 
-  function updateOscillatorParameter(oscId, param, value) {
+  function updateOscillatorParameter<K extends Exclude<keyof Oscillator, 'id'>>(
+    oscId: number,
+    param: K,
+    value: Oscillator[K]
+  ) {
     const oscData = store.oscillators[oscId]
     if (!oscData || oscData[param] === value) return
 
     recordChange({ labelKey: PARAM_LABEL_KEYS[param], oscId })
 
     if (param === 'enabled') {
-      store.updateOscillator(oscId, { enabled: value })
+      store.updateOscillator(oscId, { enabled: value as boolean })
       if (value && store.isAlarmRunning) {
         startSingleOscillator(oscId)
       } else if (!value && getOscRuntime(oscId)?.osc) {
@@ -43,7 +48,7 @@ export function useOscillators() {
     }
 
     if (param === 'pattern') {
-      store.updateOscillator(oscId, { pattern: value })
+      store.updateOscillator(oscId, { pattern: value as string })
       parsePattern(oscId)
       return
     }
@@ -53,13 +58,13 @@ export function useOscillators() {
       const now = store.audioCtx.currentTime
       switch (param) {
         case 'frequency':
-          rt.osc.frequency.setValueAtTime(value, now)
+          rt.osc.frequency.setValueAtTime(value as number, now)
           break
         case 'waveType':
-          applyWaveType(rt.osc, store.audioCtx, value)
+          applyWaveType(rt.osc, store.audioCtx, value as string)
           break
         case 'pan':
-          if (rt.panNode) rt.panNode.pan.setValueAtTime(value, now)
+          if (rt.panNode) rt.panNode.pan.setValueAtTime(value as number, now)
           break
       }
     }

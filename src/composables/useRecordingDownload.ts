@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useToast } from './useToast'
 import { formatTime } from '@/lib/formatTime'
 
-const EXTENSION_MAP = [
+const EXTENSION_MAP: { test: (mimeType: string) => boolean; ext: string }[] = [
   { test: (m) => m.includes('wav'), ext: 'wav' },
   { test: (m) => m.includes('opus') && m.includes('ogg'), ext: 'ogg' },
   { test: (m) => m.includes('opus'), ext: 'webm' },
@@ -10,7 +10,7 @@ const EXTENSION_MAP = [
   { test: (m) => m.includes('mp4'), ext: 'mp4' },
 ]
 
-function mimeToExtension(mimeType) {
+function mimeToExtension(mimeType: string): string {
   return EXTENSION_MAP.find((e) => e.test(mimeType))?.ext ?? 'webm'
 }
 
@@ -19,9 +19,9 @@ export function useRecordingDownload() {
   const downloadUrl = ref('')
   const downloadFilename = ref('')
   const showDownload = ref(false)
-  const recordedBlob = ref(null)
+  const recordedBlob = ref<Blob | null>(null)
 
-  function create(mimeType, chunks) {
+  function create(mimeType: string, chunks: BlobPart[]) {
     try {
       if (!chunks.length) return
 

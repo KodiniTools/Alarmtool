@@ -6,7 +6,7 @@ const FALLBACK_PATTERN = [1500, 300]
 export function useOscillatorPattern() {
   const store = useAlarmStore()
 
-  function parsePattern(oscId) {
+  function parsePattern(oscId: number) {
     const oscData = store.oscillators[oscId]
     if (!oscData) return
 
@@ -23,7 +23,7 @@ export function useOscillatorPattern() {
     }
   }
 
-  function setOscTone(oscId, on) {
+  function setOscTone(oscId: number, on: boolean) {
     const rt = getOscRuntime(oscId)
     if (!store.audioCtx || !rt?.gainNode) return
 
@@ -55,7 +55,7 @@ export function useOscillatorPattern() {
     }
   }
 
-  function runOscPattern(oscId) {
+  function runOscPattern(oscId: number) {
     const oscData = store.oscillators[oscId]
     const rt = getOscRuntime(oscId)
     if (!oscData?.enabled || !store.isAlarmRunning || !rt?.patternSteps?.length) return
@@ -63,8 +63,9 @@ export function useOscillatorPattern() {
     const newToneState = !rt.toneIsOn
     setOscTone(oscId, newToneState)
 
-    const stepDuration = rt.patternSteps[rt.patternIndex]
-    const nextIndex = (rt.patternIndex + 1) % rt.patternSteps.length
+    const index = rt.patternIndex ?? 0
+    const stepDuration = rt.patternSteps[index]
+    const nextIndex = (index + 1) % rt.patternSteps.length
 
     // Update runtime state without touching Vue reactive system
     setOscRuntime(oscId, { toneIsOn: newToneState, patternIndex: nextIndex })

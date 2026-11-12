@@ -69,10 +69,10 @@ alarm-tool-vue/
 │   │   ├── FAQSection.vue
 │   │   └── SettingsPanel.vue
 │   ├── composables/         # Wiederverwendbare Logik
-│   │   ├── useAudioContext.js
-│   │   ├── useOscillators.js
-│   │   ├── usePlayer.js
-│   │   └── useRecorder.js
+│   │   ├── useAudioContext.ts
+│   │   ├── useOscillators.ts
+│   │   ├── usePlayer.ts
+│   │   └── useRecorder.ts
 │   ├── stores/              # Pinia State Management
 │   │   └── alarmStore.ts
 │   ├── i18n/                # Internationalisierung
@@ -154,7 +154,7 @@ export const translations = { de, en, fr }
 
 1. Erweitere den passenden Domain-Store in `src/stores/` (z. B. `oscillatorStore.ts`)
 2. Füge UI-Element in `src/components/OscillatorItem.vue` hinzu
-3. Implementiere Logik in `src/composables/useOscillators.js`
+3. Implementiere Logik in `src/composables/useOscillators.ts`
 
 ## Lizenz
 MIT Lizenz

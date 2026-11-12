@@ -13,8 +13,8 @@ const AUDIO_CONTEXT_CLOSE_DELAY_MS = 2000
 // Shared across every usePlayer() instance (sticky player, keyboard shortcuts,
 // presets) so playback bookkeeping stays consistent no matter which component
 // drives the transport.
-const playbackTimer = ref(null)
-const closeTimer = ref(null)
+const playbackTimer = ref<ReturnType<typeof setInterval> | null>(null)
+const closeTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
 export function usePlayer() {
   const store = useAlarmStore()
@@ -23,7 +23,7 @@ export function usePlayer() {
   const toast = useToast()
 
   // Sets the master gain immediately (no-op before the audio context exists).
-  function setMasterGain(value) {
+  function setMasterGain(value: number) {
     if (store.masterGainNode && store.audioCtx) {
       store.masterGainNode.gain.setValueAtTime(value, store.audioCtx.currentTime)
     }
@@ -190,7 +190,7 @@ export function usePlayer() {
     }, TIMER_INTERVAL_MS)
   }
 
-  function updateVolume(value) {
+  function updateVolume(value: number) {
     store.volume = value
 
     if (store.isPlaying && !store.isPaused && !store.isMuted) {
@@ -214,9 +214,9 @@ export function usePlayer() {
   }
 
   // Keyboard shortcuts
-  function handleKeyboard(event) {
+  function handleKeyboard(event: KeyboardEvent) {
     // Only if no input element is focused
-    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName ?? '')) {
       return
     }
 
