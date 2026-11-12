@@ -109,3 +109,38 @@ describe('AppPage.vue — save options', () => {
     wrapper.unmount()
   })
 })
+
+describe('AppPage.vue — Start-Link', () => {
+  it('führt aus der Tab-Leiste zurück zur Landing-Page', async () => {
+    const { mount, flushPromises } = await import('@vue/test-utils')
+    const { createMemoryHistory } = await import('vue-router')
+    const { createAppRouter } = await import('@/router')
+    const pinia = createPinia()
+    setActivePinia(pinia)
+    const router = createAppRouter(createMemoryHistory())
+    await router.push('/app/')
+    const wrapper = mount(AppPage, {
+      global: {
+        plugins: [pinia, router],
+        stubs: {
+          FilterControl: true,
+          OscillatorGrid: true,
+          OscillatorScope: true,
+          RecorderControl: true,
+          PresetsSection: true,
+          FAQSection: true,
+          PlayerControl: true,
+          SettingsPanel: true,
+        },
+      },
+    })
+    const home = wrapper.find('.tabs a.tab-btn--home')
+    expect(home.attributes('href')).toBe('/')
+    expect(home.text()).toBe('Start')
+    expect(wrapper.find('.tabs').element.firstElementChild).toBe(home.element)
+    await home.trigger('click')
+    await flushPromises()
+    expect(router.currentRoute.value.name).toBe('landing')
+    wrapper.unmount()
+  })
+})
