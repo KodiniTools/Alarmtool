@@ -274,6 +274,9 @@ exportiert über `src/components/ui/index.js`:
 
 Teilkomponenten der Aufnahme liegen in `src/components/recorder/`
 (`RecordingConvert` für MP3/WAV-Umwandlung, `RecordingProgress` für Restzeit und Balken).
+Ihre Stile stehen wie alle Komponenten-Stile global in `src/styles/components/recorder.css`.
+`tests/designTokens.spec.js` prüft CSS-Dateien und `<style>`-Blöcke der `.vue`-Dateien auf
+feste Farben, Gradients, Lifts und fremde Radien.
 
 Buttons werden nur über diese Komponenten gebaut (Test `tests/UiButton.spec.js`).
 Die Stile bleiben global in `src/styles/components/button.css`, weil der

@@ -141,7 +141,7 @@
 
 <style scoped>
   .filter-inactive-info {
-    padding: 1rem;
+    padding: var(--ds-space-4);
     text-align: center;
     opacity: 0.7;
   }

@@ -1,0 +1,102 @@
+/* Aufnahme — Auswahlfelder, Erfolgsmeldung und Umwandlung (RecorderControl,
+   recorder/RecordingConvert). Flache Flächen, 1-px-Rahmen, Status über Text und
+   Icon in ds-success; keine Gradients, Pulse oder Sonderfarben auf Buttons. */
+.recorder-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-4);
+  align-items: flex-end;
+}
+
+.recorder-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+}
+
+.recorder-field .form-select {
+  width: auto;
+  min-width: 140px;
+}
+
+.recorder-actions {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+/* Panels unter den Feldern: Erfolg, Umwandlungsangebot, Fortschritt */
+.recording-success,
+.convert-section,
+.convert-progress {
+  margin-top: var(--ds-space-3);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  background-color: var(--ds-surface-2);
+  font-size: var(--ds-text-md);
+}
+
+.recording-success {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  color: var(--ds-success);
+  font-weight: var(--ds-weight-medium);
+}
+
+.recording-success i {
+  font-size: var(--ds-icon-sm);
+}
+
+.convert-section {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.convert-label {
+  color: var(--ds-text-2);
+  white-space: nowrap;
+}
+
+.convert-actions {
+  display: flex;
+  gap: var(--ds-space-2);
+}
+
+.convert-progress {
+  color: var(--ds-text-2);
+}
+
+.convert-download {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  margin-top: var(--ds-space-3);
+}
+
+@media (max-width: 768px) {
+  .recorder-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .recorder-field .form-select {
+    width: 100%;
+  }
+
+  .recorder-actions {
+    flex-direction: column;
+  }
+
+  .convert-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .convert-download {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
