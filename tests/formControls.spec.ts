@@ -97,6 +97,6 @@ describe('FilterControl mit SliderField', () => {
     const qNumber = w.findAll('.slider-input-group')[1].findAll('input')[1]
     await qNumber.setValue('3')
     expect(updateFilter).toHaveBeenLastCalledWith({ type: 'lowpass', frequency: 1500, Q: 3 })
-    expect(w.get('label[for="filterQ"]').exists()).toBe(true)
+    expect(w.find('label[for="filterQ"]').exists()).toBe(true)
   })
 })

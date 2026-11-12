@@ -49,8 +49,8 @@ describe('PRESETS', () => {
 
   it('pads unused slots with the default oscillator after the defined ones', () => {
     const emergency = PRESETS.find((p) => p.id === 'emergency')
-    expect(emergency.data.oscillators[2].frequency).toBe(1320)
-    expect(emergency.data.oscillators.slice(3)).toEqual(Array(9).fill(DEFAULT_OSCILLATOR))
+    expect(emergency!.data.oscillators[2].frequency).toBe(1320)
+    expect(emergency!.data.oscillators.slice(3)).toEqual(Array(9).fill(DEFAULT_OSCILLATOR))
   })
 
   it('has unique ids', () => {

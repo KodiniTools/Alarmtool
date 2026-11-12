@@ -8,10 +8,10 @@ import prettierConfig from 'eslint-config-prettier'
 import prettierPlugin from 'eslint-plugin-prettier'
 import globals from 'globals'
 
-// JS und TS gemeinsam: @vue/eslint-config-typescript bringt typescript-eslint
-// mit und parst <script setup lang="ts">. Bis alle Komponenten migriert sind,
-// bleibt <script setup> ohne lang erlaubt.
-configureVueProject({ scriptLangs: ['ts', 'js'] })
+// @vue/eslint-config-typescript bringt typescript-eslint mit und parst
+// <script setup lang="ts">. Alle Komponenten sind migriert, daher ist nur
+// noch lang="ts" erlaubt.
+configureVueProject({ scriptLangs: ['ts'] })
 
 export default defineConfigWithVueTs(
   {

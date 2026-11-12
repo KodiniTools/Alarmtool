@@ -36,7 +36,7 @@ describe('alarmStore facade', () => {
 
   it('keeps audio node refs writable', () => {
     const store = useAlarmStore()
-    const fake = {}
+    const fake = {} as AudioContext
     store.audioCtx = fake
     expect(store.audioCtx).toBe(fake)
     store.audioCtx = null

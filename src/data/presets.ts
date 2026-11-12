@@ -1,7 +1,7 @@
 // Built-in alarm presets. Each definition lists only the oscillators it uses;
 // the remaining slots are filled with DEFAULT_OSCILLATOR (which the loader
 // treats as "disabled"), so every preset covers all OSCILLATOR_COUNT slots.
-import { DEFAULT_OSCILLATOR, OSCILLATOR_COUNT } from '@/lib/oscillatorDefaults'
+import { DEFAULT_OSCILLATOR, OSCILLATOR_COUNT, type OscParams } from '@/lib/oscillatorDefaults'
 
 const PRESET_DEFINITIONS = [
   {
@@ -803,7 +803,7 @@ const PRESET_DEFINITIONS = [
   },
 ]
 
-function padOscillators(oscillators) {
+function padOscillators(oscillators: Partial<OscParams>[]): Partial<OscParams>[] {
   const padding = Array.from(
     { length: Math.max(0, OSCILLATOR_COUNT - oscillators.length) },
     () => DEFAULT_OSCILLATOR

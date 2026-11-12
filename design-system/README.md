@@ -21,7 +21,7 @@ Keine zusätzlichen Abhängigkeiten – nur Node ≥ 18 und `git` (für den Comm
 | `README.md`, `components/*/README.md`, `components/*/preview.html`, `assets/Icons/README.md` | `content/` | handgeschrieben, 1:1 kopiert |
 | `publish.json` (neben `project/`) | Build | Liste der zu sendenden Dateien und Assets |
 
-**Regel:** Werte kommen immer aus dem Code, Texte immer aus `content/`. Ändert sich eine CSS-Variable, ändert sich `tokens.json` beim nächsten Build von selbst. Kommt eine neue Variable dazu, braucht sie eine Notiz in `content/tokens.notes.json` – `--check` schlägt sonst fehl. Die Komponenten-Styles nutzen keine Literalwerte mehr (Guard: `tests/designTokens.spec.js`); nur die Opazitäten und die Puls-Dauer stehen als eigene Einträge in den Notizen.
+**Regel:** Werte kommen immer aus dem Code, Texte immer aus `content/`. Ändert sich eine CSS-Variable, ändert sich `tokens.json` beim nächsten Build von selbst. Kommt eine neue Variable dazu, braucht sie eine Notiz in `content/tokens.notes.json` – `--check` schlägt sonst fehl. Die Komponenten-Styles nutzen keine Literalwerte mehr (Guard: `tests/designTokens.spec.ts`); nur die Opazitäten und die Puls-Dauer stehen als eigene Einträge in den Notizen.
 
 ## Ordner
 
@@ -68,5 +68,5 @@ Ein Workflow-Schritt `npm run design-system:check` stellt sicher, dass jede CSS-
 
 - Font Awesome, Favicon und OG-Bild liegen auf dem Host, nicht im Repo – sie sind nicht Teil des Systems. Supreme (400/500/700) liegt im Repo und wird mitgeliefert.
 - `--ds-focus-ring` (Composite mit `var()`), `--ds-ease` und die Typo-Skala sind keine Seiten-Tokens und wandern in das Prelude von `bundle.css`.
-- Die Token-Werte werden im Collage-Maker gepflegt (`src/design-system/tokens-v2.css`) und nach `src/styles/tokens.css` übernommen; `tests/designTokens.spec.js` hält Dark und Light deckungsgleich.
+- Die Token-Werte werden im Collage-Maker gepflegt (`src/design-system/tokens-v2.css`) und nach `src/styles/tokens.css` übernommen; `tests/designTokens.spec.ts` hält Dark und Light deckungsgleich.
 - Komponenten sind statische Vorschauen auf Basis des Original-CSS; es gibt kein `bundle.js`.

@@ -69,8 +69,8 @@ describe('Keine rohen .btn-Klassen in Komponenten', () => {
     const { join } = await import('node:path')
     const { fileURLToPath, URL: NodeURL } = await import('node:url')
     const root = fileURLToPath(new NodeURL('../src', import.meta.url))
-    const offenders = []
-    const walk = (dir) => {
+    const offenders: string[] = []
+    const walk = (dir: string): void => {
       for (const e of readdirSync(dir)) {
         const p = join(dir, e)
         if (statSync(p).isDirectory()) walk(p)
