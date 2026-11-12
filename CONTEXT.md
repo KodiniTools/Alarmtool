@@ -13,7 +13,7 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | **Pinia** | ^2.1.7 | State Management (Vuex-Nachfolger) |
 | **Vite** | ^5.0.0 | Build Tool & Dev Server |
 | **JavaScript** | ES6+ | Programmiersprache (Migration nach TypeScript vorbereitet) |
-| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc` |
+| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; `src/lib` ist TypeScript (außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
 
 ### Browser APIs
 | API | Verwendung |
@@ -77,7 +77,7 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
     ├── stores/                    # Pinia State Management
     │   └── alarmStore.js          # Zentraler State Store
     │
-    ├── lib/                       # Reine Logik ohne Vue (u. a. filterConfig.js, recordingFormats.js)
+    ├── lib/                       # Reine Logik ohne Vue, TypeScript (u. a. filterConfig.ts, recordingFormats.ts)
     │
     └── i18n/                      # Internationalisierung
         ├── de.js / en.js          # Texte je Sprache (gleiche Schlüssel, Test tests/i18n.spec.js)
@@ -187,7 +187,7 @@ npm run dev      # Startet Entwicklungsserver (Port 5173)
 npm run build    # Erstellt Production Build in /dist
 npm run preview  # Vorschau des Production Builds
 npm test         # Vitest (Unit- und Komponententests in tests/)
-npm run lint     # ESLint
+npm run lint     # ESLint (JS, TS und .vue mit <script setup> oder lang="ts")
 npm run format:check  # Prettier
 npm run type-check    # vue-tsc (TypeScript)
 npm run design-system:check  # Design-System-Export prüfen
