@@ -316,7 +316,6 @@ export default {
   lp_visual_off: 'Off',
   lp_visual_more: '+ 7 more oscillators',
   lp_visual_mix: 'Mix',
-  lp_visual_mix_hint: 'Envelope and pattern 300, 150 ms',
   lp_fact_oscillators: 'oscillators at once',
   lp_fact_waveforms: 'waveforms',
   lp_fact_presets: 'ready-made alarm presets',

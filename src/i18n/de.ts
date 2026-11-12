@@ -318,7 +318,6 @@ export default {
   lp_visual_off: 'Aus',
   lp_visual_more: '+ 7 weitere Oszillatoren',
   lp_visual_mix: 'Summe',
-  lp_visual_mix_hint: 'Hüllkurve und Muster 300, 150 ms',
   lp_fact_oscillators: 'Oszillatoren gleichzeitig',
   lp_fact_waveforms: 'Wellenformen',
   lp_fact_presets: 'fertige Alarm-Presets',
