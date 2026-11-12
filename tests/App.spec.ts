@@ -65,6 +65,20 @@ describe('App.vue — SSI nav sync', () => {
   })
 })
 
+describe('App.vue — tab switch from presets', () => {
+  it('opens the tab a section asks for via navigate', async () => {
+    const wrapper = mountApp()
+    const sections = () => wrapper.findAll('.tab-content > .section')
+    const visibleIndex = () => sections().findIndex((s) => s.isVisible())
+    expect(visibleIndex()).toBe(0)
+
+    wrapper.findComponent({ name: 'PresetsSection' }).vm.$emit('navigate', 'recording')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.tab-btn.active').text()).toContain('Aufnahme')
+    wrapper.unmount()
+  })
+})
+
 describe('normalizeLang', () => {
   it('maps locales to supported languages', () => {
     expect(normalizeLang('EN-gb')).toBe('en')

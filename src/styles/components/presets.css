@@ -142,6 +142,9 @@
 
 /* Preset Play button — hands playback over to the sticky player */
 .preset-play {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
   margin-top: var(--ds-space-3);
   padding-top: var(--ds-space-3);
   border-top: var(--ds-border-width) solid var(--ds-border);
@@ -201,12 +204,11 @@
   }
 
   .preset-play {
-    display: flex;
     justify-content: center;
   }
 
   .preset-play-btn {
-    width: 100%;
+    flex: 1 1 0;
     justify-content: center;
   }
 }

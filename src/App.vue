@@ -7,7 +7,7 @@
     </div>
 
     <!-- Tabs -->
-    <div class="tabs">
+    <div ref="tabsEl" class="tabs">
       <button
         v-for="tab in tabs"
         :key="tab.id"
@@ -58,7 +58,7 @@
 
       <!-- Presets Tab -->
       <div v-show="activeTab === 'presets'" class="section section-narrow">
-        <PresetsSection />
+        <PresetsSection @navigate="openTab" />
       </div>
 
       <!-- FAQ Tab -->
@@ -112,6 +112,14 @@
   }
 
   const activeTab = ref('filter')
+  const tabsEl = ref<HTMLElement | null>(null)
+
+  // Switch tabs from inside a section (e.g. preset "Edit"/"Record") and bring
+  // the tab bar back into view, since the user may have scrolled down the list.
+  const openTab = (id: string) => {
+    activeTab.value = id
+    tabsEl.value?.scrollIntoView?.({ block: 'start', behavior: 'smooth' })
+  }
   const tabs = [
     { id: 'filter', label: 'tab_filter', icon: 'fas fa-filter' },
     { id: 'oscillators', label: 'tab_oscillators', icon: 'fas fa-wave-square' },

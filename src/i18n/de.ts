@@ -272,6 +272,10 @@ export default {
 
   // Preset Play (via sticky player)
   preset_play: 'Abspielen',
+  preset_edit: 'Bearbeiten',
+  preset_edit_title: 'Preset laden und im Oszillator-Editor anpassen',
+  preset_record: 'Aufnehmen',
+  preset_record_title: 'Preset abspielen und zur Aufnahme wechseln',
 
   // Hearing-safety warning
   hearing_warning_title: 'Gehörschutz-Hinweis',

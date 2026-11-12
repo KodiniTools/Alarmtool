@@ -269,6 +269,10 @@ export default {
 
   // Preset Play (via sticky player)
   preset_play: 'Play',
+  preset_edit: 'Edit',
+  preset_edit_title: 'Load preset and adjust it in the oscillator editor',
+  preset_record: 'Record',
+  preset_record_title: 'Play preset and switch to recording',
 
   // Hearing-safety warning
   hearing_warning_title: 'Hearing safety notice',

@@ -35,7 +35,7 @@
             </span>
           </div>
 
-          <!-- Play via the sticky player -->
+          <!-- Play via the sticky player; edit / record jump to the matching tab -->
           <div class="preset-play">
             <button
               class="preset-play-btn"
@@ -46,6 +46,22 @@
             >
               <i class="fas fa-play" aria-hidden="true"></i>
               <span>{{ t('preset_play') }}</span>
+            </button>
+            <button
+              class="preset-play-btn"
+              :title="t('preset_edit_title')"
+              @click="editPreset(preset)"
+            >
+              <i class="fas fa-pen" aria-hidden="true"></i>
+              <span>{{ t('preset_edit') }}</span>
+            </button>
+            <button
+              class="preset-play-btn"
+              :title="t('preset_record_title')"
+              @click="recordPreset(preset)"
+            >
+              <i class="fas fa-microphone" aria-hidden="true"></i>
+              <span>{{ t('preset_record') }}</span>
             </button>
           </div>
         </div>
@@ -76,6 +92,11 @@
 
   type Preset = (typeof presets)[number]
 
+  const emit = defineEmits<{
+    /** Ask the app shell to switch to another tab. */
+    navigate: [tab: 'oscillators' | 'recording']
+  }>()
+
   const store = useAlarmStore()
   const { updateFilter } = useAudioContext()
   const { parsePattern } = useOscillators()
@@ -101,6 +122,26 @@
     if (preset.data.globalFilter) {
       updateFilter(preset.data.globalFilter)
     }
+  }
+
+  // Load the preset into the oscillators and open the editor. A running alarm
+  // is restarted with the new sound (same as "Play"), otherwise nothing plays.
+  function editPreset(preset: Preset) {
+    if (store.isPlaying) {
+      playPreset(preset)
+    } else {
+      withHistory({ labelKey: 'history_preset', detailKey: preset.nameKey }, () =>
+        loadPreset(preset)
+      )
+    }
+    emit('navigate', 'oscillators')
+  }
+
+  // Recording needs a running alarm: play the preset, then open the recorder,
+  // where the user picks duration and format and starts the recording.
+  function recordPreset(preset: Preset) {
+    playPreset(preset)
+    emit('navigate', 'recording')
   }
 
   function getActivePresetName() {
