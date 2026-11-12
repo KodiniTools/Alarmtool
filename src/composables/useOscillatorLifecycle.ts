@@ -7,34 +7,38 @@ import {
   clearAllOscRuntime,
 } from './useOscillatorRuntime'
 import { applyWaveType } from '@/lib/waveforms'
+import type { Oscillator } from '@/stores/oscillatorStore'
 
 export function useOscillatorLifecycle() {
   const store = useAlarmStore()
   const { parsePattern, runOscPattern } = useOscillatorPattern()
 
-  function _buildNode(oscData) {
-    const osc = store.audioCtx.createOscillator()
-    const gainNode = store.audioCtx.createGain()
-    const panNode = store.audioCtx.createStereoPanner()
+  /** Callers check that audioCtx and masterGainNode exist. */
+  function _buildNode(oscData: Oscillator) {
+    const ctx = store.audioCtx!
+    const osc = ctx.createOscillator()
+    const gainNode = ctx.createGain()
+    const panNode = ctx.createStereoPanner()
 
-    applyWaveType(osc, store.audioCtx, oscData.waveType)
-    osc.frequency.setValueAtTime(oscData.frequency, store.audioCtx.currentTime)
-    panNode.pan.setValueAtTime(oscData.pan, store.audioCtx.currentTime)
-    gainNode.gain.setValueAtTime(0, store.audioCtx.currentTime)
+    applyWaveType(osc, ctx, oscData.waveType)
+    osc.frequency.setValueAtTime(oscData.frequency, ctx.currentTime)
+    panNode.pan.setValueAtTime(oscData.pan, ctx.currentTime)
+    gainNode.gain.setValueAtTime(0, ctx.currentTime)
 
-    osc.connect(gainNode).connect(panNode).connect(store.masterGainNode)
+    osc.connect(gainNode).connect(panNode).connect(store.masterGainNode!)
 
     return { osc, gainNode, panNode }
   }
 
-  function _releaseNode(oscId) {
+  function _releaseNode(oscId: number) {
     const rt = getOscRuntime(oscId)
     if (!rt?.osc || !rt?.gainNode) return
 
     const oscData = store.oscillators[oscId]
 
     try {
-      const now = store.audioCtx.currentTime
+      // Without a context this throws and is ignored below, as before
+      const now = store.audioCtx!.currentTime
       const releaseSec = (oscData?.release ?? 80) / 1000 + 0.05
       const currentVal = rt.gainNode.gain.value
 
@@ -51,7 +55,7 @@ export function useOscillatorLifecycle() {
           oscRef.stop()
           oscRef.disconnect()
           gainRef.disconnect()
-          panRef.disconnect()
+          panRef?.disconnect()
         } catch {
           // ignore — node already disconnected
         }
@@ -79,7 +83,7 @@ export function useOscillatorLifecycle() {
     })
   }
 
-  function startSingleOscillator(oscId) {
+  function startSingleOscillator(oscId: number) {
     if (!store.audioCtx || !store.masterGainNode) return
 
     const oscData = store.oscillators[oscId]
@@ -100,7 +104,7 @@ export function useOscillatorLifecycle() {
     }
   }
 
-  function stopSingleOscillator(oscId) {
+  function stopSingleOscillator(oscId: number) {
     const rt = getOscRuntime(oscId)
     if (!rt) return
 

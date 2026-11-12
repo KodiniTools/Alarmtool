@@ -9,7 +9,12 @@ export function useFormatConverter() {
   const convertedUrl = ref('')
   const convertedFilename = ref('')
 
-  async function convertBlob(sourceBlob, targetFormat, baseFilename, mono = false) {
+  async function convertBlob(
+    sourceBlob: Blob,
+    targetFormat: 'mp3' | 'wav',
+    baseFilename: string,
+    mono = false
+  ): Promise<{ url: string; filename: string }> {
     isConverting.value = true
     conversionProgress.value = 10
 

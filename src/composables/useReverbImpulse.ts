@@ -2,11 +2,14 @@
  * Creates a synthetic reverb impulse response buffer.
  * Used by the main audio context (useAudioContext).
  *
- * @param {AudioContext} audioCtx - The audio context to create the buffer for
- * @param {number} [duration=3] - Impulse duration in seconds
- * @returns {AudioBuffer|null} The impulse response buffer, or null on failure
+ * @param audioCtx - The audio context to create the buffer for
+ * @param duration - Impulse duration in seconds
+ * @returns The impulse response buffer, or null without a context
  */
-export function createReverbImpulse(audioCtx, duration = 3) {
+export function createReverbImpulse(
+  audioCtx: BaseAudioContext | null | undefined,
+  duration = 3
+): AudioBuffer | null {
   if (!audioCtx) return null
 
   const rate = audioCtx.sampleRate

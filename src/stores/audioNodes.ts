@@ -12,7 +12,7 @@ export const audioNodeRefs = {
   convolverNode: shallowRef<ConvolverNode | null>(null),
   reverbGain: shallowRef<GainNode | null>(null),
   effectsOut: shallowRef<GainNode | null>(null),
-  finalOutputNode: shallowRef<AudioNode | null>(null),
+  finalOutputNode: shallowRef<GainNode | null>(null),
 } satisfies Record<string, ShallowRef<unknown>>
 
 export function useAudioNodes() {

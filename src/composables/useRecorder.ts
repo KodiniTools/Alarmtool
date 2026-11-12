@@ -13,12 +13,13 @@ export function useRecorder() {
   const timer = useRecordingTimer()
   const download = useRecordingDownload()
 
-  const mediaRecorder = ref(null)
-  const recordedChunks = ref([])
-  const streamDest = ref(null)
-  const monoMixNode = ref(null)
+  const mediaRecorder = ref<MediaRecorder | null>(null)
+  const recordedChunks = ref<Blob[]>([])
+  const streamDest = ref<MediaStreamAudioDestinationNode | null>(null)
+  const monoMixNode = ref<GainNode | null>(null)
 
-  function startRecording(durationMs, format = 'auto', mono = false) {
+  /** Starts recording the final output; returns false (with a toast) if it cannot start. */
+  function startRecording(durationMs: number | null, format = 'auto', mono = false): boolean {
     if (!store.audioCtx || !store.finalOutputNode) {
       toast.warning('toast_rec_no_alarm')
       return false
@@ -46,26 +47,29 @@ export function useRecorder() {
       monoMixNode.value = mixNode
 
       const options = getRecordingOptions(format)
-      mediaRecorder.value = new MediaRecorder(dest.stream, options)
+      const recorder = new MediaRecorder(dest.stream, options)
+      mediaRecorder.value = recorder
 
-      mediaRecorder.value.ondataavailable = (e) => {
+      recorder.ondataavailable = (e: BlobEvent) => {
         if (e.data.size > 0) recordedChunks.value.push(e.data)
       }
 
-      mediaRecorder.value.onstop = () => {
-        download.create(mediaRecorder.value.mimeType, recordedChunks.value)
+      recorder.onstop = () => {
+        // Reads the ref (not `recorder`): after cleanup() it is null and nothing is offered
+        download.create(mediaRecorder.value!.mimeType, recordedChunks.value)
         recordedChunks.value = []
         store.isRecording = false
         toast.success('toast_rec_complete')
         stopAlarm()
       }
 
-      mediaRecorder.value.onerror = (event) => {
-        handleError(event.error || new Error('MediaRecorder error'))
+      recorder.onerror = (event: Event) => {
+        const { error } = event as Event & { error?: Error }
+        handleError(error || new Error('MediaRecorder error'))
       }
 
-      const chunkInterval = mediaRecorder.value.mimeType === 'audio/wav' ? 2000 : 1000
-      mediaRecorder.value.start(chunkInterval)
+      const chunkInterval = recorder.mimeType === 'audio/wav' ? 2000 : 1000
+      recorder.start(chunkInterval)
 
       timer.start(durationMs, () => {
         if (mediaRecorder.value?.state === 'recording') mediaRecorder.value.stop()
@@ -89,7 +93,7 @@ export function useRecorder() {
     store.remainingTime = 0
   }
 
-  function handleError(error) {
+  function handleError(error: Error) {
     stopRecording()
     const key =
       error.name === 'NotSupportedError'

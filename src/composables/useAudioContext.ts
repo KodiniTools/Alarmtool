@@ -1,9 +1,10 @@
 import { useAlarmStore } from '@/stores/alarmStore'
 import { createReverbImpulse } from './useReverbImpulse'
+import type { FilterSettings } from '@/lib/oscillatorDefaults'
 
 // The UI's 'none' maps to a pass-through allpass node.
-function toNodeFilterType(type) {
-  return !type || type === 'none' ? 'allpass' : type
+function toNodeFilterType(type: string | undefined): BiquadFilterType {
+  return !type || type === 'none' ? 'allpass' : (type as BiquadFilterType)
 }
 
 export function useAudioContext() {
@@ -11,8 +12,8 @@ export function useAudioContext() {
 
   function initAudioContext() {
     if (!store.audioCtx) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext
-      store.audioCtx = new AudioContext()
+      const AudioContextCtor = window.AudioContext || window.webkitAudioContext!
+      store.audioCtx = new AudioContextCtor()
 
       // Master Gain Node
       store.masterGainNode = store.audioCtx.createGain()
@@ -27,10 +28,11 @@ export function useAudioContext() {
       store.finalOutputNode.gain.value = 1.0
 
       // Connect chain: Master -> Filter -> Delay -> Reverb -> FinalOutput -> Destination
+      // (setupGlobalFilter/setupEffects have just created these nodes)
       store.masterGainNode
-        .connect(store.filterNode)
-        .connect(store.delayNode)
-        .connect(store.effectsOut)
+        .connect(store.filterNode!)
+        .connect(store.delayNode!)
+        .connect(store.effectsOut!)
         .connect(store.finalOutputNode)
         .connect(store.audioCtx.destination)
     }
@@ -87,7 +89,7 @@ export function useAudioContext() {
 
   // Always stores the settings; applies them to the live node when one exists
   // (a context created later picks them up in setupGlobalFilter).
-  function updateFilter(settings) {
+  function updateFilter(settings: Partial<FilterSettings>) {
     store.updateFilterSettings(settings)
     if (!store.filterNode || !store.audioCtx) return
 

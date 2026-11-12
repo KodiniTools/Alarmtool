@@ -5,17 +5,17 @@ const TIMER_INTERVAL_MS = 100
 
 export function useRecordingTimer() {
   const store = useAlarmStore()
-  const intervalId = ref(null)
-  const timeoutId = ref(null)
+  const intervalId = ref<ReturnType<typeof setInterval> | null>(null)
+  const timeoutId = ref<ReturnType<typeof setTimeout> | null>(null)
 
-  function start(durationMs, onExpire) {
+  function start(durationMs: number, onExpire: () => void) {
     const endTime = Date.now() + durationMs
 
     intervalId.value = setInterval(() => {
       const remaining = endTime - Date.now()
       if (remaining <= 0) {
         store.remainingTime = 0
-        clearInterval(intervalId.value)
+        if (intervalId.value) clearInterval(intervalId.value)
         intervalId.value = null
         return
       }

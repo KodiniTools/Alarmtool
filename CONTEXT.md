@@ -13,7 +13,7 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | **Pinia** | ^2.1.7 | State Management (Vuex-Nachfolger) |
 | **Vite** | ^5.0.0 | Build Tool & Dev Server |
 | **JavaScript** | ES6+ | Programmiersprache (Migration nach TypeScript vorbereitet) |
-| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; `src/lib`, `src/stores`, `src/i18n`, `src/utils` und `main.ts` sind TypeScript (in `src/lib` außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
+| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; `src/lib`, `src/composables`, `src/stores`, `src/i18n`, `src/utils` und `main.ts` sind TypeScript (in `src/lib` außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
 
 ### Browser APIs
 | API | Verwendung |
@@ -69,10 +69,10 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
     │   └── AppFooter.vue          # Footer mit Links
     │
     ├── composables/               # Wiederverwendbare Logik (Composition API)
-    │   ├── useAudioContext.js     # Audio Context & Effekte
-    │   ├── useOscillators.js      # Oszillator-Erstellung & Pattern
-    │   ├── usePlayer.js           # Play/Pause/Stop/Mute Logik
-    │   └── useRecorder.js         # Aufnahme & Download
+    │   ├── useAudioContext.ts     # Audio Context & Effekte
+    │   ├── useOscillators.ts      # Oszillator-Erstellung & Pattern
+    │   ├── usePlayer.ts           # Play/Pause/Stop/Mute Logik
+    │   └── useRecorder.ts         # Aufnahme & Download
     │
     ├── stores/                    # Pinia State Management
     │   └── alarmStore.ts          # Fassade über die Domain-Stores (TypeScript)

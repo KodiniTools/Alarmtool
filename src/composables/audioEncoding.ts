@@ -1,8 +1,8 @@
 // Pure audio encoding utilities — no Vue state, no composable lifecycle.
 
-export async function decodeBlob(blob) {
+export async function decodeBlob(blob: Blob): Promise<AudioBuffer> {
   const arrayBuffer = await blob.arrayBuffer()
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext!)()
   try {
     return await audioCtx.decodeAudioData(arrayBuffer)
   } finally {
@@ -10,7 +10,7 @@ export async function decodeBlob(blob) {
   }
 }
 
-export function downmixToMono(audioBuffer) {
+export function downmixToMono(audioBuffer: AudioBuffer): AudioBuffer {
   if (audioBuffer.numberOfChannels === 1) return audioBuffer
 
   const { sampleRate, length } = audioBuffer
@@ -29,7 +29,7 @@ export function downmixToMono(audioBuffer) {
   return monoBuffer
 }
 
-export function floatTo16BitPCM(float32Array) {
+export function floatTo16BitPCM(float32Array: Float32Array): Int16Array {
   const int16 = new Int16Array(float32Array.length)
   for (let i = 0; i < float32Array.length; i++) {
     const s = Math.max(-1, Math.min(1, float32Array[i]))
@@ -38,7 +38,7 @@ export function floatTo16BitPCM(float32Array) {
   return int16
 }
 
-export function encodeWav(audioBuffer) {
+export function encodeWav(audioBuffer: AudioBuffer): Blob {
   const numChannels = audioBuffer.numberOfChannels
   const sampleRate = audioBuffer.sampleRate
   const bitsPerSample = 16
@@ -57,7 +57,7 @@ export function encodeWav(audioBuffer) {
   const buffer = new ArrayBuffer(44 + dataLength)
   const view = new DataView(buffer)
 
-  function writeStr(offset, str) {
+  function writeStr(offset: number, str: string) {
     for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i))
   }
 
@@ -85,7 +85,10 @@ export function encodeWav(audioBuffer) {
   return new Blob([buffer], { type: 'audio/wav' })
 }
 
-export async function encodeMp3(audioBuffer, onProgress) {
+export async function encodeMp3(
+  audioBuffer: AudioBuffer,
+  onProgress?: (percent: number) => void
+): Promise<Blob> {
   const { Mp3Encoder } = await import('@/lib/lamejs.js')
 
   const numChannels = audioBuffer.numberOfChannels
