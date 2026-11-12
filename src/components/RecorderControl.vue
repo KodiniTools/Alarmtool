@@ -74,63 +74,15 @@
         <i class="fas fa-check-circle"></i> {{ t('rec_success') }}
       </div>
 
-      <!-- Format Conversion -->
-      <div v-if="showDownload && !isConverting" class="convert-section">
-        <span class="convert-label">{{ t('rec_convert_label') }}</span>
-        <div class="convert-actions">
-          <UiButton size="sm" :disabled="isConverting" @click="handleConvert('mp3')">
-            <i class="fas fa-file-audio"></i> MP3
-          </UiButton>
-          <UiButton size="sm" :disabled="isConverting" @click="handleConvert('wav')">
-            <i class="fas fa-file-audio"></i> WAV
-          </UiButton>
-        </div>
-      </div>
+      <RecordingConvert
+        ref="converter"
+        :offer-conversion="showDownload"
+        :recorded-blob="recordedBlob"
+        :base-filename="downloadFilename"
+        :mono="selectedChannelMode === 'mono'"
+      />
 
-      <!-- Conversion Progress -->
-      <div v-if="isConverting" class="convert-progress">
-        <i class="fas fa-cog fa-spin"></i> {{ t('rec_converting') }}
-        <div class="progress mt-1" style="height: 14px">
-          <div
-            class="progress-bar progress-bar-striped progress-bar-animated"
-            role="progressbar"
-            :style="{ width: conversionProgress + '%' }"
-          ></div>
-        </div>
-      </div>
-
-      <!-- Converted Download -->
-      <div v-if="convertedUrl" class="convert-download">
-        <UiButton
-          :href="convertedUrl"
-          :download="convertedFilename"
-          class="download-ready"
-          @click="handleConvertedDownload"
-        >
-          <i class="fas fa-download"></i> {{ t('rec_download') }} {{ convertedFilename }}
-        </UiButton>
-        <UiIconButton variant="danger" size="sm" :label="t('rec_dismiss')" @click="resetConversion">
-          <i class="fas fa-times" aria-hidden="true"></i>
-        </UiIconButton>
-      </div>
-
-      <!-- Recording Feedback -->
-      <div v-if="store.isRecording" class="timer">
-        <i class="fas fa-circle-notch fa-spin"></i> {{ t('rec_running') }}
-        <span>{{ formatTime(store.remainingTime) }}</span> {{ t('rec_remaining') }}
-      </div>
-
-      <!-- Progress Bar -->
-      <div v-if="store.isRecording" class="progress mt-2" style="height: 20px">
-        <div
-          class="progress-bar"
-          role="progressbar"
-          :style="{ width: progressPercentage + '%' }"
-          :aria-valuenow="progressPercentage"
-          aria-valuemin="0"
-          aria-valuemax="100"
-        ></div>
-      </div>
+      <RecordingProgress :duration-ms="selectedDuration" />
 
       <p class="small-text mt-3">{{ t('rec_help') }}</p>
     </div>
@@ -138,57 +90,34 @@
 </template>
 
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, computed, useTemplateRef } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useRecorder } from '@/composables/useRecorder'
-  import { useFormatConverter } from '@/composables/useFormatConverter'
   import { useToast } from '@/composables/useToast'
   import { useI18n } from '@/i18n'
-  import { UiButton, UiIconButton } from '@/components/ui'
+  import { UiButton } from '@/components/ui'
+  import { availableRecordingFormats } from '@/lib/recordingFormats'
+  import RecordingConvert from './recorder/RecordingConvert.vue'
+  import RecordingProgress from './recorder/RecordingProgress.vue'
 
   const store = useAlarmStore()
   const {
     startRecording,
-    formatTime,
     downloadUrl,
     downloadFilename,
     showDownload,
     resetDownload,
     recordedBlob,
   } = useRecorder()
-  const {
-    isConverting,
-    conversionProgress,
-    convertedUrl,
-    convertedFilename,
-    convertBlob,
-    resetConversion,
-  } = useFormatConverter()
+  const converter = useTemplateRef('converter')
   const toast = useToast()
 
   const selectedDuration = ref(60000) // Default 1 minute
 
   const { t } = useI18n()
 
-  // Define all possible formats with their mime types
-  const allFormats = [
-    { value: 'webm-opus', labelKey: 'rec_format_webm', mimeType: 'audio/webm;codecs=opus' },
-    { value: 'ogg-opus', labelKey: 'rec_format_ogg', mimeType: 'audio/ogg;codecs=opus' },
-    { value: 'wav', labelKey: 'rec_format_wav', mimeType: 'audio/wav' },
-  ]
-
-  // Filter to only show formats supported by the browser
-  const availableFormats = computed(() => {
-    const supported = allFormats.filter(
-      (fmt) => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(fmt.mimeType)
-    )
-    // If multiple formats available, add "auto" option at the beginning
-    if (supported.length > 1) {
-      return [{ value: 'auto', labelKey: 'rec_format_auto' }, ...supported]
-    }
-    // If only one or no formats, just return what's available
-    return supported.length > 0 ? supported : [{ value: 'auto', labelKey: 'rec_format_auto' }]
-  })
+  // Formats the browser can record
+  const availableFormats = computed(() => availableRecordingFormats())
 
   // Default to first available format
   const selectedFormat = ref(availableFormats.value[0]?.value || 'auto')
@@ -198,11 +127,6 @@
 
   const canStartRecording = computed(() => {
     return selectedDuration.value && store.isAlarmRunning && !store.isRecording
-  })
-
-  const progressPercentage = computed(() => {
-    if (!selectedDuration.value || !store.isRecording) return 0
-    return ((selectedDuration.value - store.remainingTime) / selectedDuration.value) * 100
   })
 
   function handleStartRecording() {
@@ -222,30 +146,9 @@
   }
 
   function handleDismiss() {
-    resetConversion()
+    converter.value?.reset()
     resetDownload()
     toast.info('toast_rec_dismissed')
-  }
-
-  async function handleConvert(targetFormat) {
-    if (!recordedBlob.value) return
-    resetConversion()
-    try {
-      await convertBlob(
-        recordedBlob.value,
-        targetFormat,
-        downloadFilename.value,
-        selectedChannelMode.value === 'mono'
-      )
-    } catch {
-      // Error already handled in composable
-    }
-  }
-
-  function handleConvertedDownload() {
-    setTimeout(() => {
-      resetConversion()
-    }, 100)
   }
 </script>
 
@@ -343,46 +246,6 @@
     }
   }
 
-  /* Format conversion */
-  .convert-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    margin-top: 0.75rem;
-    background: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(100, 149, 237, 0.03));
-    border: 1px solid rgba(100, 149, 237, 0.25);
-    border-radius: 8px;
-  }
-
-  .convert-label {
-    font-size: 0.9rem;
-    opacity: 0.85;
-    white-space: nowrap;
-  }
-
-  .convert-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .convert-progress {
-    padding: 0.75rem 1rem;
-    margin-top: 0.75rem;
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.03));
-    border: 1px solid rgba(255, 193, 7, 0.25);
-    border-radius: 8px;
-    font-size: 0.9rem;
-  }
-
-  .convert-download {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.75rem;
-    animation: successFadeIn 0.4s ease-out;
-  }
-
   @media (max-width: 768px) {
     .recorder-controls {
       flex-direction: column;
@@ -395,16 +258,6 @@
 
     .recorder-actions {
       flex-direction: column;
-    }
-
-    .convert-section {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .convert-download {
-      flex-direction: column;
-      align-items: stretch;
     }
   }
 </style>

@@ -76,6 +76,8 @@ alarm-tool-vue/
 │   ├── stores/              # Pinia State Management
 │   │   └── alarmStore.js
 │   ├── i18n/                # Internationalisierung
+│   │   ├── de.js
+│   │   ├── en.js
 │   │   └── translations.js
 │   ├── App.vue              # Haupt-Komponente
 │   ├── main.js              # Entry Point
@@ -137,14 +139,15 @@ Alle Browser müssen die Web Audio API und MediaRecorder API unterstützen.
 
 ### Neue Übersetzung hinzufügen
 
-Bearbeite `src/i18n/translations.js` und füge einen neuen Sprach-Key hinzu:
+Lege eine Datei je Sprache an (z. B. `src/i18n/fr.js` mit denselben Schlüsseln wie `de.js`),
+und trage sie in `src/i18n/translations.js` ein (`SUPPORTED_LANGS` in `locale.js` liest die Sprachen daraus):
 
 ```javascript
-export const translations = {
-  de: { /* ... */ },
-  en: { /* ... */ },
-  fr: { /* neue Sprache */ }
-}
+import de from './de'
+import en from './en'
+import fr from './fr'
+
+export const translations = { de, en, fr }
 ```
 
 ### Neuen Oszillator-Parameter hinzufügen
