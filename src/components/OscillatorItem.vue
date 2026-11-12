@@ -3,14 +3,12 @@
     <!-- Editor header -->
     <div class="osc-editor-header">
       <div class="osc-editor-title-row">
-        <label class="toggle-switch" :title="settings.enabled ? t('osc_disable') : t('osc_enable')">
-          <input
-            :checked="settings.enabled"
-            type="checkbox"
-            @change="updateParameter('enabled', $event.target.checked)"
-          />
-          <span class="toggle-slider"></span>
-        </label>
+        <UiSwitch
+          :model-value="settings.enabled"
+          :label="settings.enabled ? t('osc_disable') : t('osc_enable')"
+          :title="settings.enabled ? t('osc_disable') : t('osc_enable')"
+          @update:model-value="updateParameter('enabled', $event)"
+        />
         <h3 class="osc-editor-title">
           {{ t('osc_title_prefix') }} {{ oscillatorId + 1 }}
           <span class="osc-editor-wave-badge" :class="`osc-wave-chip--${settings.waveType}`">
@@ -72,7 +70,7 @@
         <span>{{ t('osc_section_basics') }}</span>
       </div>
       <div class="osc-params-grid">
-        <SliderInput
+        <SliderField
           :model-value="settings.frequency"
           :label="t('osc_frequency')"
           :min="50"
@@ -82,7 +80,7 @@
           @update:model-value="updateParameter('frequency', $event)"
           @change="updateParameter('frequency', $event)"
         />
-        <SliderInput
+        <SliderField
           :model-value="settings.volume"
           :label="t('osc_volume')"
           :min="0"
@@ -92,7 +90,7 @@
           @update:model-value="updateParameter('volume', $event)"
           @change="updateParameter('volume', $event)"
         />
-        <SliderInput
+        <SliderField
           :model-value="settings.pan"
           :label="t('osc_pan')"
           :min="-1"
@@ -118,7 +116,7 @@
         :class="{ 'controls-disabled': !settings.enabled }"
       >
         <div class="osc-params-grid">
-          <SliderInput
+          <SliderField
             :model-value="settings.attack"
             :label="t('osc_attack')"
             :min="0"
@@ -128,7 +126,7 @@
             @update:model-value="updateParameter('attack', $event)"
             @change="updateParameter('attack', $event)"
           />
-          <SliderInput
+          <SliderField
             :model-value="settings.decay"
             :label="t('osc_decay')"
             :min="0"
@@ -138,7 +136,7 @@
             @update:model-value="updateParameter('decay', $event)"
             @change="updateParameter('decay', $event)"
           />
-          <SliderInput
+          <SliderField
             :model-value="settings.sustain"
             :label="t('osc_sustain')"
             :min="0"
@@ -148,7 +146,7 @@
             @update:model-value="updateParameter('sustain', $event)"
             @change="updateParameter('sustain', $event)"
           />
-          <SliderInput
+          <SliderField
             :model-value="settings.release"
             :label="t('osc_release')"
             :min="0"
@@ -185,8 +183,7 @@
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useToast } from '@/composables/useToast'
   import { useI18n } from '@/i18n'
-  import { UiButton } from '@/components/ui'
-  import SliderInput from './oscillator/SliderInput.vue'
+  import { SliderField, UiButton, UiSwitch } from '@/components/ui'
   import { WAVE_TYPES, WAVE_ABBR } from '@/lib/waveforms'
   import { OSC_PARAMS, pickOscParams } from '@/lib/oscillatorDefaults'
 

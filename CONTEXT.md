@@ -265,6 +265,8 @@ exportiert über `src/components/ui/index.js`:
 
 - `UiButton`: Textbutton (`variant` primary/secondary/danger, `size` md/sm, `href` + `download` für Links)
 - `UiIconButton`: Button nur mit Icon, `label` wird `aria-label` und `title`
+- `UiSwitch`: Ein/Aus-Schalter (`role="switch"`, `label` als zugänglicher Name)
+- `SliderField`: Slider plus Zahlfeld mit Label und Hilfetext (Oszillator- und Filterparameter)
 - `CollapsibleSection`: auf- und zuklappbarer Abschnitt der Sidebar
 
 Buttons werden nur über diese Komponenten gebaut (Test `tests/UiButton.spec.js`).
