@@ -48,6 +48,7 @@
 
       <!-- Oscillators Tab -->
       <div v-show="activeTab === 'oscillators'" class="section">
+        <OscillatorScope />
         <OscillatorGrid />
       </div>
 
@@ -88,6 +89,7 @@
 
   import FilterControl from '@/components/FilterControl.vue'
   import OscillatorGrid from '@/components/OscillatorGrid.vue'
+  import OscillatorScope from '@/components/oscillator/OscillatorScope.vue'
   import RecorderControl from '@/components/RecorderControl.vue'
   import PresetsSection from '@/components/PresetsSection.vue'
   import FAQSection from '@/components/FAQSection.vue'

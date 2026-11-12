@@ -353,4 +353,12 @@ export default {
   lp_step3_desc: 'Aufnehmen und als Datei herunterladen, zum Beispiel als Klingel- oder Weckton.',
   lp_final_title: 'Bereit für deinen Alarmton?',
   lp_final_desc: 'Das Tool öffnet sich direkt im Browser. Keine Installation, kein Konto.',
+
+  // Live-Vorschau der Oszillatoren
+  scope_title: 'Live-Vorschau',
+  scope_live: 'Wiedergabe',
+  scope_wave: 'Wellenform der Summe',
+  scope_rhythm: 'Lautstärke über den Rhythmus',
+  scope_empty:
+    'Kein Oszillator aktiv. Schalte in der Auswahl einen Oszillator ein, um die Vorschau zu sehen.',
 }

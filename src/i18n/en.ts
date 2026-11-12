@@ -350,4 +350,11 @@ export default {
   lp_step3_desc: 'Record and download it as a file, for example as a ringtone or wake-up sound.',
   lp_final_title: 'Ready for your alarm sound?',
   lp_final_desc: 'The tool opens right in your browser. No installation, no account.',
+
+  // Live preview of the oscillators
+  scope_title: 'Live preview',
+  scope_live: 'Playing',
+  scope_wave: 'Waveform of the mix',
+  scope_rhythm: 'Volume over the rhythm',
+  scope_empty: 'No oscillator is active. Switch one on to see the preview.',
 }
