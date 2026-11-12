@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { useToast } from '@/composables/useToast'
 
   const { toasts, dismiss } = useToast()

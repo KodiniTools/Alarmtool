@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { computed, onMounted, onUnmounted } from 'vue'
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useToast } from '@/composables/useToast'
@@ -83,8 +83,8 @@
 
   // Global shortcuts: Ctrl/⌘+Z = undo, Ctrl/⌘+Y or Ctrl/⌘+Shift+Z = redo.
   // Ignored while typing so native text undo keeps working in inputs.
-  function handleKeyboard(event) {
-    const tag = event.target?.tagName
+  function handleKeyboard(event: KeyboardEvent) {
+    const tag = (event.target as HTMLElement | null)?.tagName
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
     if (!event.ctrlKey && !event.metaKey) return
 

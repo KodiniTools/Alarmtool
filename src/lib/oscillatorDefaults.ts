@@ -46,11 +46,20 @@ export const DEFAULT_FILTER: Readonly<FilterSettings> = Object.freeze({
   Q: 1,
 })
 
+/**
+ * Saved or imported sound (localStorage, JSON export, preset data). Comes from
+ * outside, so every part is optional; older files lack decay/sustain.
+ */
+export interface SoundSettings {
+  globalFilter?: Partial<FilterSettings>
+  oscillators?: Partial<OscParams>[]
+}
+
 /** Sound parameters of an oscillator (everything except `id` / `enabled`). */
 export const OSC_PARAMS = Object.keys(DEFAULT_OSCILLATOR) as OscParam[]
 
 /** Copies only the sound parameters of an oscillator, in OSC_PARAMS order. */
-export function pickOscParams(osc: Partial<OscParams> & Record<string, unknown>): OscParams {
+export function pickOscParams(osc: Partial<OscParams>): OscParams {
   return Object.fromEntries(OSC_PARAMS.map((p) => [p, osc[p]])) as unknown as OscParams
 }
 
@@ -58,9 +67,7 @@ export function pickOscParams(osc: Partial<OscParams> & Record<string, unknown>)
  * Like pickOscParams, but fills in decay/sustain for settings that predate the
  * ADSR envelope (older exports and preset definitions omit them).
  */
-export function normalizeOscSettings(
-  settings: Partial<OscParams> & Record<string, unknown>
-): OscParams {
+export function normalizeOscSettings(settings: Partial<OscParams>): OscParams {
   return {
     ...pickOscParams(settings),
     decay: settings.decay ?? DEFAULT_OSCILLATOR.decay,

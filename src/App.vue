@@ -81,7 +81,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useI18n, normalizeLang } from '@/i18n'
@@ -103,8 +103,8 @@
 
   // Sticky player bar: reserve exactly its height at the bottom so it never
   // covers page content, regardless of locale/wrapping.
-  const playerBar = ref(null)
-  let barResizeObserver = null
+  const playerBar = ref<HTMLElement | null>(null)
+  let barResizeObserver: ResizeObserver | null = null
 
   const updatePlayerBarHeight = () => {
     const h = playerBar.value?.offsetHeight ?? 0
@@ -126,17 +126,19 @@
 
   // SSI nav event handlers
   // Unsupported locales are ignored so the UI never falls back to raw keys.
-  const applyLocale = (locale) => {
+  const applyLocale = (locale: unknown) => {
     const lang = normalizeLang(locale)
     if (lang && lang !== store.currentLang) store.setLanguage(lang)
   }
 
-  const applyTheme = (theme) => {
+  const applyTheme = (theme: unknown) => {
     if (theme && theme !== store.currentTheme) store.setTheme(theme)
   }
 
-  const onLocaleChanged = (e) => applyLocale(e.detail?.locale)
-  const onThemeChanged = (e) => applyTheme(e.detail?.theme)
+  // Events of the SSI navigation: detail = { locale } or { theme }
+  type NavEvent = CustomEvent<{ locale?: string; theme?: string } | undefined>
+  const onLocaleChanged = (e: Event) => applyLocale((e as NavEvent).detail?.locale)
+  const onThemeChanged = (e: Event) => applyTheme((e as NavEvent).detail?.theme)
 
   onMounted(() => {
     // Sync with the SSI nav's current state. The nav is included before the

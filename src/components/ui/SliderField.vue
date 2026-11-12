@@ -11,8 +11,8 @@
         :max="max"
         :step="step"
         :disabled="disabled"
-        @input="emit('update:modelValue', +$event.target.value)"
-        @change="emit('change', +$event.target.value)"
+        @input="emit('update:modelValue', +($event.target as HTMLInputElement).value)"
+        @change="emit('change', +($event.target as HTMLInputElement).value)"
       />
       <input
         :value="modelValue"
@@ -23,15 +23,15 @@
         :max="max"
         :step="step"
         :disabled="disabled"
-        @input="emit('update:modelValue', +$event.target.value)"
-        @change="emit('change', +$event.target.value)"
+        @input="emit('update:modelValue', +($event.target as HTMLInputElement).value)"
+        @change="emit('change', +($event.target as HTMLInputElement).value)"
       />
     </div>
     <small v-if="help" class="form-text">{{ help }}</small>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   /**
    * Slider-plus-Zahlfeld-Paar (design-system/content/components/FormControls).
    * Das Label zeigt per `for` auf den Slider, das Zahlfeld trägt das Label als
@@ -53,7 +53,7 @@
     help: { type: String, default: '' },
   })
 
-  const emit = defineEmits(['update:modelValue', 'change'])
+  const emit = defineEmits<{ 'update:modelValue': [value: number]; change: [value: number] }>()
 
   const autoId = useId()
   const inputId = computed(() => props.id || autoId)

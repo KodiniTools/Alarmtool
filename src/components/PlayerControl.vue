@@ -98,7 +98,7 @@
           :title="`${t('player_volume')}: ${Math.round(store.volume * 100)}%`"
           :aria-label="t('player_volume')"
           :aria-valuetext="`${Math.round(store.volume * 100)}%`"
-          @input="updateVolume(+$event.target.value)"
+          @input="updateVolume(+($event.target as HTMLInputElement).value)"
         />
         <span class="player-volume-pct">{{ Math.round(store.volume * 100) }}%</span>
       </div>
@@ -109,7 +109,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { computed } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { usePlayer } from '@/composables/usePlayer'

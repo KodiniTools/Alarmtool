@@ -31,7 +31,7 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { useI18n } from '@/i18n'
   import { WAVE_ABBR } from '@/lib/waveforms'
 

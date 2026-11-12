@@ -7,7 +7,7 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
   /**
    * Textbutton des Design Systems (siehe design-system/content/components/Button).
    * Rendert die globalen Klassen aus src/styles/components/button.css, damit der
@@ -16,26 +16,29 @@
    * Mit `href` entsteht ein <a> (z. B. Download-Link), sonst ein <button type="button">.
    * Weitere Attribute (id, title, class) und Listener (@click) fallen auf das Wurzelelement durch.
    */
-  import { computed } from 'vue'
+  import { computed, type PropType } from 'vue'
+
+  export type ButtonVariant = 'primary' | 'secondary' | 'danger'
+  export type ButtonSize = 'md' | 'sm'
 
   const props = defineProps({
     /** primary: einzige Akzentfläche je Ansicht · secondary: Standard · danger: textbasiert */
     variant: {
-      type: String,
+      type: String as PropType<ButtonVariant>,
       default: 'secondary',
-      validator: (v) => ['primary', 'secondary', 'danger'].includes(v),
+      validator: (v: string) => ['primary', 'secondary', 'danger'].includes(v),
     },
     /** md: 36 px · sm: 28 px */
     size: {
-      type: String,
+      type: String as PropType<ButtonSize>,
       default: 'md',
-      validator: (v) => ['md', 'sm'].includes(v),
+      validator: (v: string) => ['md', 'sm'].includes(v),
     },
     /** HTML-Typ des Buttons; ohne Formular in der App immer 'button' */
     type: {
-      type: String,
+      type: String as PropType<'button' | 'submit' | 'reset'>,
       default: 'button',
-      validator: (v) => ['button', 'submit', 'reset'].includes(v),
+      validator: (v: string) => ['button', 'submit', 'reset'].includes(v),
     },
     /** Rendert einen Link statt eines Buttons */
     href: { type: String, default: '' },

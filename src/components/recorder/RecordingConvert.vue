@@ -35,12 +35,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   /**
    * Umwandlung einer fertigen Aufnahme nach MP3 oder WAV: Angebot, Fortschritt und
    * Download-Link. Der Zustand gehört dieser Komponente; `reset()` (per Template-Ref)
    * verwirft eine laufende oder fertige Umwandlung, z. B. wenn die Aufnahme verworfen wird.
    */
+  import type { PropType } from 'vue'
   import { useFormatConverter } from '@/composables/useFormatConverter'
   import { useI18n } from '@/i18n'
   import { UiButton, UiIconButton } from '@/components/ui'
@@ -49,7 +50,7 @@
     /** Zeigt das Umwandlungsangebot (solange die Aufnahme bereitsteht) */
     offerConversion: { type: Boolean, required: true },
     /** Die aufgenommene Datei; ohne sie passiert beim Klick nichts */
-    recordedBlob: { type: Blob, default: null },
+    recordedBlob: { type: Blob as PropType<Blob | null>, default: null },
     /** Dateiname der Aufnahme; die Endung wird ersetzt */
     baseFilename: { type: String, required: true },
     /** Vor dem Kodieren auf Mono heruntermischen */
@@ -66,7 +67,7 @@
     resetConversion,
   } = useFormatConverter()
 
-  async function handleConvert(targetFormat) {
+  async function handleConvert(targetFormat: 'mp3' | 'wav') {
     if (!props.recordedBlob) return
     resetConversion()
     try {

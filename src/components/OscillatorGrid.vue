@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
   import { ref, computed } from 'vue'
   import { useAlarmStore } from '@/stores/alarmStore'
   import { useOscillators } from '@/composables/useOscillators'
@@ -74,7 +74,7 @@
   const selectedLabel = computed(() => `${t('osc_title_prefix')} ${selectedId.value + 1}`)
   const activeCount = computed(() => store.oscillators.filter((o) => o.enabled).length)
 
-  function handleToggleEnabled(index, value) {
+  function handleToggleEnabled(index: number, value: boolean) {
     updateOscillatorParameter(index, 'enabled', value)
   }
 </script>
