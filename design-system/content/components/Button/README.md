@@ -12,6 +12,8 @@ Der Textbutton der App nach `UiButton` des Collage Makers: 36 px hoch, 10-px-Rad
 
 **Zustände:** Fokus über `ds-focus-ring` (kein Outline); `disabled` nur Opazität 0.45 und `cursor: not-allowed`. Kein Lift, kein Schatten, kein Lichtstreifen.
 
+**In der App:** immer über `UiButton` bzw. `UiIconButton` aus `src/components/ui` (nie `class="btn …"` direkt, ein Test prüft das). Props: `variant` (`primary` | `secondary` | `danger`), `size` (`md` | `sm`), `disabled`, `href` + `download` für Links. `UiIconButton` verlangt `label` (wird `aria-label` und `title`). Die Komponenten rendern die Klassen `.btn`, `.btn-<variant>`, `.btn-sm` aus `button.css`; die Alias-Klassen `.btn-success`, `.btn-outline-secondary`, `.btn-outline-danger` bleiben für die Vorschau und Fremd-Markup erhalten.
+
 **Der Konsument liefert:** `<button>` oder `<a>`, Label in Satzschreibung, optional ein Icon-Element vor dem Text (`<i class="fas fa-…">`, 16 px).
 
 **Dos/Don'ts:** Ein Primär-Button pro Panel. Icon-only-Aktionen sind Transport-/Aux-Buttons, nicht `.btn`. Keine zusätzlichen Farben; Status wird durch Text und Icon vermittelt.

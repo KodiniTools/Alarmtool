@@ -11,13 +11,9 @@
           >{{ t('preset_active_label') }}: <strong>{{ getActivePresetName() }}</strong></span
         >
       </div>
-      <button
-        class="btn btn-secondary preset-reset-btn"
-        :title="t('preset_reset_title')"
-        @click="resetToDefaults"
-      >
+      <UiButton class="preset-reset-btn" :title="t('preset_reset_title')" @click="resetToDefaults">
         <i class="fas fa-undo"></i> {{ t('preset_reset') }}
-      </button>
+      </UiButton>
     </div>
 
     <div class="presets-grid">
@@ -67,6 +63,7 @@
   import { usePlayer } from '@/composables/usePlayer'
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useI18n } from '@/i18n'
+  import { UiButton } from '@/components/ui'
   import { PRESETS as presets } from '@/data/presets'
   import {
     DEFAULT_ENABLED_COUNT,

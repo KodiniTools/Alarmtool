@@ -19,23 +19,19 @@
         </h3>
       </div>
       <div class="osc-editor-actions">
-        <button
-          class="btn btn-outline-secondary btn-sm"
-          :title="t('osc_copy')"
-          @click="copySettings"
-        >
+        <UiButton size="sm" :title="t('osc_copy')" @click="copySettings">
           <i class="fas fa-copy"></i>
           <span class="osc-action-label">{{ t('osc_copy') }}</span>
-        </button>
-        <button
-          class="btn btn-outline-secondary btn-sm"
+        </UiButton>
+        <UiButton
+          size="sm"
           :title="t('osc_paste')"
           :disabled="!store.oscClipboard"
           @click="pasteSettings"
         >
           <i class="fas fa-paste"></i>
           <span class="osc-action-label">{{ t('osc_paste') }}</span>
-        </button>
+        </UiButton>
       </div>
     </div>
 
@@ -189,6 +185,7 @@
   import { useUndoRedo } from '@/composables/useUndoRedo'
   import { useToast } from '@/composables/useToast'
   import { useI18n } from '@/i18n'
+  import { UiButton } from '@/components/ui'
   import SliderInput from './oscillator/SliderInput.vue'
   import { WAVE_TYPES, WAVE_ABBR } from '@/lib/waveforms'
   import { OSC_PARAMS, pickOscParams } from '@/lib/oscillatorDefaults'
