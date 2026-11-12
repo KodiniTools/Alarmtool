@@ -16,7 +16,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url))
 const STYLES_DIR = join(ROOT, 'src/styles')
 const TOKENS_FILE = join(STYLES_DIR, 'tokens.css')
 
-function collectCssFiles(dir, out = []) {
+function collectCssFiles(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry)
     if (statSync(full).isDirectory()) collectCssFiles(full, out)
@@ -25,7 +25,7 @@ function collectCssFiles(dir, out = []) {
   return out
 }
 
-function collectVueFiles(dir, out = []) {
+function collectVueFiles(dir: string, out: string[] = []): string[] {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry)
     if (statSync(full).isDirectory()) collectVueFiles(full, out)
@@ -35,9 +35,9 @@ function collectVueFiles(dir, out = []) {
 }
 
 /** Zeilen aus <style>-Blöcken einer .vue-Datei, mit ihrer Zeilennummer in der Datei. */
-function vueStyleLines(file) {
+function vueStyleLines(file: string): { line: string; index: number }[] {
   const lines = readFileSync(file, 'utf8').split('\n')
-  const out = []
+  const out: { line: string; index: number }[] = []
   let inStyle = false
   lines.forEach((line, index) => {
     if (/^<style\b/.test(line)) inStyle = true
@@ -51,7 +51,7 @@ function vueStyleLines(file) {
  * Alle Zeilen (Datei:Zeile) der Komponenten-Styles, die das Muster treffen: CSS-Dateien in
  * src/styles (ohne tokens.css) und <style>-Blöcke der .vue-Dateien in src.
  */
-function findInStyles(pattern, { includeTokens = false } = {}) {
+function findInStyles(pattern: RegExp, { includeTokens = false } = {}): string[] {
   const hits = []
   for (const file of collectCssFiles(STYLES_DIR)) {
     if (!includeTokens && file === TOKENS_FILE) continue
@@ -99,7 +99,7 @@ describe('tokens.css', () => {
   const css = readFileSync(TOKENS_FILE, 'utf8')
 
   it('deklariert Dark auf :root und Light auf [data-theme=light] mit derselben Palette', () => {
-    const names = (block) => [...block.matchAll(/--ds-[a-z0-9-]+(?=:)/g)].map((m) => m[0])
+    const names = (block: string) => [...block.matchAll(/--ds-[a-z0-9-]+(?=:)/g)].map((m) => m[0])
     const darkStart = css.indexOf('\n:root {')
     const lightStart = css.indexOf("\n[data-theme='light'] {")
     expect(darkStart).toBeGreaterThan(-1)

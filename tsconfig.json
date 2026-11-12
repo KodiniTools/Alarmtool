@@ -9,8 +9,6 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "allowJs": true,
-    "checkJs": false,
     "types": ["vite/client", "node"],
     "baseUrl": ".",
     "paths": {

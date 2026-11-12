@@ -10,7 +10,7 @@ const recorder = {
   downloadFilename: ref(''),
   showDownload: ref(false),
   resetDownload: vi.fn(),
-  recordedBlob: ref(null),
+  recordedBlob: ref<Blob | null>(null),
 }
 vi.mock('@/composables/useRecorder', () => ({ useRecorder: () => recorder }))
 
@@ -61,7 +61,7 @@ describe('RecorderControl', () => {
     recorder.showDownload.value = true
     const w = mount(RecorderControl)
     const dismiss = w.findAll('.recorder-actions button').find((b) => b.classes('btn-danger'))
-    await dismiss.trigger('click')
+    await dismiss!.trigger('click')
     expect(resetConversion).toHaveBeenCalled()
     expect(recorder.resetDownload).toHaveBeenCalled()
   })

@@ -1,10 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import { RECORDING_FORMATS, availableRecordingFormats } from '@/lib/recordingFormats'
-import { FILTER_DEFAULTS, filterLimits, filterTextKey } from '@/lib/filterConfig'
-import de from '@/i18n/de'
+import { FILTER_DEFAULTS, filterLimits, filterTextKey, type FilterText } from '@/lib/filterConfig'
+import type { RecordingFormatOption } from '@/lib/recordingFormats'
+import deTexts from '@/i18n/de'
+
+const de: Record<string, string> = deTexts
 
 describe('availableRecordingFormats', () => {
-  const values = (list) => list.map((f) => f.value)
+  const values = (list: RecordingFormatOption[]) => list.map((f) => f.value)
 
   it('stellt bei mehreren unterstützten Formaten „auto“ voran', () => {
     expect(values(availableRecordingFormats(() => true))).toEqual([
@@ -16,7 +19,7 @@ describe('availableRecordingFormats', () => {
   })
 
   it('bietet bei genau einem Format nur dieses an', () => {
-    const only = (mime) => mime === 'audio/ogg;codecs=opus'
+    const only = (mime: string) => mime === 'audio/ogg;codecs=opus'
     expect(values(availableRecordingFormats(only))).toEqual(['ogg-opus'])
   })
 
@@ -55,7 +58,7 @@ describe('filterConfig', () => {
   })
 
   it('verweist nur auf vorhandene Texte für die echten Filtertypen', () => {
-    for (const text of ['frequencyLabel', 'frequencyHelp', 'qLabel', 'qHelp']) {
+    for (const text of ['frequencyLabel', 'frequencyHelp', 'qLabel', 'qHelp'] as FilterText[]) {
       for (const type of Object.keys(FILTER_DEFAULTS)) {
         expect(de[filterTextKey(text, type)], `${text}/${type}`).toBeTruthy()
       }

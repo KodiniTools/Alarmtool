@@ -2,12 +2,12 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useSettingsStore } from '@/stores/settingsStore'
 
-function memoryStorage(initial = {}) {
-  const data = { ...initial }
+function memoryStorage(initial: Record<string, string> = {}) {
+  const data: Record<string, string> = { ...initial }
   return {
     data,
-    getItem: (k) => (k in data ? data[k] : null),
-    setItem: (k, v) => {
+    getItem: (k: string) => (k in data ? data[k] : null),
+    setItem: (k: string, v: unknown) => {
       data[k] = String(v)
     },
   }

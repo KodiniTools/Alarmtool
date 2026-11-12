@@ -2,7 +2,7 @@
 
 Die Preset-Karte: Icon-Kachel links, Name, Beschreibung, Tag-Pills und ein Play-Pill; dazu das Banner über der Liste, das das aktive Preset nennt. Karten sind flache `ds-surface-1`-Flächen mit 1-px-Rahmen; Auswahl heißt `ds-accent-soft` plus `ds-accent`-Rahmen.
 
-**Aufbau (Quelle `PresetsSection.vue`, `presets.js`, `presets.css`):**
+**Aufbau (Quelle `PresetsSection.vue`, `presets.ts`, `presets.css`):**
 - `.presets-intro` — 14 px in `ds-text-2`, 20 px darunter.
 - `.preset-active-banner` — Flex space-between, Padding 12 / 16 px, `ds-radius-md`, `ds-accent-soft` mit Rahmen `ds-accent`; `.preset-active-info` in `ds-text-2` mit Häkchen in `ds-accent` und `<strong>` in `ds-text`; rechts `.btn-secondary.preset-reset-btn`.
 - `.presets-grid` — Spalte, Gap 12 px, scrollbar bis 65 vh mit dünner Scrollbar in `ds-border-strong`.

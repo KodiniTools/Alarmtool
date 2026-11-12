@@ -7,10 +7,13 @@ import { useAudioContext } from '@/composables/useAudioContext'
 import { useUndoRedo, _resetHistoryForTests } from '@/composables/useUndoRedo'
 import { describeHistoryAction } from '@/lib/historyLabel'
 
-const t = (key) => ({ osc_frequency: 'Frequenz', osc_title_prefix: 'Oszillator' })[key] ?? key
+const TEXTS: Record<string, string> = { osc_frequency: 'Frequenz', osc_title_prefix: 'Oszillator' }
+const t = (key: string): string => TEXTS[key] ?? key
 
 describe('useUndoRedo', () => {
-  let store, osc, history
+  let store: ReturnType<typeof useAlarmStore>
+  let osc: ReturnType<typeof useOscillators>
+  let history: ReturnType<typeof useUndoRedo>
 
   beforeEach(() => {
     vi.useFakeTimers()

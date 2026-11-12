@@ -13,7 +13,7 @@ function mountApp() {
 }
 
 describe('App.vue — SSI nav sync', () => {
-  let wrapper
+  let wrapper: ReturnType<typeof mountApp> | null = null
 
   beforeEach(() => {
     localStorage.clear()

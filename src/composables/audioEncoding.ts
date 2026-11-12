@@ -97,7 +97,7 @@ export async function encodeMp3(
 
   const left = floatTo16BitPCM(audioBuffer.getChannelData(0))
   const right = numChannels > 1 ? floatTo16BitPCM(audioBuffer.getChannelData(1)) : left
-  const mp3Data = []
+  const mp3Data: BlobPart[] = []
   const blockSize = 1152
   const totalBlocks = Math.ceil(left.length / blockSize)
 

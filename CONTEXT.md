@@ -13,7 +13,7 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | **Pinia** | ^2.1.7 | State Management (Vuex-Nachfolger) |
 | **Vite** | ^5.0.0 | Build Tool & Dev Server |
 | **JavaScript** | ES6+ | Programmiersprache (Migration nach TypeScript vorbereitet) |
-| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc`; Alle Komponenten (`<script setup lang="ts">`), `src/lib`, `src/composables`, `src/stores`, `src/i18n`, `src/utils` und `main.ts` sind TypeScript (in `src/lib` außer `waveforms.js`, das `design-system/build.mjs` direkt in Node lädt, und der Fremdbibliothek `lamejs.js`) |
+| **TypeScript** | ~5.9 | `tsconfig.json` (strict, ohne `allowJs`), Prüfung mit `vue-tsc`; App und Tests sind komplett TypeScript (`<script setup lang="ts">`). Ausnahmen mit `.d.ts` daneben: `src/lib/waveforms.js` (lädt `design-system/build.mjs` direkt in Node) und die Fremdbibliothek `src/lib/lamejs.js`; `tests/designSystem.spec.js` bleibt JS, weil es `design-system/lib.mjs` importiert |
 
 ### Browser APIs
 | API | Verwendung |
@@ -80,7 +80,7 @@ Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Al
     ├── lib/                       # Reine Logik ohne Vue, TypeScript (u. a. filterConfig.ts, recordingFormats.ts)
     │
     └── i18n/                      # Internationalisierung
-        ├── de.ts / en.ts          # Texte je Sprache (gleiche Schlüssel, Test tests/i18n.spec.js)
+        ├── de.ts / en.ts          # Texte je Sprache (gleiche Schlüssel, Test tests/i18n.spec.ts)
         └── translations.ts        # fasst de und en zusammen (Typ Lang)
 ```
 
@@ -264,7 +264,7 @@ Lint, Prettier, Typprüfung, Tests, Design-System-Check und Build aus.
 ## Ui-Komponenten (`src/components/ui`)
 
 Wiederverwendbare Bausteine nach dem Muster von Playlist-Generator und Equalizer-19,
-exportiert über `src/components/ui/index.js`:
+exportiert über `src/components/ui/index.ts`:
 
 - `UiButton`: Textbutton (`variant` primary/secondary/danger, `size` md/sm, `href` + `download` für Links)
 - `UiIconButton`: Button nur mit Icon, `label` wird `aria-label` und `title`
@@ -275,10 +275,10 @@ exportiert über `src/components/ui/index.js`:
 Teilkomponenten der Aufnahme liegen in `src/components/recorder/`
 (`RecordingConvert` für MP3/WAV-Umwandlung, `RecordingProgress` für Restzeit und Balken).
 Ihre Stile stehen wie alle Komponenten-Stile global in `src/styles/components/recorder.css`.
-`tests/designTokens.spec.js` prüft CSS-Dateien und `<style>`-Blöcke der `.vue`-Dateien auf
+`tests/designTokens.spec.ts` prüft CSS-Dateien und `<style>`-Blöcke der `.vue`-Dateien auf
 feste Farben, Gradients, Lifts und fremde Radien.
 
-Buttons werden nur über diese Komponenten gebaut (Test `tests/UiButton.spec.js`).
+Buttons werden nur über diese Komponenten gebaut (Test `tests/UiButton.spec.ts`).
 Die Stile bleiben global in `src/styles/components/button.css`, weil der
 Design-System-Export (`npm run design-system`) daraus `bundle.css` erzeugt.
 
