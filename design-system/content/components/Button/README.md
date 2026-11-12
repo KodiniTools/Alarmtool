@@ -6,7 +6,7 @@ Der Textbutton der App nach `UiButton` des Collage Makers: 36 px hoch, 10-px-Rad
 
 **Varianten (Quelle `button.css`):**
 - `.btn-primary`, `.btn-success` — die einzige Goldfläche pro Ansicht: `ds-accent` mit `ds-on-accent`, Gewicht 600, Hover `ds-accent-hover`. Aufnahme starten, Speichern.
-- `.btn-secondary`, `.btn-outline-secondary` — Standard: `ds-surface-2` mit `ds-border-strong`, Hover `ds-surface-3`. Download, Konvertieren, Zurücksetzen, Editor-Aktionen; als `<a download>` mit `.download-ready` auch für Links.
+- `.btn-secondary`, `.btn-outline-secondary` — Standard: `ds-surface-2` mit `ds-border-strong`, Hover `ds-surface-3`. Download, Konvertieren, Zurücksetzen, Editor-Aktionen; als `<a download>` (UiButton mit `href`) auch für Links.
 - `.btn-danger`, `.btn-outline-danger` — textbasiert: `ds-danger` auf transparentem Grund, Hover `ds-surface-2`. Verwerfen, Aufnahme löschen. Nie als Vollfläche.
 - `.btn-sm` — 28 px, 6-px-Radius, `button-sm` 13 px; für Aktionen in Kopfzeilen und Konvertierung.
 

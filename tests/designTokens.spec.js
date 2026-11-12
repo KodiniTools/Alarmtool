@@ -25,7 +25,32 @@ function collectCssFiles(dir, out = []) {
   return out
 }
 
-/** Alle Zeilen (Datei:Zeile) der Komponenten-Styles (ohne tokens.css), die das Muster treffen. */
+function collectVueFiles(dir, out = []) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry)
+    if (statSync(full).isDirectory()) collectVueFiles(full, out)
+    else if (entry.endsWith('.vue')) out.push(full)
+  }
+  return out
+}
+
+/** Zeilen aus <style>-Blöcken einer .vue-Datei, mit ihrer Zeilennummer in der Datei. */
+function vueStyleLines(file) {
+  const lines = readFileSync(file, 'utf8').split('\n')
+  const out = []
+  let inStyle = false
+  lines.forEach((line, index) => {
+    if (/^<style\b/.test(line)) inStyle = true
+    else if (/^<\/style>/.test(line)) inStyle = false
+    else if (inStyle) out.push({ line, index })
+  })
+  return out
+}
+
+/**
+ * Alle Zeilen (Datei:Zeile) der Komponenten-Styles, die das Muster treffen: CSS-Dateien in
+ * src/styles (ohne tokens.css) und <style>-Blöcke der .vue-Dateien in src.
+ */
 function findInStyles(pattern, { includeTokens = false } = {}) {
   const hits = []
   for (const file of collectCssFiles(STYLES_DIR)) {
@@ -36,10 +61,15 @@ function findInStyles(pattern, { includeTokens = false } = {}) {
         if (pattern.test(line)) hits.push(`${relative(ROOT, file)}:${index + 1}`)
       })
   }
+  for (const file of collectVueFiles(join(ROOT, 'src'))) {
+    for (const { line, index } of vueStyleLines(file)) {
+      if (pattern.test(line)) hits.push(`${relative(ROOT, file)}:${index + 1}`)
+    }
+  }
   return hits
 }
 
-describe('Design-Tokens in src/styles', () => {
+describe('Design-Tokens in src/styles und .vue-Styles', () => {
   it('nutzen keine Variablen der alten Palette (--at-*)', () => {
     expect(findInStyles(/--at-/, { includeTokens: true })).toEqual([])
   })
