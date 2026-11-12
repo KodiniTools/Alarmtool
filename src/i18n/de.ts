@@ -357,8 +357,7 @@ export default {
   // Live-Vorschau der Oszillatoren
   scope_title: 'Live-Vorschau',
   scope_live: 'Wiedergabe',
-  scope_wave: 'Wellenform der Summe',
-  scope_rhythm: 'Lautstärke über den Rhythmus',
   scope_empty:
     'Kein Oszillator aktiv. Schalte in der Auswahl einen Oszillator ein, um die Vorschau zu sehen.',
+  scope_mix: 'Summe',
 }

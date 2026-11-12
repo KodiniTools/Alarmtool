@@ -1,9 +1,9 @@
 <template>
-  <!--
-    Großes Hero-Bild: nachgebaute Oszillator-Ansicht als SVG/HTML, keine Bilddatei.
-    Farben je Wellenform aus denselben Klassen wie in der App (osc-wave-chip--*).
-  -->
   <figure class="lp-visual" role="img" :aria-label="t('lp_visual_label')">
+    <!--
+      Großes Hero-Bild: nachgebaute Oszillator-Ansicht als SVG/HTML, keine Bilddatei.
+      Farben je Wellenform aus denselben Klassen wie in der App (osc-wave-chip--*).
+    -->
     <div class="lp-visual__head" aria-hidden="true">
       <span class="lp-visual__title">
         <i class="fas fa-wave-square"></i>

@@ -147,3 +147,23 @@ describe('partials.css', () => {
     expect(main.indexOf("'./partials.css'")).toBeGreaterThan(main.indexOf("'./base.css'"))
   })
 })
+
+describe('tokens.css — dunkle Insel', () => {
+  const css = readFileSync(TOKENS_FILE, 'utf8')
+  const block = (selector: string) => {
+    const start = css.indexOf(`\n${selector} {`)
+    expect(start, selector).toBeGreaterThan(-1)
+    return css.slice(start, css.indexOf('}', start))
+  }
+  const decls = (text: string) =>
+    Object.fromEntries(
+      [...text.matchAll(/(--ds-[a-z0-9-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2]])
+    )
+
+  it("[data-theme='dark'] wiederholt nur Werte aus :root, unverändert", () => {
+    const dark = decls(block(':root'))
+    const island = decls(block("[data-theme='dark']"))
+    expect(Object.keys(island).length).toBeGreaterThan(5)
+    for (const [name, value] of Object.entries(island)) expect(value, name).toBe(dark[name])
+  })
+})

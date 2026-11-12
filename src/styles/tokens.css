@@ -161,3 +161,22 @@
   --ds-focus-ring: 0 0 0 2px var(--ds-surface-0), 0 0 0 4px var(--ds-accent);
   --ds-shadow-overlay: 0 8px 24px rgba(20, 33, 58, 0.12);
 }
+
+/* === Dunkle Insel ===
+   Elemente mit data-theme='dark' (z. B. der Oszillator-Visualizer) behalten die
+   Dark-Werte auch im Light-Theme. Werte = :root (Test: tests/designTokens.spec.ts). */
+[data-theme='dark'] {
+  --ds-surface-0: #0a1324;
+  --ds-surface-1: #111d33;
+  --ds-surface-2: #182741;
+  --ds-surface-3: #1f3050;
+  --ds-border: #223553;
+  --ds-border-strong: #2f4668;
+  --ds-text: #f2eee2;
+  --ds-text-2: #a7b3c4;
+  --ds-text-3: #8593a8;
+  --ds-accent: #d4a257;
+  --ds-success: #5fcf8a;
+  --ds-warning: #e3b341;
+  --ds-info: #6aaef5;
+}

@@ -482,18 +482,20 @@
   }
 }
 
-/* ─── Live-Vorschau (OscillatorScope.vue) ──────────────────────── */
-/* Farben je Wellenform über currentColor aus .osc-wave-chip--* */
+/* ─── Visualizer (OscillatorScope.vue) ─────────────────────────── */
+/* Dunkle Insel (data-theme="dark" am Element): gleiche Werte in beiden Themes.
+   Kurven zeichnet das Canvas mit --ds-info, --ds-success und --ds-warning. */
 
-.osc-scope {
+.osc-viz {
   margin-bottom: var(--ds-gap);
   padding: var(--ds-space-4);
   border: var(--ds-border-width) solid var(--ds-border);
   border-radius: var(--ds-radius-md);
   background: var(--ds-surface-0);
+  color: var(--ds-text);
 }
 
-.osc-scope__head {
+.osc-viz__head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -501,111 +503,60 @@
   margin-bottom: var(--ds-space-3);
 }
 
-.osc-scope__title {
+.osc-viz__title {
   display: flex;
+  white-space: nowrap;
   align-items: center;
   gap: var(--ds-space-2);
   font-size: var(--ds-text-md);
   font-weight: var(--ds-weight-semibold);
 }
 
-.osc-scope__title i {
-  color: var(--ds-accent);
+.osc-viz__title i {
+  color: var(--ds-warning);
 }
 
-.osc-scope__live {
+.osc-viz__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-3);
+}
+
+.osc-viz__window {
+  font-family: var(--ds-font-mono);
+  white-space: nowrap;
+}
+
+.osc-viz__live {
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
-  font-size: var(--ds-text-xs);
   font-weight: var(--ds-weight-medium);
   color: var(--ds-text-2);
 }
 
-.osc-scope__dot {
+.osc-viz__dot {
   width: var(--ds-space-2);
   height: var(--ds-space-2);
   border-radius: 50%;
   background: var(--ds-success);
 }
 
-.osc-scope__empty {
+.osc-viz__empty {
   font-size: var(--ds-text-sm);
   color: var(--ds-text-3);
 }
 
-.osc-scope__view + .osc-scope__view {
-  margin-top: var(--ds-space-3);
-}
-
-.osc-scope__label {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--ds-space-2);
-  margin-bottom: var(--ds-space-1);
-  font-size: var(--ds-text-xs);
-  color: var(--ds-text-2);
-}
-
-.osc-scope__meta {
-  font-family: var(--ds-font-mono);
-  color: var(--ds-text-3);
-}
-
-.osc-scope__lane {
+.osc-viz__canvas {
   display: block;
   width: 100%;
-  border: var(--ds-border-width) solid var(--ds-border);
+  height: 260px;
   border-radius: var(--ds-radius-sm);
-  background: var(--ds-surface-1);
 }
 
-.osc-scope__lane--wave {
-  height: 140px;
-}
-
-.osc-scope__lane--rhythm {
-  height: 64px;
-}
-
-.osc-scope__axis {
-  stroke: var(--ds-border-strong);
-  stroke-dasharray: 4 4;
-  vector-effect: non-scaling-stroke;
-}
-
-.osc-scope__layer {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-opacity: 0.6;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.osc-scope__mix {
-  fill: none;
-  /* Textfarbe statt Akzent: Rechteck nutzt bereits den Akzent */
-  stroke: var(--ds-text);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.osc-scope__area {
-  fill: var(--ds-surface-3);
-  stroke: var(--ds-text-2);
-  stroke-width: 1.5;
-  vector-effect: non-scaling-stroke;
-}
-
-.osc-scope__playhead {
-  stroke: var(--ds-text);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-
-.osc-scope__legend {
+.osc-viz__legend {
   display: flex;
   flex-wrap: wrap;
   gap: var(--ds-space-1) var(--ds-space-4);
@@ -616,25 +567,41 @@
   color: var(--ds-text-2);
 }
 
-.osc-scope__legend li {
+.osc-viz__legend li {
   display: inline-flex;
   align-items: center;
   gap: var(--ds-space-2);
 }
 
-.osc-scope__swatch {
+.osc-viz__swatch {
   width: var(--ds-space-3);
   height: 3px;
   border-radius: var(--ds-radius-full);
-  background: currentColor;
+}
+
+.osc-viz__swatch--blue {
+  background: var(--ds-info);
+}
+
+.osc-viz__swatch--green {
+  background: var(--ds-success);
+}
+
+.osc-viz__swatch--mix {
+  background: var(--ds-warning);
 }
 
 @media (max-width: 640px) {
-  .osc-scope {
+  .osc-viz {
     padding: var(--ds-space-3);
   }
 
-  .osc-scope__lane--wave {
-    height: 104px;
+  .osc-viz__canvas {
+    height: 200px;
+  }
+
+  /* Zeitfenster nur auf breiten Bildschirmen */
+  .osc-viz__window {
+    display: none;
   }
 }
