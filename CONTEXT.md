@@ -258,6 +258,21 @@ Lint, Prettier, Typprüfung, Tests, Design-System-Check und Build aus.
 
 ---
 
+## Ui-Komponenten (`src/components/ui`)
+
+Wiederverwendbare Bausteine nach dem Muster von Playlist-Generator und Equalizer-19,
+exportiert über `src/components/ui/index.js`:
+
+- `UiButton`: Textbutton (`variant` primary/secondary/danger, `size` md/sm, `href` + `download` für Links)
+- `UiIconButton`: Button nur mit Icon, `label` wird `aria-label` und `title`
+- `CollapsibleSection`: auf- und zuklappbarer Abschnitt der Sidebar
+
+Buttons werden nur über diese Komponenten gebaut (Test `tests/UiButton.spec.js`).
+Die Stile bleiben global in `src/styles/components/button.css`, weil der
+Design-System-Export (`npm run design-system`) daraus `bundle.css` erzeugt.
+
+---
+
 ## Weitere Dokumentation
 
 - **README.md** - Vollständige Feature-Übersicht und Nutzungsanleitung

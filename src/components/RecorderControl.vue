@@ -37,35 +37,35 @@
 
         <!-- Start Recording Button -->
         <div class="recorder-field recorder-actions">
-          <button
+          <UiButton
             id="startRecordingBtn"
-            class="btn btn-success"
+            variant="primary"
             :disabled="!canStartRecording"
             @click="handleStartRecording"
           >
             <i class="fas fa-record-vinyl"></i> {{ t('rec_start') }}
-          </button>
+          </UiButton>
 
           <!-- Download Link -->
-          <a
+          <UiButton
             v-if="showDownload"
             :href="downloadUrl"
             :download="downloadFilename"
-            class="btn btn-outline-secondary download-ready"
+            class="download-ready"
             @click="handleDownload"
           >
             <i class="fas fa-download"></i> {{ t('rec_download') }}
-          </a>
+          </UiButton>
 
           <!-- Dismiss Recording -->
-          <button
+          <UiButton
             v-if="showDownload"
-            class="btn btn-danger"
+            variant="danger"
             :title="t('rec_dismiss')"
             @click="handleDismiss"
           >
             <i class="fas fa-times"></i> {{ t('rec_dismiss') }}
-          </button>
+          </UiButton>
         </div>
       </div>
 
@@ -78,20 +78,12 @@
       <div v-if="showDownload && !isConverting" class="convert-section">
         <span class="convert-label">{{ t('rec_convert_label') }}</span>
         <div class="convert-actions">
-          <button
-            class="btn btn-outline-secondary btn-sm"
-            :disabled="isConverting"
-            @click="handleConvert('mp3')"
-          >
+          <UiButton size="sm" :disabled="isConverting" @click="handleConvert('mp3')">
             <i class="fas fa-file-audio"></i> MP3
-          </button>
-          <button
-            class="btn btn-outline-secondary btn-sm"
-            :disabled="isConverting"
-            @click="handleConvert('wav')"
-          >
+          </UiButton>
+          <UiButton size="sm" :disabled="isConverting" @click="handleConvert('wav')">
             <i class="fas fa-file-audio"></i> WAV
-          </button>
+          </UiButton>
         </div>
       </div>
 
@@ -109,21 +101,17 @@
 
       <!-- Converted Download -->
       <div v-if="convertedUrl" class="convert-download">
-        <a
+        <UiButton
           :href="convertedUrl"
           :download="convertedFilename"
-          class="btn btn-outline-secondary download-ready"
+          class="download-ready"
           @click="handleConvertedDownload"
         >
           <i class="fas fa-download"></i> {{ t('rec_download') }} {{ convertedFilename }}
-        </a>
-        <button
-          class="btn btn-sm btn-outline-danger"
-          :title="t('rec_dismiss')"
-          @click="resetConversion"
-        >
-          <i class="fas fa-times"></i>
-        </button>
+        </UiButton>
+        <UiIconButton variant="danger" size="sm" :label="t('rec_dismiss')" @click="resetConversion">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </UiIconButton>
       </div>
 
       <!-- Recording Feedback -->
@@ -156,6 +144,7 @@
   import { useFormatConverter } from '@/composables/useFormatConverter'
   import { useToast } from '@/composables/useToast'
   import { useI18n } from '@/i18n'
+  import { UiButton, UiIconButton } from '@/components/ui'
 
   const store = useAlarmStore()
   const {
