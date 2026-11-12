@@ -13,7 +13,7 @@ export default {
   // Presets
   presets_title: 'Alarm-Presets',
   presets_intro:
-    'Fertige Alarmton-Konfigurationen zum sofortigen Laden. Klicke auf "Laden" um ein Preset zu aktivieren.',
+    'Fertige Alarmton-Konfigurationen. „Abspielen“ startet ein Preset, „Bearbeiten“ lädt es zum Anpassen in die Oszillatoren, „Aufnehmen“ spielt es ab und öffnet die Aufnahme.',
   preset_emergency_name: 'Klassische Notfallsirene',
   preset_emergency_desc:
     'Zwei-Ton Hi-Lo Sirene (660/880 Hz) mit Oberwelle — klassischer Rettungsdienst-Alarm.',
