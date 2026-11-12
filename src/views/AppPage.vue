@@ -97,6 +97,7 @@
   import { useI18n } from '@/i18n'
   import { PAGE_PATHS } from '@/lib/pageMeta'
   import { usePlayer } from '@/composables/usePlayer'
+  import { useSiteNavOffset } from '@/composables/useSiteNavOffset'
 
   import FilterControl from '@/components/FilterControl.vue'
   import OscillatorGrid from '@/components/OscillatorGrid.vue'
@@ -111,6 +112,8 @@
   import CollapsibleSection from '@/components/ui/CollapsibleSection.vue'
 
   const { handleKeyboard, stopAlarm } = usePlayer()
+  // Sticky visualizer stays below the global SSI navigation
+  useSiteNavOffset()
 
   // Sticky player bar: reserve exactly its height at the bottom so it never
   // covers page content, regardless of locale/wrapping.
