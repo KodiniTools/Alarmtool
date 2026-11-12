@@ -2,7 +2,7 @@ Alarmtool ist der Online-Alarmton-Generator von KodiniTools: zwölf Oszillatoren
 
 ## Inhalt und Tonalität
 
-- **Sprache:** Deutsch zuerst, Englisch als zweite Locale (`src/i18n/translations.js`). Jede UI-Zeichenkette existiert in beiden Sprachen; Layouts müssen beide Längen vertragen (die Player-Bar misst ihre Höhe deshalb zur Laufzeit).
+- **Sprache:** Deutsch zuerst, Englisch als zweite Locale (`src/i18n/de.ts`, `src/i18n/en.ts`). Jede UI-Zeichenkette existiert in beiden Sprachen; Layouts müssen beide Längen vertragen (die Player-Bar misst ihre Höhe deshalb zur Laufzeit).
 - **Anrede:** Du-Form, kurz, technisch, direkt. Beispiele aus der App: „Reduziere die Lautstärke, bevor du abspielst — besonders mit Kopfhörern.", „Steuerung: Leertaste = Play/Pause | Esc = Stop | M = Mute | L = Loop".
 - **Casing:** Satzschreibung für Labels und Buttons („Aufnahme starten", „Verstanden"); VERSALIEN nur für Eyebrows (`eyebrow`) und Wellenform-Kürzel (SIN, SQR, SAW, TRI, PLS, ORG).
 - **Fachbegriffe bleiben Fachbegriffe:** Hz, Q-Faktor, Attack/Decay/Sustain/Release, Tiefpass/Hochpass/Bandpass/Notch, Pan.
