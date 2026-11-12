@@ -12,7 +12,8 @@
     "format:check": "prettier --check \"src/**/*.{vue,js,css}\"",
     "test": "vitest run",
     "design-system": "node design-system/build.mjs",
-    "design-system:check": "node design-system/build.mjs --check"
+    "design-system:check": "node design-system/build.mjs --check",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "pinia": "^2.1.7",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vue/test-utils": "^2.5.1",
     "eslint": "^10.5.0",
@@ -29,8 +31,10 @@
     "globals": "^17.6.0",
     "jsdom": "^30.1.1",
     "prettier": "^3.8.4",
+    "typescript": "~5.9.0",
     "vite": "^5.0.0",
     "vitest": "^3.2.7",
-    "vue-eslint-parser": "^10.4.1"
+    "vue-eslint-parser": "^10.4.1",
+    "vue-tsc": "^3.3.14"
   }
 }

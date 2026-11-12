@@ -12,7 +12,8 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | **Vue 3** | ^3.4.0 | Progressive JavaScript Framework |
 | **Pinia** | ^2.1.7 | State Management (Vuex-Nachfolger) |
 | **Vite** | ^5.0.0 | Build Tool & Dev Server |
-| **JavaScript** | ES6+ | Programmiersprache |
+| **JavaScript** | ES6+ | Programmiersprache (Migration nach TypeScript vorbereitet) |
+| **TypeScript** | ~5.9 | `tsconfig.json` (strict, `allowJs`), Prüfung mit `vue-tsc` |
 
 ### Browser APIs
 | API | Verwendung |
@@ -182,7 +183,17 @@ Das System unterstützt **12 unabhängige Oszillatoren**. Jeder Oszillator hat f
 npm run dev      # Startet Entwicklungsserver (Port 5173)
 npm run build    # Erstellt Production Build in /dist
 npm run preview  # Vorschau des Production Builds
+npm test         # Vitest (Unit- und Komponententests in tests/)
+npm run lint     # ESLint
+npm run format:check  # Prettier
+npm run type-check    # vue-tsc (TypeScript)
+npm run design-system:check  # Design-System-Export prüfen
 ```
+
+### CI
+
+`.github/workflows/ci.yml` führt bei jedem Pull Request und Push auf `main`
+Lint, Prettier, Typprüfung, Tests, Design-System-Check und Build aus.
 
 ### Konfiguration (vite.config.js)
 
