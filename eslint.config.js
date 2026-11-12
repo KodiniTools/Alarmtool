@@ -1,12 +1,24 @@
-import js from '@eslint/js'
+import {
+  configureVueProject,
+  defineConfigWithVueTs,
+  vueTsConfigs,
+} from '@vue/eslint-config-typescript'
 import pluginVue from 'eslint-plugin-vue'
 import prettierConfig from 'eslint-config-prettier'
 import prettierPlugin from 'eslint-plugin-prettier'
 import globals from 'globals'
 
-export default [
-  js.configs.recommended,
-  ...pluginVue.configs['flat/recommended'],
+// JS und TS gemeinsam: @vue/eslint-config-typescript bringt typescript-eslint
+// mit und parst <script setup lang="ts">. Bis alle Komponenten migriert sind,
+// bleibt <script setup> ohne lang erlaubt.
+configureVueProject({ scriptLangs: ['ts', 'js'] })
+
+export default defineConfigWithVueTs(
+  {
+    ignores: ['dist/**', 'node_modules/**', 'src/lib/lamejs.js'],
+  },
+  pluginVue.configs['flat/recommended'],
+  vueTsConfigs.recommended,
   prettierConfig,
   {
     plugins: {
@@ -22,11 +34,14 @@ export default [
       'prettier/prettier': 'error',
       'vue/multi-word-component-names': 'off',
       'vue/attributes-order': 'warn',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-console': 'warn',
+      // Wie bisher erlaubt: Aufrufe per Ternary oder && (z. B. paused ? resume() : start())
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        { allowTernary: true, allowShortCircuit: true },
+      ],
     },
-  },
-  {
-    ignores: ['dist/**', 'node_modules/**', 'src/lib/**'],
-  },
-]
+  }
+)
