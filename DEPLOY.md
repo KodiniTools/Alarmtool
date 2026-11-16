@@ -54,7 +54,53 @@ auf `main` tut es nichts.
 - `/alarmtool/app/` – das eigentliche Tool (`src/views/AppPage.vue`)
 
 Der Build legt zusätzlich `dist/app/index.html` ab (Kopie der `index.html` mit
-Canonical/Titel der App-Seite, siehe `appPageCopy()` in `vite.config.js`). Dadurch
+Canonical/Titel der App-Seite, siehe `localizedPageCopies()` in `vite.config.js`). Dadurch
 funktionieren Neuladen und Direktaufruf von `/alarmtool/app/` ohne Rewrite-Regel im
 Webserver, und die SSI-Includes werden wie auf der Startseite verarbeitet. `deploy.sh`
 kopiert den Ordner mit dem restlichen Build-Output (`rsync … dist/`).
+
+## Englisch serverseitig (`?lang=en`)
+
+Der Build erzeugt zu jeder Seite eine englische Fassung mit englischem Head:
+
+| URL                       | Datei               | `<html lang>` | Canonical                 |
+| ------------------------- | ------------------- | ------------- | ------------------------- |
+| `/alarmtool/`             | `index.html`        | `de`          | `/alarmtool/`             |
+| `/alarmtool/?lang=en`     | `index.en.html`     | `en`          | `/alarmtool/?lang=en`     |
+| `/alarmtool/app/`         | `app/index.html`    | `de`          | `/alarmtool/app/`         |
+| `/alarmtool/app/?lang=en` | `app/index.en.html` | `en`          | `/alarmtool/app/?lang=en` |
+
+In der englischen Fassung sind außerdem Titel, Beschreibung, `og:*` und `twitter:*`
+englisch; hreflang (de, en, x-default = de) ist in allen Fassungen gleich. Erzeugt
+werden die Dateien von `src/lib/localizedHtml.ts`. `deploy.sh` kopiert sie mit dem
+übrigen Build-Output, eine Änderung am Skript ist nicht nötig.
+
+Damit nginx bei `?lang=en` die englische Datei ausliefert, **einmalig** auf dem
+Server ergänzen:
+
+```nginx
+# im http-Block (z. B. /etc/nginx/conf.d/alarmtool-lang.conf):
+map $arg_lang $alarmtool_index {
+    default        index.html;
+    "~*^en(-|$)"   index.en.html;   # en, EN, en-US
+}
+
+# im server-Block von kodinitools.com, in der bestehenden location /alarmtool/
+# (SSI bleibt wie bisher aktiv):
+location /alarmtool/ {
+    index $alarmtool_index;
+    # … bestehende Direktiven unverändert lassen
+}
+```
+
+Danach `sudo nginx -t && sudo systemctl reload nginx`. Ohne die Regel ändert sich
+nichts: nginx liefert weiter `index.html` aus, und die App stellt wie bisher erst
+per JavaScript auf Englisch um.
+
+Prüfen (ohne JavaScript, wie ein Crawler):
+
+```bash
+curl -s 'https://kodinitools.com/alarmtool/?lang=en' | grep -E '<html lang|<title>|canonical'
+curl -s 'https://kodinitools.com/alarmtool/app/?lang=en' | grep -E '<html lang|<title>|canonical'
+curl -s 'https://kodinitools.com/alarmtool/' | grep -E '<html lang|canonical'   # bleibt de
+```
