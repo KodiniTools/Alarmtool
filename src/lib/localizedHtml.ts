@@ -21,12 +21,44 @@ function setMetaContent(html: string, attr: 'name' | 'property', key: string, va
   return html.replace(pattern, (_m, start: string, end: string) => `${start}${value}${end}`)
 }
 
+/** Englische Texte der strukturierten Daten (JSON-LD); Deutsch steht in index.html. */
+export const JSON_LD_EN = {
+  name: 'Online Alarm Sound Generator',
+  description:
+    'Create and shape custom alarm sounds right in your browser. Multiple oscillators, filters, ADSR envelope and recording.',
+  featureList: [
+    'Multiple oscillators (sine, square, sawtooth, triangle)',
+    'Global band-pass filter',
+    'ADSR envelope per oscillator',
+    'Rhythm pattern editor',
+    'Recording as WAV or MP3',
+    'Import / export of settings',
+    'Built-in alarm presets',
+    'Free and without installation',
+  ],
+}
+
+const JSON_LD_PATTERN = /(<script type="application\/ld\+json">)([\s\S]*?)(\n?[ \t]*<\/script>)/
+
+/**
+ * Überschreibt Felder im JSON-LD-Block. Fehlt der Block, bleibt das HTML unverändert;
+ * ungültiges JSON bricht den Build ab, statt unbemerkt deutsche Daten auszuliefern.
+ */
+function patchJsonLd(html: string, patch: Record<string, unknown>): string {
+  return html.replace(JSON_LD_PATTERN, (_m, open: string, body: string, close: string) => {
+    const data = { ...(JSON.parse(body) as Record<string, unknown>), ...patch }
+    const json = JSON.stringify(data, null, 2).replace(/</g, '\\u003c').replace(/^/gm, '      ')
+    return `${open}\n${json}${close}`
+  })
+}
+
 /**
  * Erzeugt aus der deutschen Landing-index.html die Fassung für Seite und Sprache.
  * - Seite: alle Links auf SITE_URL (Canonical, hreflang, og:url, JSON-LD) zeigen auf die Seite.
  * - Titel und Beschreibung der Seite in der Sprache.
  * - Englisch zusätzlich: <html lang="en">, Canonical/og:url/twitter:url mit ?lang=en,
- *   og:locale en_US sowie Open-Graph-/Twitter-Titel und -Beschreibung.
+ *   og:locale en_US, Open-Graph-/Twitter-Titel und -Beschreibung sowie englisches JSON-LD
+ *   (name, description, featureList, url mit ?lang=en).
  * hreflang bleibt in allen Fassungen gleich (de, en, x-default = de).
  */
 export function localizeIndexHtml(sourceHtml: string, page: Page, lang: HtmlLang): string {
@@ -58,5 +90,5 @@ export function localizeIndexHtml(sourceHtml: string, page: Page, lang: HtmlLang
   html = setMetaContent(html, 'property', 'og:description', description)
   html = setMetaContent(html, 'name', 'twitter:title', title)
   html = setMetaContent(html, 'name', 'twitter:description', description)
-  return html
+  return patchJsonLd(html, { ...JSON_LD_EN, url: canonical })
 }

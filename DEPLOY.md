@@ -70,7 +70,7 @@ Der Build erzeugt zu jeder Seite eine englische Fassung mit englischem Head:
 | `/alarmtool/app/`         | `app/index.html`    | `de`          | `/alarmtool/app/`         |
 | `/alarmtool/app/?lang=en` | `app/index.en.html` | `en`          | `/alarmtool/app/?lang=en` |
 
-In der englischen Fassung sind außerdem Titel, Beschreibung, `og:*` und `twitter:*`
+In der englischen Fassung sind außerdem Titel, Beschreibung, `og:*`, `twitter:*` und JSON-LD
 englisch; hreflang (de, en, x-default = de) ist in allen Fassungen gleich. Erzeugt
 werden die Dateien von `src/lib/localizedHtml.ts`. `deploy.sh` kopiert sie mit dem
 übrigen Build-Output, eine Änderung am Skript ist nicht nötig.
