@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { localizeIndexHtml, localizedFileName } from '@/lib/localizedHtml'
+import { JSON_LD_EN, localizeIndexHtml, localizedFileName } from '@/lib/localizedHtml'
 import { PAGE_META } from '@/lib/pageMeta'
 
 const SOURCE = readFileSync(resolve(__dirname, '../index.html'), 'utf8')
@@ -81,6 +81,20 @@ describe('localizeIndexHtml', () => {
     expect(d.documentElement.lang).toBe('en')
     expect(d.title).toBe(PAGE_META.app.en.title)
     expect(attr(d, 'link[rel="canonical"]', 'href')).toBe(`${APP}?lang=en`)
+  })
+
+  it('JSON-LD: Englisch in den EN-Fassungen, Deutsch unverändert', () => {
+    const jsonLd = (html: string) =>
+      JSON.parse(doc(html).querySelector('script[type="application/ld+json"]')?.textContent ?? '')
+    const source = jsonLd(SOURCE)
+
+    const en = jsonLd(localizeIndexHtml(SOURCE, 'landing', 'en'))
+    expect(en).toEqual({ ...source, ...JSON_LD_EN, url: `${BASE}?lang=en` })
+    expect(en.featureList).toHaveLength(source.featureList.length)
+    expect(jsonLd(localizeIndexHtml(SOURCE, 'app', 'en')).url).toBe(`${APP}?lang=en`)
+
+    expect(jsonLd(localizeIndexHtml(SOURCE, 'landing', 'de'))).toEqual(source)
+    expect(jsonLd(localizeIndexHtml(SOURCE, 'app', 'de'))).toEqual({ ...source, url: APP })
   })
 
   it('SSI-Includes, App-Mount und Theme-Skript bleiben erhalten', () => {
