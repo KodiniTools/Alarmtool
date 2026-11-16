@@ -1,43 +1,46 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
-import { PAGE_META, SITE_URL, pageUrl } from './src/lib/pageMeta'
+import { localizeIndexHtml, localizedFileName } from './src/lib/localizedHtml'
 
-const escapeHtml = (text) =>
-  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+/** Zusätzlich zur deutschen Landing-Seite (index.html) erzeugte Fassungen. */
+const LOCALIZED_PAGES = [
+  { page: 'landing', lang: 'en' },
+  { page: 'app', lang: 'de' },
+  { page: 'app', lang: 'en' },
+]
 
 /**
- * Legt eine Kopie der gebauten index.html unter app/index.html ab. So liefert der
- * Webserver /alarmtool/app/ auch beim Neuladen oder Direktaufruf ohne Rewrite-Regel
- * aus (inkl. SSI-Includes). Canonical, hreflang, Titel und Beschreibung zeigen in der
- * Kopie auf die App-Seite; zur Laufzeit übernimmt settingsStore.
+ * Legt statische Fassungen der gebauten index.html ab:
+ * - app/index.html: /alarmtool/app/ funktioniert beim Neuladen oder Direktaufruf ohne
+ *   Rewrite-Regel (inkl. SSI-Includes).
+ * - index.en.html, app/index.en.html: englischer Head (lang, Titel, Beschreibung,
+ *   Canonical) für ?lang=en; der Webserver liefert sie per nginx-Regel aus (DEPLOY.md).
+ * Zur Laufzeit übernimmt settingsStore den Head.
  */
-function appPageCopy() {
-  const appUrl = pageUrl('app')
-  const meta = PAGE_META.app.de
+function localizedPageCopies() {
   return {
-    name: 'alarmtool-app-page-copy',
+    name: 'alarmtool-localized-page-copies',
     enforce: 'post',
     apply: 'build',
     generateBundle(_options, bundle) {
       const index = bundle['index.html']
       if (!index || index.type !== 'asset') return
-      const html = String(index.source)
-        .replaceAll(`"${SITE_URL}"`, `"${appUrl}"`)
-        .replaceAll(`"${SITE_URL}?lang=en"`, `"${appUrl}?lang=en"`)
-        .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(meta.title)}</title>`)
-        .replace(
-          /(<meta\s+name="description"\s+content=")[^"]*(")/,
-          `$1${escapeHtml(meta.description)}$2`
-        )
-      this.emitFile({ type: 'asset', fileName: 'app/index.html', source: html })
+      const source = String(index.source)
+      for (const { page, lang } of LOCALIZED_PAGES) {
+        this.emitFile({
+          type: 'asset',
+          fileName: localizedFileName(page, lang),
+          source: localizeIndexHtml(source, page, lang),
+        })
+      }
     },
   }
 }
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), appPageCopy()],
+  plugins: [vue(), localizedPageCopies()],
   
   // WICHTIG: Base-Path für das Deployment unter /alarmtool/
   // Dies stellt sicher, dass alle Assets korrekt geladen werden
