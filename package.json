@@ -1,6 +1,7 @@
 {
   "name": "alarm-tool-vue",
   "version": "1.0.0",
+  "description": "Alarmtool: Alarmton-Generator im Browser mit 12 Oszillatoren, ADSR-Hüllkurve, Filter, Presets und Aufnahme als WAV oder MP3",
   "type": "module",
   "scripts": {
     "dev": "vite",

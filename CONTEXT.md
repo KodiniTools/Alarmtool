@@ -26,7 +26,6 @@ Diese Datei dokumentiert den technischen Kontext des Alarmtool-Projekts.
 | Library | Version | Verwendung |
 |---------|---------|------------|
 | **FontAwesome** | 6.4.0 | Icon-Bibliothek |
-| **Google Analytics** | GTM | Analytics-Tracking |
 
 ### Hinweis
 Dies ist eine **reine Frontend-Anwendung (SPA)** ohne Backend oder Datenbank. Alle Daten werden client-seitig im Browser verarbeitet und gespeichert.

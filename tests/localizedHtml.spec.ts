@@ -2,8 +2,12 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { JSON_LD_EN, localizeIndexHtml, localizedFileName } from '@/lib/localizedHtml'
-import { PAGE_META } from '@/lib/pageMeta'
+import { existsSync, statSync } from 'node:fs'
+import { localizeIndexHtml, localizedFileName } from '@/lib/localizedHtml'
+import { PAGE_META, SITE_META } from '@/lib/pageMeta'
+import { OSCILLATOR_COUNT } from '@/lib/oscillatorDefaults'
+import { WAVE_TYPES } from '@/lib/waveforms.js'
+import { PRESETS } from '@/data/presets'
 
 const SOURCE = readFileSync(resolve(__dirname, '../index.html'), 'utf8')
 const BASE = 'https://kodinitools.com/alarmtool/'
@@ -83,18 +87,61 @@ describe('localizeIndexHtml', () => {
     expect(attr(d, 'link[rel="canonical"]', 'href')).toBe(`${APP}?lang=en`)
   })
 
-  it('JSON-LD: Englisch in den EN-Fassungen, Deutsch unverändert', () => {
+  it('JSON-LD: Name, Beschreibung, Funktionsliste und Bild je Sprache', () => {
     const jsonLd = (html: string) =>
       JSON.parse(doc(html).querySelector('script[type="application/ld+json"]')?.textContent ?? '')
-    const source = jsonLd(SOURCE)
 
-    const en = jsonLd(localizeIndexHtml(SOURCE, 'landing', 'en'))
-    expect(en).toEqual({ ...source, ...JSON_LD_EN, url: `${BASE}?lang=en` })
-    expect(en.featureList).toHaveLength(source.featureList.length)
-    expect(jsonLd(localizeIndexHtml(SOURCE, 'app', 'en')).url).toBe(`${APP}?lang=en`)
+    for (const lang of ['de', 'en'] as const) {
+      const site = SITE_META[lang]
+      const suffix = lang === 'en' ? '?lang=en' : ''
+      const data = jsonLd(localizeIndexHtml(SOURCE, 'landing', lang))
+      expect(data.name).toBe(site.appName)
+      expect(data.description).toBe(site.appDescription)
+      expect(data.featureList).toEqual(site.featureList)
+      expect(data.image).toBe(BASE + site.image)
+      expect(data.url).toBe(BASE + suffix)
+      expect(data['@type']).toBe('WebApplication')
+      expect(jsonLd(localizeIndexHtml(SOURCE, 'app', lang)).url).toBe(APP + suffix)
+    }
+    expect(SITE_META.en.featureList).toHaveLength(SITE_META.de.featureList.length)
+  })
 
-    expect(jsonLd(localizeIndexHtml(SOURCE, 'landing', 'de'))).toEqual(source)
-    expect(jsonLd(localizeIndexHtml(SOURCE, 'app', 'de'))).toEqual({ ...source, url: APP })
+  it('index.html (Landing Deutsch) stimmt mit PAGE_META und SITE_META überein', () => {
+    const squash = (html: string) => html.replace(/\s+/g, ' ')
+    expect(squash(localizeIndexHtml(SOURCE, 'landing', 'de'))).toBe(squash(SOURCE))
+  })
+
+  it('Keywords und Vorschaubild folgen der Sprache; die Bilddateien liegen in public/', () => {
+    for (const lang of ['de', 'en'] as const) {
+      const site = SITE_META[lang]
+      for (const page of ['landing', 'app'] as const) {
+        const d = doc(localizeIndexHtml(SOURCE, page, lang))
+        expect(attr(d, 'meta[name="keywords"]', 'content')).toBe(site.keywords)
+        expect(attr(d, 'meta[property="og:image"]', 'content')).toBe(BASE + site.image)
+        expect(attr(d, 'meta[name="twitter:image"]', 'content')).toBe(BASE + site.image)
+        expect(attr(d, 'meta[property="og:image:alt"]', 'content')).toBe(site.imageAlt)
+        expect(attr(d, 'meta[name="twitter:image:alt"]', 'content')).toBe(site.imageAlt)
+        expect(attr(d, 'meta[property="og:title"]', 'content')).toBe(PAGE_META[page][lang].title)
+      }
+      const file = resolve(__dirname, '../public', site.image)
+      expect(existsSync(file)).toBe(true)
+      expect(statSync(file).size).toBeGreaterThan(10_000)
+    }
+  })
+
+  it('Zahlen in den Metadaten passen zum Funktionsumfang', () => {
+    const counts = [OSCILLATOR_COUNT, WAVE_TYPES.length, PRESETS.length]
+    for (const lang of ['de', 'en'] as const) {
+      const texts = [PAGE_META.landing[lang].description, SITE_META[lang].featureList.join(' | ')]
+      for (const text of texts) {
+        for (const count of counts) expect(text).toMatch(new RegExp(`\\b${count}\\b`))
+      }
+      expect(PAGE_META.app[lang].description).toMatch(new RegExp(`\\b${OSCILLATOR_COUNT}\\b`))
+      for (const page of ['landing', 'app'] as const) {
+        expect(PAGE_META[page][lang].title.length).toBeLessThanOrEqual(65)
+        expect(PAGE_META[page][lang].description.length).toBeLessThanOrEqual(165)
+      }
+    }
   })
 
   it('SSI-Includes, App-Mount und Theme-Skript bleiben erhalten', () => {

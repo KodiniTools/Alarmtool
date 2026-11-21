@@ -7,7 +7,7 @@ Eine moderne Vue 3 Anwendung zur Erzeugung komplexer Audiosignale mit 12 individ
 - 🎵 **12 Oszillatoren** mit individuellen Einstellungen
   - Verschiedene Wellenformen (Sinus, Rechteck, Sägezahn, Dreieck, Puls, Orgel)
   - Frequenz, Lautstärke, Pan-Steuerung
-  - Attack/Release-Hüllkurven
+  - ADSR-Hüllkurve (Attack, Decay, Sustain, Release)
   - Pattern-basierte Rhythmen
 
 - 🎛️ **Globaler Filter**
@@ -16,8 +16,8 @@ Eine moderne Vue 3 Anwendung zur Erzeugung komplexer Audiosignale mit 12 individ
 
 - 🎤 **Live Recording**
   - MediaRecorder API
-  - Hochwertige Audio-Codecs (WAV, Opus, WebM)
-  - Verschiedene Aufnahmedauern (1-5 Minuten)
+  - Aufnahme als WebM, OGG oder WAV, Umwandlung in MP3 oder WAV
+  - Verschiedene Aufnahmedauern (30 Sekunden bis 5 Minuten)
 
 - 🎮 **Media Player**
   - Play/Pause/Stop
