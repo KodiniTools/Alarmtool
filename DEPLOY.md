@@ -43,8 +43,12 @@ auf `main` tut es nichts.
 
 - Der Ziel-Pfad und der Branch sind oben in `deploy.sh` konfigurierbar.
 - `assets/` wird mit `--delete` synchronisiert (alte, gehashte Chunks werden
-  entfernt); der Rest ohne `--delete`, damit manuell abgelegte Dateien wie
-  `og-image.png` erhalten bleiben.
+  entfernt); der Rest ohne `--delete`, damit manuell abgelegte Dateien
+  erhalten bleiben.
+- Die Vorschaubilder für Social Media (`og-image.png` deutsch, `og-image-en.png`
+  englisch, je 1200 × 630) liegen in `public/` und werden mit dem Build deployt.
+  Titel, Beschreibung, Keywords und JSON-LD aller HTML-Fassungen kommen aus
+  `src/lib/pageMeta.ts`.
 - `favicon.ico` liegt im Document-Root `/var/www/kodinitools.com/public` und
   wird vom Deploy nicht angefasst.
 
