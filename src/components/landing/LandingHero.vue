@@ -4,6 +4,7 @@
       <div class="lp-hero__text">
         <p class="lp-eyebrow">{{ t('lp_eyebrow') }}</p>
         <h1 class="lp-title">{{ t('lp_title') }}</h1>
+        <p class="lp-subtitle">{{ t('lp_subtitle') }}</p>
         <p class="lp-lead">{{ t('lp_lead') }}</p>
         <div class="lp-actions">
           <UiButton :to="PAGE_PATHS.app" variant="primary" class="lp-cta">

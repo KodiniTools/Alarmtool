@@ -1,0 +1,294 @@
+/* ==========================================================================
+   Alarmtool · Etappe 1: Grundlayout und Designsystem
+   --------------------------------------------------------------------------
+   Rein visuelle, additive Schicht nach dem Muster Playlist Generator
+   (kodini-layout-stage1.css + kodini-landing-modern.css). Keine Änderung an
+   Vue-Logik, Stores, Audio, Routing, Theme-Logik oder SSI-Partials.
+
+   - Farben nur aus Tokens (tokens.css): Verläufe --ds-landing-glow /
+     --ds-app-glow / --ds-card-gradient, Tönung --ds-tint, Cyan
+     --ds-heading-accent, gefülltes Gold --ds-accent-fill mit weißer Schrift.
+   - `body` vor dem Selektor hebt die Spezifität über die Regeln aus
+     src/styles/components/*.css, ohne diese Dateien zu ändern.
+   - Landingpage: Schrift wie im Muster durchgehend Supreme Regular 400.
+   ========================================================================== */
+
+/* === Gefüllte Goldflächen: dunkleres Gold, weiße Schrift === */
+body .btn-primary,
+body .btn-success,
+body .history-count,
+body .preset-play-btn.active,
+body .transport-btn--play.transport-btn--active {
+  background-color: var(--ds-accent-fill);
+  color: var(--ds-on-accent);
+}
+
+body .btn-primary:hover:not(:disabled),
+body .btn-success:hover:not(:disabled) {
+  background-color: var(--ds-accent-fill-hover);
+}
+
+/* === App-Seite: dezente Blau-Cyan-Tiefe hinter dem Werkzeug ===
+   Auf #app, damit der Verlauf die volle Breite nutzt; nur solange die
+   App-Seite (.main-container) gerendert ist. */
+body #app:has(> .main-container) {
+  background-image: var(--ds-app-glow);
+  background-repeat: no-repeat;
+}
+
+/* Hauptpanels der App: leichte Cyan-Tönung auf Fläche und Rahmen */
+body .main-container .section {
+  border-color: color-mix(in srgb, var(--ds-border) 82%, var(--ds-tint) 18%);
+  background: color-mix(in srgb, var(--ds-surface-1) 96%, var(--ds-tint) 4%);
+}
+
+body .main-container .section > h2,
+body .main-container .section > div > h2 {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 76%, var(--ds-tint) 24%);
+}
+
+/* ======================= Landingpage ======================= */
+
+body .landing-page {
+  min-height: 100vh;
+  background-color: var(--ds-surface-0);
+  background-image: var(--ds-landing-glow);
+  background-repeat: no-repeat;
+  background-size: 100% 42rem;
+}
+
+/* Supreme Regular wie im Muster (kein synthetisches Fett). Gilt nicht für das
+   Hero-Visual, das die App-Ansicht abbildet. */
+body .landing-page > section:not(.lp-hero),
+body .landing-page .lp-hero__text {
+  --ds-weight-medium: var(--ds-weight-regular);
+  --ds-weight-semibold: var(--ds-weight-regular);
+  --ds-weight-bold: var(--ds-weight-regular);
+
+  font-weight: var(--ds-weight-regular);
+  font-synthesis: none;
+}
+
+body .landing-page .lp-wrap {
+  max-width: 1160px;
+  padding: 0 clamp(var(--ds-space-3), 3vw, var(--ds-space-6));
+}
+
+/* --- Hero: zweispaltig, Text links, Visualizer rechts --- */
+body .landing-page .lp-hero {
+  padding: clamp(var(--ds-space-8), 7vw, 6rem) 0 clamp(var(--ds-space-8), 5vw, 4rem);
+}
+
+body .landing-page .lp-hero > .lp-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(var(--ds-space-6), 5vw, var(--ds-space-16));
+}
+
+body .landing-page .lp-hero__text {
+  max-width: 680px;
+  margin: 0;
+  text-align: start;
+}
+
+body .landing-page .lp-eyebrow {
+  border: var(--ds-border-width) solid color-mix(in srgb, var(--ds-border) 60%, var(--ds-tint) 40%);
+  background: color-mix(in srgb, var(--ds-surface-1) 85%, var(--ds-tint) 15%);
+}
+
+/* Display-Größe nur hier: die Token-Skala endet bei 32 px. */
+body .landing-page .lp-title {
+  margin-bottom: var(--ds-space-3);
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+
+body .landing-page .lp-subtitle {
+  margin-bottom: var(--ds-space-3);
+  font-size: var(--ds-text-lg);
+  color: var(--ds-heading-accent);
+}
+
+body .landing-page .lp-lead {
+  max-width: 560px;
+  margin: 0 0 var(--ds-space-6);
+  font-size: var(--ds-text-md);
+}
+
+body .landing-page .lp-actions,
+body .landing-page .lp-trust {
+  justify-content: flex-start;
+}
+
+body .landing-page .btn.lp-cta {
+  height: var(--ds-control-lg);
+  padding: 0 var(--ds-space-5);
+}
+
+/* Hero-Visual (dunkle Insel): Rahmen und Overlay-Schatten wie das Hero-Bild im Muster */
+body .landing-page .lp-visual {
+  border-color: var(--ds-border-strong);
+  box-shadow: var(--ds-shadow-overlay);
+}
+
+body .landing-page .lp-visual__head {
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 76%, var(--ds-tint) 24%);
+  background: color-mix(in srgb, var(--ds-surface-1) 91%, var(--ds-tint) 9%);
+}
+
+body .landing-page .lp-visual__title .fas {
+  color: var(--ds-accent);
+}
+
+body .landing-page .lp-hero .lp-visual__body {
+  grid-template-columns: 200px minmax(0, 1fr);
+}
+
+body .landing-page .lp-hero .lp-osc {
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-3);
+}
+
+body .landing-page .lp-hero .lp-visual__scope {
+  min-height: 300px;
+}
+
+/* --- Fakten: einzelne Karten statt Leiste --- */
+body .landing-page .lp-facts {
+  padding-bottom: clamp(var(--ds-space-6), 4vw, var(--ds-space-10));
+  border: 0;
+  background: none;
+}
+
+body .landing-page .lp-facts__grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: var(--ds-gap);
+}
+
+body .landing-page .lp-fact {
+  border: var(--ds-border-width) solid color-mix(in srgb, var(--ds-border) 82%, var(--ds-tint) 18%);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-card-gradient);
+}
+
+body .landing-page .lp-fact + .lp-fact {
+  border-left: var(--ds-border-width) solid
+    color-mix(in srgb, var(--ds-border) 82%, var(--ds-tint) 18%);
+}
+
+body .landing-page .lp-fact dt {
+  font-family: var(--ds-font-sans);
+  color: var(--ds-accent);
+}
+
+/* --- Abschnitte: zentrierte Überschriften, Karten mit Verlauf --- */
+body .landing-page .lp-section {
+  padding: clamp(var(--ds-space-8), 5vw, var(--ds-space-16)) 0;
+}
+
+body .landing-page #funktionen {
+  border-top: var(--ds-border-width) solid var(--ds-border);
+  border-bottom: var(--ds-border-width) solid var(--ds-border);
+  background: var(--ds-surface-1);
+}
+
+body .landing-page .lp-section--alt {
+  border: 0;
+  background: none;
+}
+
+/* Ohne Band läge der Abschluss-Block sonst mit doppeltem Abstand unter den Schritten */
+body .landing-page .lp-section--alt + .lp-section {
+  padding-top: 0;
+}
+
+body .landing-page .lp-section__head {
+  max-width: 720px;
+  margin: 0 auto var(--ds-space-8);
+  text-align: center;
+}
+
+body .landing-page .lp-section__head h2,
+body .landing-page .lp-final h2 {
+  margin-bottom: var(--ds-space-2);
+  font-size: var(--ds-text-2xl);
+  letter-spacing: var(--ds-tracking-tight);
+}
+
+body .landing-page .lp-section__head p {
+  font-size: var(--ds-text-md);
+}
+
+body .landing-page :is(.lp-features, .lp-steps) {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+body .landing-page :is(.lp-feature, .lp-step, .lp-final) {
+  border: var(--ds-border-width) solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-card-gradient);
+  transition: border-color var(--ds-duration) var(--ds-ease);
+}
+
+body .landing-page :is(.lp-feature, .lp-step) {
+  padding: var(--ds-space-5);
+}
+
+body .landing-page :is(.lp-feature, .lp-step):hover {
+  border-color: var(--ds-border-strong);
+}
+
+body .landing-page .lp-feature__icon {
+  margin-bottom: var(--ds-space-3);
+  background: var(--ds-surface-2);
+  color: var(--ds-heading-accent);
+}
+
+body .landing-page .lp-step__num {
+  margin-bottom: var(--ds-space-3);
+  border-color: transparent;
+  background: var(--ds-accent-fill);
+  color: var(--ds-on-accent);
+  font-family: var(--ds-font-sans);
+}
+
+body .landing-page .lp-final {
+  border-color: color-mix(in srgb, var(--ds-border) 70%, var(--ds-tint) 30%);
+}
+
+body .landing-page .lp-final p {
+  font-size: var(--ds-text-md);
+}
+
+/* --- Schmale Bildschirme (Schwellen wie im Muster) --- */
+@media (max-width: 960px) {
+  body .landing-page .lp-fact:nth-child(n + 3) {
+    border-top: var(--ds-border-width) solid
+      color-mix(in srgb, var(--ds-border) 82%, var(--ds-tint) 18%);
+  }
+}
+
+@media (max-width: 760px) {
+  body .landing-page .lp-hero > .lp-wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  body .landing-page .lp-hero .lp-visual__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body .landing-page .lp-hero .lp-visual__scope {
+    min-height: 220px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .landing-page :is(.lp-feature, .lp-step, .lp-final) {
+    transition: none;
+  }
+}
