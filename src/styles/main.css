@@ -18,3 +18,4 @@
 
 /* KodiniTools-Design nach dem Muster Playlist Generator (separate Schicht je Etappe) */
 @import './kodini/stage1-layout.css';
+@import './kodini/stage2-header.css';
