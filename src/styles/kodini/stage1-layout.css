@@ -55,6 +55,8 @@ body .landing-page {
   background-image: var(--ds-landing-glow);
   background-repeat: no-repeat;
   background-size: 100% 42rem;
+  font-size: var(--ds-text-md);
+  line-height: var(--ds-leading);
 }
 
 /* Supreme Regular wie im Muster (kein synthetisches Fett). Gilt nicht für das
@@ -100,7 +102,7 @@ body .landing-page .lp-eyebrow {
 /* Display-Größe nur hier: die Token-Skala endet bei 32 px. */
 body .landing-page .lp-title {
   margin-bottom: var(--ds-space-3);
-  font-size: clamp(2.25rem, 4.6vw, 4rem);
+  font-size: clamp(2.25rem, 5.25vw, 4.5rem);
   line-height: 1.05;
   letter-spacing: -0.045em;
   overflow-wrap: anywhere;
@@ -126,6 +128,8 @@ body .landing-page .lp-trust {
 body .landing-page .btn.lp-cta {
   height: var(--ds-control-lg);
   padding: 0 var(--ds-space-5);
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading);
 }
 
 /* Hero-Visual (dunkle Insel): Rahmen und Overlay-Schatten wie das Hero-Bild im Muster */
@@ -245,6 +249,7 @@ body .landing-page .lp-feature__icon {
   margin-bottom: var(--ds-space-3);
   background: var(--ds-surface-2);
   color: var(--ds-heading-accent);
+  font-size: var(--ds-text-xl);
 }
 
 body .landing-page .lp-step__num {
@@ -271,9 +276,39 @@ body .landing-page .lp-final p {
   }
 }
 
+@media (max-width: 768px) {
+  body .landing-page .lp-section__head {
+    margin-bottom: var(--ds-space-6);
+  }
+
+  body .landing-page .lp-section__head h2,
+  body .landing-page .lp-final h2 {
+    font-size: var(--ds-text-xl);
+  }
+}
+
 @media (max-width: 760px) {
   body .landing-page .lp-hero > .lp-wrap {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  body .landing-page .lp-subtitle {
+    font-size: var(--ds-text-md);
+  }
+
+  body .landing-page .lp-visual {
+    border-radius: var(--ds-radius-md);
+  }
+
+  body .landing-page .lp-actions .btn.lp-cta {
+    max-width: 320px;
+    height: var(--ds-row-height);
+  }
+
+  body .landing-page :is(.lp-feature, .lp-step) {
+    padding: var(--ds-space-4);
   }
 }
 
