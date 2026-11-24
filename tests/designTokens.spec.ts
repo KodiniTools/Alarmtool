@@ -137,9 +137,15 @@ describe('partials.css', () => {
   const css = readFileSync(join(STYLES_DIR, 'partials.css'), 'utf8')
 
   it('macht Navigation und Footer transparent und färbt ihren Text aus den Tokens', () => {
-    expect(css).toMatch(/body > :not\(#app\)[^{]*\{\s*background-color: transparent !important/)
+    expect(css).toMatch(/body\s*>\s*:not\(#app\)[^{]*\{\s*background-color: transparent !important/)
     expect(css).toContain('color: var(--ds-text) !important')
     expect(css).toContain('color: var(--ds-link) !important')
+  })
+
+  it('gibt der SSI-Navigation wie im Playlist Generator eine Fläche aus den Tokens', () => {
+    expect(css).toContain(':not(.global-nav)')
+    expect(css).toMatch(/html body \.global-nav,[^{]*\{[^}]*--nav-bg: var\(--ds-surface-1\)/)
+    expect(css).toMatch(/\.global-nav-lang-btn\.active \{[^}]*var\(--ds-accent-fill\)/)
   })
 
   it('wird in main.css nach base.css importiert', () => {

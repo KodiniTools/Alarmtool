@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Alarmtool · Etappe 2: Header und Navigation
+   --------------------------------------------------------------------------
+   Rein visuelle Schicht für den App-Kopf und die Tab-Leiste (AppPage.vue),
+   nach dem Muster Playlist Generator (kodini-header-stage2.css). Keine
+   Änderung an Vue, Tabs-Logik, Routing oder Theme-Logik. Die SSI-Navigation
+   liegt außerhalb von #app und wird in partials.css gestylt.
+
+   - Titel linksbündig wie im Muster; Tab-Leiste über die volle
+     Containerbreite mit Blau-Cyan-Tönung, aktive Seite mit Goldlinie.
+   - `body` vor dem Selektor hebt die Spezifität über layout.css.
+   - Fokus bleibt der vorhandene --ds-focus-ring.
+   ========================================================================== */
+
+/* === App-Kopf === */
+body .main-container .app-header {
+  margin-bottom: var(--ds-space-5);
+  padding: var(--ds-space-6) 0 0;
+  text-align: start;
+}
+
+body .main-container .app-title {
+  letter-spacing: var(--ds-tracking-tight);
+}
+
+/* === Tab-Leiste === */
+body .main-container .tabs {
+  align-items: center;
+  gap: var(--ds-space-1);
+  max-width: none;
+  min-height: var(--ds-topbar-height);
+  padding: var(--ds-space-2);
+  border-color: color-mix(in srgb, var(--ds-border) 78%, var(--ds-tint) 22%);
+  border-radius: var(--ds-radius-lg);
+  background: color-mix(in srgb, var(--ds-surface-1) 94%, var(--ds-tint) 6%);
+}
+
+body .main-container .tab-btn {
+  flex: 0 0 auto;
+  height: var(--ds-control-md);
+  padding: 0 var(--ds-space-3);
+  border-radius: var(--ds-radius-md);
+  font-size: var(--ds-text-md);
+}
+
+body .main-container .tab-btn:hover {
+  background: color-mix(in srgb, var(--ds-surface-2) 84%, var(--ds-tint) 16%);
+  border-color: color-mix(in srgb, var(--ds-border) 72%, var(--ds-tint) 28%);
+}
+
+body .main-container .tab-btn.active,
+body .main-container .tab-btn.active:hover {
+  color: var(--ds-text);
+  background: color-mix(in srgb, var(--ds-surface-2) 90%, var(--ds-accent) 10%);
+  border-color: color-mix(in srgb, var(--ds-border) 64%, var(--ds-accent) 36%);
+  box-shadow: inset 0 -2px 0 var(--ds-accent);
+}
+
+/* Fokus-Ring und Goldlinie teilen sich box-shadow: beim Fokus gilt der Ring. */
+body .main-container .tab-btn:focus-visible,
+body .main-container .tab-btn.active:focus-visible {
+  box-shadow: var(--ds-focus-ring);
+}
+
+/* Blog-Link bleibt rechts außen (margin-left: auto aus layout.css). */
+
+/* === Schmale Bildschirme === */
+@media (max-width: 768px) {
+  body .main-container .app-header {
+    margin-bottom: var(--ds-space-4);
+    padding-top: var(--ds-space-4);
+  }
+
+  body .main-container .tabs {
+    min-height: 0;
+    padding: var(--ds-space-1);
+  }
+
+  body .main-container .tab-btn {
+    padding: 0 var(--ds-space-2);
+    font-size: var(--ds-text-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  body .main-container .tab-btn {
+    padding: 0 var(--ds-space-3);
+  }
+}
