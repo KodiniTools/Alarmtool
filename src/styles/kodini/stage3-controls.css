@@ -1,0 +1,107 @@
+/* ==========================================================================
+   Alarmtool · Etappe 3: Bedienfelder
+   --------------------------------------------------------------------------
+   Rein visuelle Schicht für Buttons, Felder, Schieberegler, Schalter,
+   Klappbereiche, Speichermenü, Verlauf (Rückgängig/Wiederholen), Toasts und
+   Gehörschutz-Hinweis, nach dem Muster Playlist Generator
+   (kodini-controls-stage3.css). Keine Änderung an Vue, Interaktion, Audio
+   oder Stores.
+
+   - Cyan-Tönung aus --ds-tint, Gold aus --ds-accent (je Theme in tokens.css).
+   - `body` vor dem Selektor hebt die Spezifität über die Regeln aus
+     src/styles/components/*.css, ohne diese Dateien zu ändern.
+   - Flächen mit --ds-text-3 darauf werden auf --ds-surface-1 gemischt, damit
+     der Kontrast über 4,5:1 bleibt.
+   - Fokus bleibt der vorhandene --ds-focus-ring; Schatten nur nach
+     Design-System (Overlay-Token, Innenlinie).
+   ========================================================================== */
+
+/* === Schaltflächen und Felder: Rahmen mit Cyan-Anteil === */
+body .btn-secondary,
+body .btn-outline-secondary,
+body .history-btn,
+body .hearing-warning__dismiss,
+body .form-control,
+body .form-select {
+  border-color: color-mix(in srgb, var(--ds-border-strong) 78%, var(--ds-tint) 22%);
+}
+
+/* Eingaben liegen wie im Muster vertieft auf der Seitenfläche */
+body .form-control,
+body .form-select {
+  background-color: var(--ds-surface-0);
+}
+
+body .form-control:focus-visible,
+body .form-select:focus-visible {
+  border-color: var(--ds-accent);
+}
+
+/* === Schieberegler: Spur mit Cyan-Anteil, Daumenrand auf Panelfläche === */
+body .form-range {
+  background: color-mix(in srgb, var(--ds-surface-3) 86%, var(--ds-tint) 14%);
+}
+
+body .form-range::-moz-range-track {
+  background: color-mix(in srgb, var(--ds-surface-3) 86%, var(--ds-tint) 14%);
+}
+
+body .form-range::-webkit-slider-thumb {
+  border-color: var(--ds-surface-0);
+}
+
+body .form-range::-moz-range-thumb {
+  border-color: var(--ds-surface-0);
+}
+
+/* === Schalter: Spur aus mit Cyan-Anteil === */
+body .toggle-slider {
+  background-color: color-mix(in srgb, var(--ds-surface-3) 80%, var(--ds-tint) 20%);
+}
+
+body .toggle-switch input:checked + .toggle-slider::before {
+  background-color: var(--ds-surface-0);
+}
+
+/* === Klappbereiche (Speicheroptionen, Hüllkurve …) === */
+body .collapsible {
+  border-color: color-mix(in srgb, var(--ds-border) 82%, var(--ds-tint) 18%);
+  background: var(--ds-card-gradient);
+}
+
+body .collapsible-header:hover {
+  background: color-mix(in srgb, var(--ds-surface-1) 88%, var(--ds-tint) 12%);
+}
+
+body .collapsible--open .collapsible-header {
+  border-bottom: var(--ds-border-width) solid
+    color-mix(in srgb, var(--ds-border) 76%, var(--ds-tint) 24%);
+}
+
+/* === Speichermenü === */
+body .settings-menu-group + .settings-menu-group {
+  border-top-color: color-mix(in srgb, var(--ds-border) 76%, var(--ds-tint) 24%);
+}
+
+body .settings-menu-item:hover {
+  background: color-mix(in srgb, var(--ds-surface-1) 88%, var(--ds-tint) 12%);
+}
+
+/* === Rückgängig / Wiederholen === */
+body .history-btn:hover:not(:disabled),
+body .hearing-warning__dismiss:hover {
+  background: color-mix(in srgb, var(--ds-surface-2) 84%, var(--ds-tint) 16%);
+}
+
+/* === Toasts und Gehörschutz-Hinweis: Rahmen mit Cyan-Anteil ===
+   Die farbige Statuskante links (border-left) bleibt unverändert. */
+body .toast-item,
+body .hearing-warning__inner {
+  border-top-color: color-mix(in srgb, var(--ds-border) 70%, var(--ds-tint) 30%);
+  border-right-color: color-mix(in srgb, var(--ds-border) 70%, var(--ds-tint) 30%);
+  border-bottom-color: color-mix(in srgb, var(--ds-border) 70%, var(--ds-tint) 30%);
+}
+
+body .toast-close:hover {
+  background: color-mix(in srgb, var(--ds-surface-2) 84%, var(--ds-tint) 16%);
+}
