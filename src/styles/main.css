@@ -15,3 +15,6 @@
 @import './components/hearing-warning.css';
 @import './components/recorder.css';
 @import './components/landing.css';
+
+/* KodiniTools-Design nach dem Muster Playlist Generator (separate Schicht je Etappe) */
+@import './kodini/stage1-layout.css';

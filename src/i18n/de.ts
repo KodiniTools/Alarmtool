@@ -304,6 +304,7 @@ export default {
   // Landing-Page
   lp_eyebrow: 'Alarmton-Generator im Browser',
   lp_title: 'Bau deinen eigenen Alarmton aus bis zu 12 Oszillatoren',
+  lp_subtitle: 'Alarmton erstellen – direkt im Browser, ohne Konto',
   lp_lead:
     'Wellenform wählen, Frequenz und Hüllkurve formen, Rhythmus festlegen und als WAV oder MP3 speichern. Alles läuft direkt im Browser, ohne Installation und ohne Konto.',
   lp_cta_start: 'Alarmton erstellen',
