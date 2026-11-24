@@ -35,10 +35,11 @@ body .osc-list-row:hover {
   background: color-mix(in srgb, var(--ds-surface-1) 88%, var(--ds-tint) 12%);
 }
 
-/* Gewählte Zeile: Cyan-Tönung, die Goldkante (::before) bleibt */
+/* Gewählte Zeile: Cyan-Tönung, die Goldkante (::before) bleibt. 12 % halten
+   --ds-text-3 (Zeilen-Meta) in Dark über 4,5:1. */
 body .osc-list-row--selected,
 body .osc-list-row--selected:hover {
-  background: color-mix(in srgb, var(--ds-surface-1) 86%, var(--ds-tint) 14%);
+  background: color-mix(in srgb, var(--ds-surface-1) 88%, var(--ds-tint) 12%);
 }
 
 /* === Oszillator-Editor: wie ein Panel des Musters === */
