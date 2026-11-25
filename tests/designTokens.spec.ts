@@ -173,3 +173,42 @@ describe('tokens.css — dunkle Insel', () => {
     for (const [name, value] of Object.entries(island)) expect(value, name).toBe(dark[name])
   })
 })
+
+describe('Button-Verlauf (Equalizer-19-Muster)', () => {
+  const tokens = readFileSync(TOKENS_FILE, 'utf8')
+  const stage1 = readFileSync(join(STYLES_DIR, 'kodini/stage1-layout.css'), 'utf8')
+
+  function luminance(hex: string): number {
+    const [r, g, b] = [1, 3, 5].map((i) => {
+      const c = parseInt(hex.slice(i, i + 2), 16) / 255
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+    })
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+  }
+
+  it.each(['--ds-accent-fill-grad', '--ds-accent-fill-grad-hover'])(
+    '%s ist in beiden Themes gesetzt, jeder Stopp erreicht mit Weiß WCAG AA',
+    (token) => {
+      const values = [...tokens.matchAll(new RegExp(`${token}:\\s*([^;]+);`, 'g'))].map((m) => m[1])
+      expect(values).toHaveLength(2)
+      for (const value of values) {
+        const stops = value.match(/#[0-9a-f]{6}/gi) ?? []
+        expect(stops).toHaveLength(3)
+        for (const stop of stops)
+          expect(1.05 / (luminance(stop) + 0.05)).toBeGreaterThanOrEqual(4.5)
+      }
+    }
+  )
+
+  it('Primärbuttons, aktive Wiedergabe und Sprachauswahl nutzen den Verlauf, der Zähler bleibt flach', () => {
+    const gradRule = stage1.match(/([^{}]+)\{\s*background-image: var\(--ds-accent-fill-grad\);/)
+    expect(gradRule?.[1]).toContain('.btn-primary')
+    expect(gradRule?.[1]).toContain('.transport-btn--play.transport-btn--active')
+    expect(gradRule?.[1]).not.toContain('.history-count')
+    expect(stage1).toContain('background-image: var(--ds-accent-fill-grad-hover);')
+    const partials = readFileSync(join(STYLES_DIR, 'partials.css'), 'utf8')
+    expect(partials).toContain(
+      'background: var(--ds-accent-fill) var(--ds-accent-fill-grad) !important;'
+    )
+  })
+})

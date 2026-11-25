@@ -23,9 +23,21 @@ body .transport-btn--play.transport-btn--active {
   color: var(--ds-on-accent);
 }
 
+/* Buttons mit Verlauf (Equalizer-19-Muster); der Zähler bleibt flach. */
+body .btn-primary,
+body .btn-success,
+body .preset-play-btn.active,
+body .transport-btn--play.transport-btn--active {
+  background-image: var(--ds-accent-fill-grad);
+}
+
 body .btn-primary:hover:not(:disabled),
-body .btn-success:hover:not(:disabled) {
+body .btn-success:hover:not(:disabled),
+body .preset-play-btn.active:hover,
+body .transport-btn--play.transport-btn--active:hover:not(:disabled) {
   background-color: var(--ds-accent-fill-hover);
+  color: var(--ds-on-accent);
+  background-image: var(--ds-accent-fill-grad-hover);
 }
 
 /* === App-Seite: dezente Blau-Cyan-Tiefe hinter dem Werkzeug ===
