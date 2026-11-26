@@ -301,7 +301,8 @@ export default {
 
   // Landing page
   lp_eyebrow: 'Alarm sound generator in your browser',
-  lp_title: 'Build your own alarm sound from up to 12 oscillators',
+  lp_title_line1: 'Create your alarm',
+  lp_title_line2: 'with 12 oscillators',
   lp_subtitle: 'Create alarm sounds – right in your browser, no account',
   lp_lead:
     'Pick a waveform, shape frequency and envelope, set the rhythm and save as WAV or MP3. Everything runs right in your browser, with no installation and no account.',

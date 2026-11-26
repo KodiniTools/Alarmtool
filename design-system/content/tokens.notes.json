@@ -19,6 +19,8 @@
       "ds-link": "Links im Fließtext der SSI-Partials; in der App ungenutzt.",
       "ds-tint": "Blau-Cyan-Tönung wie im Playlist Generator: nie pur, nur per color-mix mit Flächen und Rahmen (Panels, Tab-Leiste, Karten, Player).",
       "ds-heading-accent": "Cyan für Unterzeilen und Feature-Icons der Landingpage (Hero-Unterzeile). Dark 11.0:1 auf surface-0, Light 5.7:1.",
+      "ds-title-gold": "Erste Zeile des Hero-Titels der Landingpage (Kreieren Sie Ihren Alarm). Dark #e6bc76 (10.5:1 auf surface-0), Light #775115 (6.5:1).",
+      "ds-title-blue": "Zweite Zeile des Hero-Titels der Landingpage (mit 12 Oszillatoren), Blau aus dem Logo. Dark #48a0d8 (6.5:1 auf surface-0), Light #0058a0 (6.6:1).",
       "ds-success": "Läuft-Status (Punkt und Label), SIN-Chip, Erfolgs-Toast (Kante, Icon, Countdown). Dark 8.6:1 auf surface-1; Light 5.4:1 / 4.6:1 auf surface-2.",
       "ds-warning": "Pausiert-Status, PLS-Chip, Warn-Toast. Dark 8.7:1; Light 5.0:1 auf surface-1, 4.3:1 auf surface-2 (Chip, Quellwert — flagged).",
       "ds-danger": "Danger-Buttons (Text auf flacher Fläche), SAW-Chip, Fehler-Toast, Gehörschutz-Kante und -Icon. Dark 5.6:1; Light 5.0:1 auf surface-1, 4.3:1 auf surface-2 (Chip, Quellwert — flagged).",
