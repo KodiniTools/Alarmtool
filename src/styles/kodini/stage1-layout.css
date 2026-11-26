@@ -120,6 +120,19 @@ body .landing-page .lp-title {
   overflow-wrap: anywhere;
 }
 
+/* Zwei Zeilen: Gold, dann Logo-Blau (Tokens je Theme in tokens.css) */
+body .landing-page .lp-title__line {
+  display: block;
+}
+
+body .landing-page .lp-title__line--gold {
+  color: var(--ds-title-gold);
+}
+
+body .landing-page .lp-title__line--blue {
+  color: var(--ds-title-blue);
+}
+
 body .landing-page .lp-subtitle {
   margin-bottom: var(--ds-space-3);
   font-size: var(--ds-text-lg);

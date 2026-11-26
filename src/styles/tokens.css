@@ -65,6 +65,9 @@
   --ds-tint: #3c98b9;
   /* Cyan für Unterzeilen und Icons der Landingpage */
   --ds-heading-accent: #69d7e9;
+  /* Hero-Titel der Landingpage: Zeile 1 Gold, Zeile 2 Logo-Blau */
+  --ds-title-gold: #e6bc76;
+  --ds-title-blue: #48a0d8;
 
   /* Status */
   --ds-success: #5fcf8a;
@@ -176,6 +179,8 @@
   --ds-link: #0f5aa8;
   --ds-tint: #3c98b9;
   --ds-heading-accent: #086a80;
+  --ds-title-gold: #775115;
+  --ds-title-blue: #0058a0;
 
   --ds-success: #177a42;
   --ds-warning: #9a6416;
